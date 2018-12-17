@@ -1,3 +1,3 @@
 # Sicv
 
-![Alt text](relative/path/to/architecture.png?raw=true "Architecture Choosed")
+![Alt text](architecture.png?raw=true "Architecture Choosed")
