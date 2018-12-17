@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Sicv</string>
+    <string name="app_name">SICV</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Senha</string>
+    <string name="sign_in_text">Entrar</string>
+    <string name="register_text">Registrar</string>
 </resources>

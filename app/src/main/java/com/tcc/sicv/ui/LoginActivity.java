@@ -1,7 +1,9 @@
-package com.tcc.sicv;
+package com.tcc.sicv.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.tcc.sicv.R;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -10,5 +12,5 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
     }
-    
+
 }
