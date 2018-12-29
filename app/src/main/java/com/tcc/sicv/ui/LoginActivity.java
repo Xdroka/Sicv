@@ -4,13 +4,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.tcc.sicv.R;
+import com.tcc.sicv.presentation.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity {
+    private LoginViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mViewModel = new LoginViewModel();
     }
 
 }
