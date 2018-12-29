@@ -1,7 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
+    ext{
+        lifecycleVersion = "2.0.0"
+        retrofitVersion = "2.5.0"
+        koinVersion = "1.0.2"
+        coroutinesVersion = '1.0.1'
+    }
+
     repositories {
         google()
         jcenter()
