@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <android.support.design.widget.TextInputEditText
-            style="@style/EditTextStyle"
+            style="@style/EditTextDrawable"
             android:id="@+id/emailEt"
             android:drawableStart="@drawable/ic_email"
             android:layout_width="match_parent"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout">
 
         <android.support.design.widget.TextInputEditText
-            style="@style/EditTextStyle"
+            style="@style/EditTextDrawable"
             android:id="@+id/passwordEt"
             android:drawableStart="@drawable/ic_password_lock"
             android:layout_width="match_parent"

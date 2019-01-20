@@ -2,6 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
+    packagingOptions{
+        exclude 'META-INF/rxjava.properties'
+    }
     defaultConfig {
         applicationId "com.tcc.sicv"
         minSdkVersion 24
@@ -40,6 +43,9 @@ dependencies {
     //RX
     implementation 'io.reactivex:rxandroid:1.2.0'
     implementation 'io.reactivex:rxjava:1.1.8'
+
+    //EditText com máscara
+    implementation 'com.vicmikhailau:MaskedEditText:2.0.4'
 
     //Firebase
     implementation 'com.google.firebase:firebase-core:16.0.6'

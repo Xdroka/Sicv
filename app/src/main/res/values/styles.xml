@@ -30,8 +30,19 @@
         <item name="layoutManager">androidx.recyclerview.widget.LinearLayoutManager</item>
     </style>
 
-    <style name="EditTextStyle">
+    <style name="EditTextDefault">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="EditTextDrawable" parent="EditTextDefault">
         <item name="android:paddingStart">@dimen/paddingEditText</item>
+    </style>
+
+    <style name="SubTitleDrawable">
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>
