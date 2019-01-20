@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="paddingEditText">16dp</dimen>
+    <dimen name="titleSize">24sp</dimen>
 
 </resources>
