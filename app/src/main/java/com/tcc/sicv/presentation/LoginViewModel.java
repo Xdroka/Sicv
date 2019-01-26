@@ -16,8 +16,8 @@ import static com.tcc.sicv.presentation.model.State.VALID;
 public class LoginViewModel extends ViewModel {
     private MutableLiveData<ViewState<User>> viewState;
     private User user;
-    public MutableLiveData<State> emailState;
-    public MutableLiveData<State> passwordState;
+    private MutableLiveData<State> emailState;
+    private MutableLiveData<State> passwordState;
 
     public LoginViewModel() {
         user = new User();
