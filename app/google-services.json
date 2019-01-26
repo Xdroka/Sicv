@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "476554723651",
+    "firebase_url": "https://sicv-409be.firebaseio.com",
+    "project_id": "sicv-409be",
+    "storage_bucket": "sicv-409be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476554723651:android:fcbfad68bb912cb0",
+        "android_client_info": {
+          "package_name": "com.tcc.sicv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "476554723651-an8pjd4vfgrdbaekhuu9aerq4o1mfe5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEpHTPLxHG2504uTxPxs_MGQlJJq_jVh8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
