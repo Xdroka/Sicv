@@ -1,5 +1,6 @@
 package com.tcc.sicv.presentation;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import com.tcc.sicv.presentation.model.State;
@@ -38,7 +39,7 @@ public class LoginViewModel extends ViewModel {
         return password.length() >= 6;
     }
 
-    public MutableLiveData<ViewState<User>> getViewState() {
+    public LiveData<ViewState<User>> getViewState() {
         return viewState;
     }
 
