@@ -1,11 +1,11 @@
 package com.tcc.sicv.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.tcc.sicv.R;
+import com.tcc.sicv.base.BaseActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 //    private LoginViewModel mViewModel;
 //    private Button button;
 //    private TextInputEditText emailEt;
