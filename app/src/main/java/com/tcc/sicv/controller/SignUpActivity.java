@@ -1,4 +1,4 @@
-package com.tcc.sicv.ui;
+package com.tcc.sicv.controller;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

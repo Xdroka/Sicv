@@ -5,4 +5,14 @@
     <string name="sign_in_text">Entrar</string>
     <string name="register_text">Registrar</string>
     <string name="signup_title">Faça seu cadastro abaixo:</string>
+    <string name="cpf">CPF</string>
+    <string name="name">Nome</string>
+    <string name="telephone">Telefone</string>
+    <string name="dateOfBirth">Data de nascimento</string>
+    <string name="personalData">Dados Pessoais</string>
+    <string name="accountData">Dados da Conta</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Senha</string>
+    <string name="signUp">Realizar cadastro</string>
+    <string name="confirmPassword">Confirmar Senha</string>
 </resources>
