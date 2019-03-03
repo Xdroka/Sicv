@@ -16,7 +16,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-//        mViewModel = new LoginViewModel();
+//        mViewModel = new LoginViewModel( ((AppBase) getApplication()).getIntractor());
 //        setup();
 //        creatingObservers();
     }
@@ -35,10 +35,10 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 //
 //    private void creatingObservers() {
-//        mViewModel.getViewState().observe(this, new Observer<ViewState<User>>() {
+//        mViewModel.getFlowState().observe(this, new Observer<FlowState<User>>() {
 //            @Override
-//            public void onChanged(@Nullable ViewState<User> userViewState) {
-//                handleWithMainFlow(userViewState);
+//            public void onChanged(@Nullable FlowState<User> userFlowState) {
+//                handleWithMainFlow(userFlowState);
 //            }
 //        });
 //        button.setOnClickListener(new View.OnClickListener() {
@@ -68,10 +68,31 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 //
 //    private void handleWithPasswordState(State state) {
-//
+//        switch (state){
+//            case EMPTY:
+//                passwordEt.setError(getString(R.string.error_empty_password));
+//                break;
+//            case VALID:
+//                passwordEt.setError(null);
+//                break;
+//            case INVALID:
+//                passwordEt.setError(getString(R.string.error_invalid_password));
+//                break;
+//        }
 //    }
 //
 //    private void handleWithEmailState(State state) {
+//        switch (state){
+//            case EMPTY:
+//                emailEt.setError(getString(R.string.error_empty_email));
+//                break;
+//            case VALID:
+//                emailEt.setError(null);
+//                break;
+//            case INVALID:
+//                emailEt.setError(getString(R.string.error_invalid_email));
+//                break;
+//        }
 //
 //    }
 //
@@ -84,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
 //
 //    }
 //
-//    private void handleWithMainFlow(ViewState<User> userViewState) {
+//    private void handleWithMainFlow(FlowState<User> userFlowState) {
 //
 //    }
 
