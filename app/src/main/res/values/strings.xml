@@ -5,6 +5,10 @@
     <string name="sign_in_text">Entrar</string>
     <string name="register_text">Registrar</string>
     <string name="signup_title">Faça seu cadastro abaixo:</string>
+    <string name="error_empty_email">Campo de email vazio</string>
+    <string name="error_empty_password">Campo de senha vazio</string>
+    <string name="error_invalid_password">Senha deve conter pelo menos 6 caracteres</string>
+    <string name="error_invalid_email">Email invalido</string>
     <string name="cpf">CPF</string>
     <string name="name">Nome</string>
     <string name="telephone">Telefone</string>
