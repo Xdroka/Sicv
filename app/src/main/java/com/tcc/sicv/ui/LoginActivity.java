@@ -1,4 +1,4 @@
-package com.tcc.sicv.controller;
+package com.tcc.sicv.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

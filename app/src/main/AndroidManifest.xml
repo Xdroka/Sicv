@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.LoginActivity">
+        <activity android:name=".ui.LoginActivity">
 
         </activity>
-        <activity android:name=".controller.SignUpActivity">
+        <activity android:name=".ui.SignUpActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -19,4 +19,13 @@
     <string name="password">Senha</string>
     <string name="signUp">Realizar cadastro</string>
     <string name="confirmPassword">Confirmar Senha</string>
+    <string name="error_confirm_password">As senhas não conferem!</string>
+    <string name="empty_name">Campo de nome vazio</string>
+    <string name="empty_cpf">Campo de CPF vazio</string>
+    <string name="invalid_cpf">CPF inválido</string>
+    <string name="empty_telephone">Campo de telefone vazio</string>
+    <string name="invalid_telephone">Telefone inválido</string>
+    <string name="empty_date">Campo de nascimento vazio</string>
+    <string name="invalid_date">Data de nascimento inválida</string>
+    <string name="invalid_age_date">Para acesso ao aplicativo é preciso ter no mínimo 18 anos</string>
 </resources>

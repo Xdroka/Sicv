@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.SignUpActivity">
+    tools:context=".ui.SignUpActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/sign_up_appbar"
@@ -54,6 +54,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
                 <com.vicmikhailau.maskededittext.MaskedEditText
+                    android:id="@+id/cpfEt"
                     style="@style/EditTextDefault"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -90,6 +91,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView3">
 
                 <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/nameEt"
                     style="@style/EditTextDefault"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -112,6 +114,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
                 <com.vicmikhailau.maskededittext.MaskedEditText
+                    android:id="@+id/telephoneEt"
                     style="@style/EditTextDefault"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -133,6 +136,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
 
                 <com.vicmikhailau.maskededittext.MaskedEditText
+                    android:id="@+id/dateEt"
                     style="@style/EditTextDefault"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -236,6 +240,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout6">
 
                 <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/confirmPasswordEt"
                     style="@style/EditTextDefault"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
