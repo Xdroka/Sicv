@@ -34,13 +34,14 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <android.support.v7.widget.AppCompatEditText
-            style="@style/EditTextDrawable"
             android:id="@+id/emailEt"
-            android:drawableStart="@drawable/ic_email"
-            android:drawablePadding="6dp"
+            style="@style/EditTextDrawable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email_hint" />
+            android:drawableStart="@drawable/ic_email"
+            android:drawablePadding="6dp"
+            android:hint="@string/email_hint"
+            android:singleLine="true" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -55,13 +56,15 @@
         app:layout_constraintTop_toBottomOf="@+id/emailTextInputLayout">
 
         <android.support.v7.widget.AppCompatEditText
-            style="@style/EditTextDrawable"
             android:id="@+id/passwordEt"
-            android:drawableStart="@drawable/ic_password_lock"
-            android:drawablePadding="6dp"
+            style="@style/EditTextDrawable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password_hint" />
+            android:drawableStart="@drawable/ic_password_lock"
+            android:drawablePadding="6dp"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
+            android:singleLine="true" />
     </android.support.design.widget.TextInputLayout>
 
 

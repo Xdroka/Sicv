@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModel;
 import android.util.Patterns;
 
 import com.tcc.sicv.data.model.User;
-import com.tcc.sicv.data.remote.firebase.AuthRepository;
+import com.tcc.sicv.data.firebase.AuthRepository;
 import com.tcc.sicv.presentation.model.FlowState;
 import com.tcc.sicv.presentation.model.State;
 import com.tcc.sicv.presentation.model.Status;
