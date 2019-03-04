@@ -1,6 +1,9 @@
 package com.tcc.sicv.ui;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,12 +11,12 @@ import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.tcc.sicv.HomeActivity;
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.presentation.SignUpViewModel;
@@ -35,6 +38,7 @@ public class SignUpActivity extends BaseActivity {
     private AppCompatEditText passwordEt;
     private AppCompatEditText confirmPasswordEt;
     private Button button;
+    AlertDialog successSignUpDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,6 @@ public class SignUpActivity extends BaseActivity {
         setup();
 
         creatingObservers();
-        //configFirebase();
     }
 
     private void setup() {
@@ -61,8 +64,10 @@ public class SignUpActivity extends BaseActivity {
     private void creatingObservers() {
         mViewModel.getFlowState().observe(this, new Observer<FlowState<Boolean>>() {
             @Override
-            public void onChanged(@Nullable FlowState<Boolean> userFlowState) {
-                handleWithMainFlow(userFlowState);
+            public void onChanged(@Nullable FlowState<Boolean> flowState) {
+                if (flowState != null) {
+                    handleWithMainFlow(flowState);
+                }
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
@@ -144,28 +149,6 @@ public class SignUpActivity extends BaseActivity {
                 if (state != null) {
                     handleWithConfirmPassState(state);
                 }
-            }
-        });
-    }
-
-    private void configFirebase() {
-        DocumentReference db = FirebaseFirestore.getInstance().document("usuarios/pedro");
-
-        // Create a new user with a first and last name
-        Map<String, Object> user = new HashMap<>();
-        user.put("email", "pedro");
-        user.put("senha", "pedro01");
-
-// Add a new document with a generated ID
-        db.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d("Aqui", "Sucesso");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("Aqui", "Deu ruim");
             }
         });
     }
@@ -265,7 +248,40 @@ public class SignUpActivity extends BaseActivity {
         }
     }
 
-    private void handleWithMainFlow(FlowState<Boolean> userFlowState) {
-        Toast.makeText(this, "Sucesso", Toast.LENGTH_SHORT).show();
+    private void handleWithMainFlow(FlowState<Boolean> flowState) {
+        switch (flowState.getStatus()) {
+            case LOADING:
+                showLoadingDialog();
+                break;
+            case SUCCESS:
+                hideLoadingDialog();
+                createSignUpDialog();
+                break;
+            case ERROR:
+                hideLoadingDialog();
+                handleErrors(flowState);
+                break;
+        }
+    }
+
+    private void createSignUpDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.ic_done_blue_24dp);
+        builder.setTitle("SUCESSO");
+        builder.setMessage("Cadastro realizado com sucesso!");
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                successSignUpDialog.dismiss();
+            }
+        });
+        successSignUpDialog = builder.create();
+        successSignUpDialog.show();
+        successSignUpDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
+                finish();
+            }
+        });
     }
 }

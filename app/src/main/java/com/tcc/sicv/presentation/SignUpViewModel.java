@@ -1,13 +1,18 @@
 package com.tcc.sicv.presentation;
 
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Patterns;
 
+import com.tcc.sicv.data.model.User;
+import com.tcc.sicv.data.remote.firebase.AuthRepository;
 import com.tcc.sicv.presentation.model.FlowState;
 import com.tcc.sicv.presentation.model.State;
 import com.tcc.sicv.presentation.model.Status;
+
+import java.util.Date;
 
 import static com.tcc.sicv.presentation.model.State.EMPTY;
 import static com.tcc.sicv.presentation.model.State.INVALID;
@@ -15,6 +20,7 @@ import static com.tcc.sicv.presentation.model.State.MIN_AGE;
 import static com.tcc.sicv.presentation.model.State.VALID;
 
 public class SignUpViewModel extends ViewModel {
+    private AuthRepository authRepository;
     private MutableLiveData<FlowState<Boolean>> flowState;
     private MutableLiveData<State> nameState;
     private MutableLiveData<State> cpfState;
@@ -25,6 +31,7 @@ public class SignUpViewModel extends ViewModel {
     private MutableLiveData<State> confirmPassState;
 
     public SignUpViewModel() {
+        authRepository = new AuthRepository();
         flowState = new MutableLiveData<>();
         nameState = new MutableLiveData<>();
         cpfState = new MutableLiveData<>();
@@ -114,18 +121,48 @@ public class SignUpViewModel extends ViewModel {
         }
     }
 
+    private int getAge(int year, int month, int day) {
+        Date now = new Date();
+        int nowMonth = now.getMonth() + 1;
+        int nowYear = now.getYear() + 1900;
+        int result = nowYear - year;
+
+        if (month > nowMonth) {
+            result--;
+        } else if (month == nowMonth) {
+            int nowDay = now.getDate();
+
+            if (day > nowDay) {
+                result--;
+            }
+        }
+        return result;
+    }
+
+    private boolean validDate(int year, int month, int day) {
+        return year >= 1900 && month >= 1 && month <= 12 && day >= 1 && day <= 32;
+    }
+
     private Boolean processDateData(String date) {
         int DATE_MIN_LENGHT = 10;
         int USER_MIN_AGE = 18;
         int userAge = 0;
+        int day = 0;
+        int month = 0;
+        int year = 0;
         if (date.length() == DATE_MIN_LENGHT) {
-            String year = date.split("/")[2];
-            userAge = 2018 - Integer.parseInt(year);
+            day = Integer.parseInt(date.split("/")[0]);
+            month = Integer.parseInt(date.split("/")[1]);
+            year = Integer.parseInt(date.split("/")[2]);
+            userAge = getAge(year, month, day);
         }
         if (date.isEmpty()) {
             dateState.postValue(EMPTY);
             return false;
         } else if (date.length() != DATE_MIN_LENGHT) {
+            dateState.postValue(INVALID);
+            return false;
+        } else if (!validDate(year, month, day)) {
             dateState.postValue(INVALID);
             return false;
         } else if (userAge < USER_MIN_AGE) {
@@ -158,7 +195,19 @@ public class SignUpViewModel extends ViewModel {
                 validEmail && validName && validPassword && validConfirmPassword &&
                         validTelephone && validCpf && validDate
         ) {
-            flowState.postValue(new FlowState<>(true, null, Status.SUCCESS));
+            flowState.postValue(new FlowState<Boolean>(null, null, Status.LOADING));
+
+            authRepository.checkAccountExistAndCreateUser(
+                    new User(
+                            email,
+                            password,
+                            name,
+                            cpf,
+                            tel,
+                            date
+                    ),
+                    flowState
+            );
         }
     }
 

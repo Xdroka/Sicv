@@ -1,18 +1,6 @@
 package com.tcc.sicv.presentation;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-
-import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.presentation.model.State;
-import com.tcc.sicv.presentation.model.User;
-
-import java.util.regex.Pattern;
-
-import static com.tcc.sicv.presentation.model.State.EMPTY;
-import static com.tcc.sicv.presentation.model.State.INVALID;
-import static com.tcc.sicv.presentation.model.State.VALID;
 
 public class LoginViewModel extends ViewModel {
 //    private MutableLiveData<FlowState<User>> flowState;
