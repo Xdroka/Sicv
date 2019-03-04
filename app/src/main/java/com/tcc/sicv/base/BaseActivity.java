@@ -35,14 +35,12 @@ public class BaseActivity extends AppCompatActivity {
         if (flowState.getThrowable() != null){
             Throwable throwable = flowState.getThrowable();
             if (throwable instanceof Exceptions.NoInternetException){
-                createErrorDialog("Falha na conexão com a Internet");
+                createErrorDialog(getString(R.string.internetConnectionError));
             }else if (throwable instanceof Exceptions.InvalidUserEmailData){
-                createErrorDialog("Já existe um usuário cadastrado com este email");
-            }else if (throwable instanceof Exceptions.InvalidUserCPFData){
-                createErrorDialog("Já existe um usuário cadastrado com este CPF");
+                createErrorDialog(getString(R.string.invalidUserEmail));
             }
             else{
-                createErrorDialog("Ocorreu um problema com o servidor, tente novamente");
+                createErrorDialog(getString(R.string.problemsInServer));
             }
         }
     }
@@ -50,9 +48,9 @@ public class BaseActivity extends AppCompatActivity {
     private void createErrorDialog(String message) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.ic_error_red_24dp);
-        builder.setTitle("Erro");
+        builder.setTitle(getString(R.string.error));
         builder.setMessage(message);
-        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.OK), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) { }
         });
         alertDialog = builder.create();

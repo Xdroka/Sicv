@@ -28,4 +28,9 @@
     <string name="empty_date">Campo de nascimento vazio</string>
     <string name="invalid_date">Data de nascimento inválida</string>
     <string name="invalid_age_date">Para acesso ao aplicativo é preciso ter no mínimo 18 anos</string>
+    <string name="internetConnectionError">Falha na conexão com a Internet</string>
+    <string name="invalidUserEmail">Já existe um usuário cadastrado com este email</string>
+    <string name="problemsInServer">Ocorreu um problema com o servidor, tente novamente</string>
+    <string name="error">Erro</string>
+    <string name="OK">OK</string>
 </resources>
