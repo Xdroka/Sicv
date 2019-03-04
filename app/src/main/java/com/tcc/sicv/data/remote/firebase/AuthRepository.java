@@ -24,6 +24,7 @@ import java.util.Objects;
 import static com.tcc.sicv.presentation.model.Status.ERROR;
 
 public class AuthRepository {
+    private static final String USER_COLLECTION_PATH  = "usuarios";
     private final FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
@@ -64,7 +65,7 @@ public class AuthRepository {
 //    }
 
     private void createUserDocument(final User user, final MutableLiveData<FlowState<Boolean>> result) {
-        db.collection("usuarios").document(user.getEmail())
+        db.collection(USER_COLLECTION_PATH).document(user.getEmail())
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
