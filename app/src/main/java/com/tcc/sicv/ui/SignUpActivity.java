@@ -41,6 +41,13 @@ public class SignUpActivity extends BaseActivity {
         creatingObservers();
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+        super.onBackPressed();
+    }
+
     private void setup() {
         nameEt = findViewById(R.id.nameEt);
         cpfEt = findViewById(R.id.cpfEt);

@@ -41,6 +41,7 @@
             android:drawableStart="@drawable/ic_email"
             android:drawablePadding="6dp"
             android:hint="@string/email_hint"
+            android:inputType="textEmailAddress"
             android:singleLine="true" />
     </android.support.design.widget.TextInputLayout>
 

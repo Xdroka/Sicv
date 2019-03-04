@@ -4,15 +4,12 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Patterns;
-
 import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.data.firebase.AuthRepository;
 import com.tcc.sicv.presentation.model.FlowState;
 import com.tcc.sicv.presentation.model.State;
 import com.tcc.sicv.presentation.model.Status;
-
-import java.util.Date;
-
+import java.util.Calendar;
 import static com.tcc.sicv.presentation.model.State.EMPTY;
 import static com.tcc.sicv.presentation.model.State.INVALID;
 import static com.tcc.sicv.presentation.model.State.MIN_AGE;
@@ -121,15 +118,15 @@ public class SignUpViewModel extends ViewModel {
     }
 
     private int getAge(int year, int month, int day) {
-        Date now = new Date();
-        int nowMonth = now.getMonth() + 1;
-        int nowYear = now.getYear() + 1900;
+        Calendar calendar = Calendar.getInstance();
+        int nowMonth = calendar.get(Calendar.MONTH) + 1;
+        int nowYear = calendar.get(Calendar.YEAR) + 1900;
         int result = nowYear - year;
 
         if (month > nowMonth) {
             result--;
         } else if (month == nowMonth) {
-            int nowDay = now.getDate();
+            int nowDay = calendar.get(Calendar.DATE);
 
             if (day > nowDay) {
                 result--;

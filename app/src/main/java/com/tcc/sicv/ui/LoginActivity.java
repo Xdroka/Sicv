@@ -8,6 +8,8 @@ import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.gson.Gson;
+import com.tcc.sicv.HomeActivity;
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.model.User;
@@ -17,6 +19,8 @@ import com.tcc.sicv.presentation.model.FlowState;
 import com.tcc.sicv.presentation.model.State;
 
 import java.util.Objects;
+
+import static com.tcc.sicv.Constants.USER_FIELD;
 
 public class LoginActivity extends BaseActivity {
     private LoginViewModel mViewModel;
@@ -42,6 +46,11 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void creatingObservers() {
+        User user = mViewModel.getUser();
+        if(user != null){
+            callHomeActivity(user);
+        }
+
         mViewModel.getFlowState().observe(this, new Observer<FlowState<User>>() {
             @Override
             public void onChanged(@Nullable FlowState<User> userFlowState) {
@@ -61,6 +70,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                finish();
             }
         });
 
@@ -134,9 +144,19 @@ public class LoginActivity extends BaseActivity {
                 break;
             case SUCCESS:
                 hideLoadingDialog();
-                mViewModel.saveUser();
+                User user = userFlowState.getData();
+                if (user == null) return;
+                mViewModel.saveUser(user);
+                callHomeActivity(user);
                 break;
         }
+    }
+
+    private void callHomeActivity(User user) {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra(USER_FIELD, new Gson().toJson(user));
+        startActivity(intent);
+        finish();
     }
 
 }

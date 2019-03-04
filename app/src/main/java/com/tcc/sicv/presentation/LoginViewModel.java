@@ -15,6 +15,7 @@ import static com.tcc.sicv.presentation.model.State.EMPTY;
 import static com.tcc.sicv.presentation.model.State.INVALID;
 import static com.tcc.sicv.presentation.model.State.VALID;
 import static com.tcc.sicv.presentation.model.Status.LOADING;
+import static com.tcc.sicv.presentation.model.Status.NEUTRAL;
 
 public class LoginViewModel extends ViewModel {
     private AuthRepository authRepository;
@@ -27,18 +28,19 @@ public class LoginViewModel extends ViewModel {
     public LoginViewModel(PreferencesHelper preferences) {
         user = new UserLogin("", "");
         flowState = new MutableLiveData<>();
-        flowState.setValue(new FlowState<User>());
+        flowState.setValue(new FlowState<User>(null, null, NEUTRAL));
         authRepository = new AuthRepository();
         preferencesHelper = preferences;
         emailState = new MutableLiveData<>();
         passwordState = new MutableLiveData<>();
     }
 
-    public void saveUser(){
-        FlowState<User> value = flowState.getValue();
-        if (value != null && value.getStatus() == Status.SUCCESS && value.getData() != null){
-            preferencesHelper.saveUser(value.getData());
-        }
+    public void saveUser(User user){
+        preferencesHelper.saveUser(user);
+    }
+
+    public User getUser(){
+        return preferencesHelper.getUser();
     }
 
     public void signIn(String email, String password) {
@@ -59,18 +61,18 @@ public class LoginViewModel extends ViewModel {
         String regex = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
         Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
         if (pattern.matcher(email).find()) {
-            emailState.postValue(VALID);
+            emailState.setValue(VALID);
         } else {
-            if (email.isEmpty()) emailState.postValue(EMPTY);
-            else emailState.postValue(INVALID);
+            if (email.isEmpty()) emailState.setValue(EMPTY);
+            else emailState.setValue(INVALID);
         }
     }
 
     private void validatePassword(String password) {
-        if (password.length() >= 6) passwordState.postValue(VALID);
+        if (password.length() >= 6) passwordState.setValue(VALID);
         else {
-            if (password.isEmpty()) passwordState.postValue(EMPTY);
-            else passwordState.postValue(INVALID);
+            if (password.isEmpty()) passwordState.setValue(EMPTY);
+            else passwordState.setValue(INVALID);
         }
     }
 
