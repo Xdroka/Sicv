@@ -63,48 +63,8 @@ public class AuthRepository {
 //        );
 //    }
 
-    public void checkAccountExistAndCreateUser(final User user, final MutableLiveData<FlowState<Boolean>> result) {
-        DocumentReference docRef = db.collection("usuarios").document(user.getCpf());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (Objects.requireNonNull(document).exists()) {
-                        result.postValue(
-                                new FlowState<Boolean>(null,
-                                        new Exceptions.InvalidUserCPFData(),
-                                        ERROR
-                                )
-                        );
-                    } else {
-                        createUserAuth(user, result);
-                    }
-                } else {
-                    Exception exception = task.getException();
-                    if (exception instanceof FirebaseNetworkException) {
-                        result.postValue(
-                                new FlowState<Boolean>(
-                                        null,
-                                        new Exceptions.NoInternetException(),
-                                        ERROR)
-                        );
-                    } else {
-                        result.postValue(
-                                new FlowState<Boolean>(
-                                        null,
-                                        new Exceptions.ServerException(),
-                                        ERROR
-                                )
-                        );
-                    }
-                }
-            }
-        });
-    }
-
     private void createUserDocument(final User user, final MutableLiveData<FlowState<Boolean>> result) {
-        db.collection("usuarios").document(user.getCpf())
+        db.collection("usuarios").document(user.getEmail())
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -126,7 +86,7 @@ public class AuthRepository {
                 });
     }
 
-    private void createUserAuth(
+    public void checkAccountExistAndCreateUser(
             final User user,
             final MutableLiveData<FlowState<Boolean>> result
     ) {
