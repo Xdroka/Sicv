@@ -38,8 +38,6 @@ public class BaseActivity extends AppCompatActivity {
                 createErrorDialog("Falha na conexão com a Internet");
             }else if (throwable instanceof Exceptions.InvalidUserEmailData){
                 createErrorDialog("Já existe um usuário cadastrado com este email");
-            }else if (throwable instanceof Exceptions.InvalidUserCPFData){
-                createErrorDialog("Já existe um usuário cadastrado com este CPF");
             }
             else{
                 createErrorDialog("Ocorreu um problema com o servidor, tente novamente");
