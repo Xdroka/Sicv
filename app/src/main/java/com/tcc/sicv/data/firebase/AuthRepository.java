@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,10 +46,9 @@ public class AuthRepository {
                                     : "";
                             postUserFromDb(user.getEmail(), result);
                         } else {
-                            Exception exception = task.getException();
-                            if (exception != null) {
+                            if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                                 result.postValue(
-                                        new FlowState<User>(null, exception, ERROR)
+                                        new FlowState<User>(null, new Exceptions.InvalidLogin(), ERROR)
                                 );
                             } else {
                                 result.postValue(

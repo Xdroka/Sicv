@@ -47,10 +47,7 @@ public class LoginViewModel extends ViewModel {
         flowState.postValue(new FlowState<User>(null, null, LOADING));
         validateEmail(email);
         validatePassword(password);
-        if(emailState.getValue() != VALID || passwordState.getValue() != VALID){
-
-            return;
-        }
+        if(emailState.getValue() != VALID || passwordState.getValue() != VALID) return;
 
         user.setEmail(email);
         user.setPassword(password);
