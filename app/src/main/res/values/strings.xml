@@ -40,5 +40,6 @@
     <string name="maintenance">Manutenção</string>
     <string name="purchase">Comprar veículo</string>
     <string name="selectOneOption">Selecione uma das opções abaixo para fazer uso do aplicativo:</string>
-    <string name="invalid_login_error">Verifique se a senha e o email estão corretos</string>
+    <string name="invalid_password_login">Senha incorreta, por favor verifique a senha digitada</string>
+    <string name="invalid_email_login">Email não encontrado, por favor verifique se o email foi digitado corretamente</string>
 </resources>

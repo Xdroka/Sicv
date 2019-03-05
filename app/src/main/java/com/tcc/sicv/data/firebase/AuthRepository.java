@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,17 +40,20 @@ public class AuthRepository {
                             result.postValue(
                                     new FlowState<>(email, null, SUCCESS)
                             );
+                        } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            result.postValue(
+                                    new FlowState<String>(null, new Exceptions.InvalidPasswordLogin(), ERROR)
+                            );
+                        } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                            result.postValue(
+                                    new FlowState<String>(null, new Exceptions.InvalidEmailLogin(), ERROR)
+                            );
                         } else {
-                            if (task.getException() instanceof FirebaseAuthInvalidUserException) {
-                                result.postValue(
-                                        new FlowState<String>(null, new Exceptions.InvalidLogin(), ERROR)
-                                );
-                            } else {
-                                result.postValue(
-                                        new FlowState<String>(null, new Exception(), ERROR)
-                                );
-                            }
+                            result.postValue(
+                                    new FlowState<String>(null, new Exception(), ERROR)
+                            );
                         }
+
                     }
                 }
         );

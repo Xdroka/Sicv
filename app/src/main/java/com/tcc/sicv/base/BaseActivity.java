@@ -63,8 +63,10 @@ public class BaseActivity extends AppCompatActivity {
                 createErrorDialog(getString(R.string.internetConnectionError));
             } else if (throwable instanceof Exceptions.InvalidUserEmailData) {
                 createErrorDialog(getString(R.string.invalidUserEmail));
-            } else if (throwable instanceof Exceptions.InvalidLogin) {
-                createErrorDialog(getString(R.string.invalid_login_error));
+            } else if (throwable instanceof Exceptions.InvalidPasswordLogin) {
+                createErrorDialog(getString(R.string.invalid_password_login));
+            } else if (throwable instanceof Exceptions.InvalidEmailLogin) {
+                createErrorDialog(getString(R.string.invalid_email_login));
             } else {
                 createErrorDialog(getString(R.string.problemsInServer));
             }
