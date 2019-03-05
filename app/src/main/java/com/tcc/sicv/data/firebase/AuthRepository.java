@@ -30,10 +30,6 @@ public class AuthRepository {
         db = FirebaseFirestore.getInstance();
     }
 
-    public Boolean check() {
-        return true;
-    }
-
     public void signIn(final String email, String password, final MutableLiveData<FlowState<String>> result) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
