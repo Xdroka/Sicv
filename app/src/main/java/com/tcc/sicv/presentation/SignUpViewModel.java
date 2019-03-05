@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Patterns;
 import com.tcc.sicv.data.model.User;
-import com.tcc.sicv.data.firebase.FirebaseRepository;
+import com.tcc.sicv.data.firebase.AuthRepository;
 import com.tcc.sicv.presentation.model.FlowState;
 import com.tcc.sicv.presentation.model.State;
 import com.tcc.sicv.presentation.model.Status;
@@ -16,7 +16,7 @@ import static com.tcc.sicv.presentation.model.State.MIN_AGE;
 import static com.tcc.sicv.presentation.model.State.VALID;
 
 public class SignUpViewModel extends ViewModel {
-    private FirebaseRepository firebaseRepository;
+    private AuthRepository authRepository;
     private MutableLiveData<FlowState<Boolean>> flowState;
     private MutableLiveData<State> nameState;
     private MutableLiveData<State> cpfState;
@@ -27,7 +27,7 @@ public class SignUpViewModel extends ViewModel {
     private MutableLiveData<State> confirmPassState;
 
     public SignUpViewModel() {
-        firebaseRepository = new FirebaseRepository();
+        authRepository = new AuthRepository();
         flowState = new MutableLiveData<>();
         nameState = new MutableLiveData<>();
         cpfState = new MutableLiveData<>();
@@ -193,7 +193,7 @@ public class SignUpViewModel extends ViewModel {
         ) {
             flowState.postValue(new FlowState<Boolean>(null, null, Status.LOADING));
 
-            firebaseRepository.checkAccountExistAndCreateUser(
+            authRepository.checkAccountExistAndCreateUser(
                     new User(
                             email,
                             password,

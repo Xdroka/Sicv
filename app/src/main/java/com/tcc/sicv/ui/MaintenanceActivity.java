@@ -35,7 +35,7 @@ public class MaintenanceActivity extends BaseActivity implements OnItemClick<Mai
         mViewModel = new MaintenanceViewModel(new PreferencesHelper(getApplication()));
         setupViews();
         creatingObservers();
-        setupToolbar(R.id.maintenanceToolbar, R.string.maintenance, true);
+        setupToolbar(R.id.main_toolbar, R.string.maintenance, true);
     }
 
     @Override

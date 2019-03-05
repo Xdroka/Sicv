@@ -36,11 +36,11 @@ import static com.tcc.sicv.utils.Constants.TYPE_FIELD;
 import static com.tcc.sicv.utils.Constants.USER_COLLECTION_PATH;
 import static com.tcc.sicv.utils.Constants.VEHICLES_COLLECTION_PATH;
 
-public class FirebaseRepository {
+public class AuthRepository {
     private final FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
-    public FirebaseRepository() {
+    public AuthRepository() {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
     }

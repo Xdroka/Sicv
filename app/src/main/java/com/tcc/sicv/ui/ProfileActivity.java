@@ -19,7 +19,6 @@ import com.tcc.sicv.presentation.model.FlowState;
 
 public class ProfileActivity extends BaseActivity {
     private ProfileViewModel mViewModel;
-    private AlertDialog logoutDialog;
     private TextView nameTv;
     private TextView cpfTv;
     private TextView emailTv;
@@ -124,7 +123,7 @@ public class ProfileActivity extends BaseActivity {
         builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) { }
         });
-        logoutDialog = builder.create();
+        AlertDialog logoutDialog = builder.create();
         logoutDialog.show();
     }
 }

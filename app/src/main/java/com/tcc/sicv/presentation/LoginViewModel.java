@@ -10,7 +10,7 @@ import com.tcc.sicv.presentation.model.State;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.data.firebase.FirebaseRepository;
+import com.tcc.sicv.data.firebase.AuthRepository;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 
 import static com.tcc.sicv.presentation.model.State.EMPTY;
@@ -20,7 +20,7 @@ import static com.tcc.sicv.presentation.model.Status.LOADING;
 import static com.tcc.sicv.presentation.model.Status.NEUTRAL;
 
 public class LoginViewModel extends ViewModel {
-    private FirebaseRepository firebaseRepository;
+    private AuthRepository authRepository;
     private MutableLiveData<FlowState<String>> flowState;
     private MutableLiveData<State> emailState;
     private MutableLiveData<State> passwordState;
@@ -29,7 +29,7 @@ public class LoginViewModel extends ViewModel {
     public LoginViewModel(PreferencesHelper preferences) {
         flowState = new MutableLiveData<>();
         flowState.setValue(new FlowState<String>(null, null, NEUTRAL));
-        firebaseRepository = new FirebaseRepository();
+        authRepository = new AuthRepository();
         preferencesHelper = preferences;
         emailState = new MutableLiveData<>();
         passwordState = new MutableLiveData<>();
@@ -50,7 +50,7 @@ public class LoginViewModel extends ViewModel {
         if (emailState.getValue() != VALID || passwordState.getValue() != VALID) return;
 
         flowState.postValue(new FlowState<String>(null, null, LOADING));
-        firebaseRepository.signIn(email, password, flowState);
+        authRepository.signIn(email, password, flowState);
     }
 
     private void validateEmail(String email) {

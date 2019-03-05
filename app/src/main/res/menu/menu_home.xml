@@ -5,6 +5,6 @@
         android:id="@+id/menu_item_profile"
         android:icon="@drawable/ic_account_box_white_24dp"
         android:title="@string/user_profile"
-        app:showAsAction="ifRoom|collapseActionView" />
+        app:showAsAction="always" />
 
 </menu>

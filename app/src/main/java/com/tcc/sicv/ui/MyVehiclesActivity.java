@@ -35,7 +35,7 @@ public class MyVehiclesActivity extends BaseActivity implements OnItemClick<Vehi
         adapter = new VehiclesAdapter(new ArrayList<Vehicle>(), this);
         vehiclesRecyclerView.setAdapter(adapter);
         refreshLayout = findViewById(R.id.refresh_layout);
-        setupToolbar(R.id.toolbar_my_vehicles, R.string.my_vehicles, true);
+        setupToolbar(R.id.main_toolbar, R.string.my_vehicles, true);
     }
 
     private void creatingObservers() {

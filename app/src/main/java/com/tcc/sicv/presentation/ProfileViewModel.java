@@ -29,8 +29,8 @@ public class ProfileViewModel extends ViewModel {
         return preferencesHelper.getEmail();
     }
 
-    public void logout(){
-        logoutState.postValue(new FlowState<Void>(null,null,LOADING));
+    public void logout() {
+        logoutState.postValue(new FlowState<Void>(null, null, LOADING));
         preferencesHelper.logout();
         authRepository.logout(logoutState);
     }
@@ -38,7 +38,7 @@ public class ProfileViewModel extends ViewModel {
     public void getUserProfile() {
         String email = getUserEmail();
         if (email == null) return;
-        authRepository.getUserProfile(email,flowState);
+        authRepository.getUserProfile(email, flowState);
     }
 
     public LiveData<FlowState<User>> getFlowState() {
