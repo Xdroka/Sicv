@@ -3,6 +3,7 @@ package com.tcc.sicv.utils;
 public class Constants {
     //Key
     public static final String PREF_KEY = "preferences";
+    public static final String MAINTENANCE_KEY = "manutencao";
 
     //Colection
     public static final String USER_COLLECTION_PATH = "usuarios";

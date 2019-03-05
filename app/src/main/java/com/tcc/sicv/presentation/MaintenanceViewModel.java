@@ -4,17 +4,12 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.tcc.sicv.data.firebase.FirebaseRepository;
 import com.tcc.sicv.data.firebase.MaintenanceRepository;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.model.FlowState;
 import com.tcc.sicv.presentation.model.MaintenanceVehicle;
-import com.tcc.sicv.presentation.model.Status;
-import com.tcc.sicv.presentation.model.Vehicle;
 
 import java.util.ArrayList;
-
-import static com.tcc.sicv.presentation.model.Status.LOADING;
 
 public class MaintenanceViewModel extends ViewModel {
     private MutableLiveData<FlowState<ArrayList<MaintenanceVehicle>>> flowState;
