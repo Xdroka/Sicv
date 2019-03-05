@@ -42,6 +42,12 @@
     <string name="selectOneOption">Selecione uma das opções abaixo para fazer uso do aplicativo:</string>
     <string name="invalid_password_login">Senha incorreta, por favor verifique a senha digitada</string>
     <string name="invalid_email_login">Email não encontrado, por favor verifique se o email foi digitado corretamente</string>
+    <string name="name_profile">Nome:</string>
+    <string name="cpf_profile">CPF:</string>
+    <string name="email_profile">E-mail:</string>
+    <string name="date_profile">Data de nascimento:</string>
+    <string name="telephone_profile">Telefone:</string>
+    <string name="logout">Deslogar</string>
     <string name="todo_description">TODO</string>
     <string name="code_format">Código: %s</string>
 </resources>

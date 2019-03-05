@@ -20,7 +20,7 @@ import com.vicmikhailau.maskededittext.MaskedEditText;
 import java.util.Objects;
 
 public class SignUpActivity extends BaseActivity {
-    AlertDialog successSignUpDialog;
+    private AlertDialog successSignUpDialog;
     private SignUpViewModel mViewModel;
     private AppCompatEditText nameEt;
     private MaskedEditText cpfEt;

@@ -2,6 +2,7 @@ package com.tcc.sicv.data.firebase;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+import android.text.BoringLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,6 +45,11 @@ public class FirebaseRepository {
         db = FirebaseFirestore.getInstance();
     }
 
+    public void logout(final MutableLiveData<FlowState<Void>> result){
+        mAuth.signOut();
+        result.postValue(new FlowState<Void>(null,null,SUCCESS));
+    }
+
     public void signIn(final String email, String password, final MutableLiveData<FlowState<String>> result) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
@@ -72,6 +78,47 @@ public class FirebaseRepository {
         );
     }
 
+    public void getUserProfile(final String email, final MutableLiveData<FlowState<User>> result) {
+        db.collection(USER_COLLECTION_PATH).document(email).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String cpf = (String) documentSnapshot.get("cpf");
+                        String date = (String) documentSnapshot.get("date");
+                        String name = (String) documentSnapshot.get("name");
+                        String tel = (String) documentSnapshot.get("tel");
+                        result.postValue(
+                                new FlowState<>(
+                                        new User(email,"",name,cpf,tel,date),
+                                        null,
+                                        SUCCESS
+                                )
+                        );
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (e instanceof FirebaseNetworkException) {
+                            result.postValue(
+                                    new FlowState<User>(
+                                            null,
+                                            new Exceptions.NoInternetException(),
+                                            ERROR)
+                            );
+                        } else {
+                            result.postValue(
+                                    new FlowState<User>(
+                                            null,
+                                            new Exceptions.ServerException(),
+                                            ERROR
+                                    )
+                            );
+                        }
+                    }
+                });
+    }
+
     private void createUserDocument(final User user, final MutableLiveData<FlowState<Boolean>> result) {
         db.collection(USER_COLLECTION_PATH).document(user.getEmail())
                 .set(user)
@@ -84,13 +131,22 @@ public class FirebaseRepository {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(
-                                new FlowState<Boolean>(
-                                        null,
-                                        new Exceptions.ServerException(),
-                                        ERROR
-                                )
-                        );
+                        if (e instanceof FirebaseNetworkException) {
+                            result.postValue(
+                                    new FlowState<Boolean>(
+                                            null,
+                                            new Exceptions.NoInternetException(),
+                                            ERROR)
+                            );
+                        } else {
+                            result.postValue(
+                                    new FlowState<Boolean>(
+                                            null,
+                                            new Exceptions.ServerException(),
+                                            ERROR
+                                    )
+                            );
+                        }
                     }
                 });
     }
