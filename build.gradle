@@ -6,6 +6,8 @@ buildscript {
         retrofitVersion = "2.5.0"
         koinVersion = "1.0.2"
         coroutinesVersion = '1.0.1'
+        glide_version = '3.8.0'
+        glide_compiler = '4.8.0'
     }
 
     repositories {
