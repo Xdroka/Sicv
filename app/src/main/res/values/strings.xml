@@ -33,4 +33,11 @@
     <string name="problemsInServer">Ocorreu um problema com o servidor, tente novamente</string>
     <string name="error">Erro</string>
     <string name="OK">OK</string>
+    <string name="menuItem">item do menu</string>
+    <string name="user_profile">Perfil do usuário</string>
+    <string name="my_vehicles">Meus Veículos</string>
+    <string name="nf">Notas Fiscais</string>
+    <string name="maintenance">Manutenção</string>
+    <string name="purchase">Comprar veículo</string>
+    <string name="selectOneOption">Selecione uma das opções abaixo para fazer uso do aplicativo:</string>
 </resources>

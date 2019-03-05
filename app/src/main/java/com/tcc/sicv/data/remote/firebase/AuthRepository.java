@@ -11,15 +11,11 @@ import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.presentation.model.FlowState;
 import com.tcc.sicv.presentation.model.Status;
-import com.tcc.sicv.ui.Exceptions;
-
-import java.util.Objects;
+import com.tcc.sicv.data.Exceptions;
 
 import static com.tcc.sicv.presentation.model.Status.ERROR;
 

@@ -4,12 +4,17 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.tcc.sicv.R;
 import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.ui.Exceptions;
+import com.tcc.sicv.data.Exceptions;
 import com.tcc.sicv.ui.LoadingDialogFragment;
 
 public class BaseActivity extends AppCompatActivity {
@@ -20,26 +25,47 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setupViews();
+    }
+
+    private void setupViews() {
         loadingDialog = new LoadingDialogFragment();
     }
 
-    protected void showLoadingDialog(){
-        loadingDialog.show(getSupportFragmentManager(),"");
+    protected void showLoadingDialog() {
+        loadingDialog.show(getSupportFragmentManager(), "");
     }
 
-    protected void hideLoadingDialog(){
+    protected void hideLoadingDialog() {
         loadingDialog.dismiss();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item != null && item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void setupToolbar(@IdRes int toolbarId, @StringRes int titleId,
+                             Boolean navigationHomeEnabled) {
+        setSupportActionBar((Toolbar) findViewById(toolbarId));
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            if (navigationHomeEnabled) supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setTitle(titleId);
+        }
+    }
+
     protected void handleErrors(FlowState<Boolean> flowState) {
-        if (flowState.getThrowable() != null){
+        if (flowState.getThrowable() != null) {
             Throwable throwable = flowState.getThrowable();
-            if (throwable instanceof Exceptions.NoInternetException){
+            if (throwable instanceof Exceptions.NoInternetException) {
                 createErrorDialog(getString(R.string.internetConnectionError));
-            }else if (throwable instanceof Exceptions.InvalidUserEmailData){
+            } else if (throwable instanceof Exceptions.InvalidUserEmailData) {
                 createErrorDialog(getString(R.string.invalidUserEmail));
-            }
-            else{
+            } else {
                 createErrorDialog(getString(R.string.problemsInServer));
             }
         }
@@ -51,7 +77,8 @@ public class BaseActivity extends AppCompatActivity {
         builder.setTitle(getString(R.string.error));
         builder.setMessage(message);
         builder.setNegativeButton(getString(R.string.OK), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) { }
+            public void onClick(DialogInterface arg0, int arg1) {
+            }
         });
         alertDialog = builder.create();
         alertDialog.show();
