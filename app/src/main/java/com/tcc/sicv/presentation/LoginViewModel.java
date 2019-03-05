@@ -40,11 +40,11 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void signIn(String email, String password) {
-        flowState.postValue(new FlowState<String>(null, null, LOADING));
         validateEmail(email);
         validatePassword(password);
         if(emailState.getValue() != VALID || passwordState.getValue() != VALID) return;
 
+        flowState.postValue(new FlowState<String>(null, null, LOADING));
         authRepository.signIn(email, password, flowState);
     }
 
