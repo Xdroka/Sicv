@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".HomeActivity"/>
+        <activity android:name=".ui.BuyVehiclesActivity"/>
+        <activity android:name=".ui.ProfileActivity" />
+        <activity android:name=".ui.HomeActivity"/>
         <activity
             android:name=".ui.LoginActivity"
             android:windowSoftInputMode="stateHidden">

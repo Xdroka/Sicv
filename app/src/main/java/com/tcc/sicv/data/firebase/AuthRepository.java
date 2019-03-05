@@ -13,9 +13,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.tcc.sicv.data.Exceptions;
 import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.ui.Exceptions;
 
 import static com.tcc.sicv.presentation.model.Status.ERROR;
 import static com.tcc.sicv.presentation.model.Status.SUCCESS;

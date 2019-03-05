@@ -1,4 +1,4 @@
-package com.tcc.sicv.ui;
+package com.tcc.sicv.data;
 
 public class Exceptions {
     public static class NoInternetException extends Exception{}
