@@ -191,36 +191,4 @@ public class AuthRepository {
                     }
                 });
     }
-
-    public void getMyVehicles(String email, final MutableLiveData<FlowState<ArrayList<Vehicle>>> flowState) {
-        db.collection(USER_COLLECTION_PATH).document(email).collection(VEHICLES_COLLECTION_PATH)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        ArrayList<Vehicle> list = new ArrayList<>();
-                        for (DocumentSnapshot item : queryDocumentSnapshots.getDocuments()) {
-                            list.add(new Vehicle(
-                                            (String) item.get(IMAGE_FIELD),
-                                            (String) item.get(MODEL_FIELD),
-                                            (String) item.get(POWER_FIELD),
-                                            (String) item.get(PRICE_FIELD),
-                                            (String) item.get(SPEED_FIELD),
-                                            (String) item.get(MARK_FIELD),
-                                            (String) item.get(TYPE_FIELD),
-                                            item.getId()
-                                    )
-                            );
-                        }
-                        flowState.postValue(new FlowState<>(list, null, SUCCESS));
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        flowState.postValue(new FlowState<ArrayList<Vehicle>>(null, e, ERROR));
-                    }
-                })
-        ;
-    }
 }
