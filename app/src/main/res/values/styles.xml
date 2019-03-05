@@ -34,7 +34,7 @@
 
     <style name="RecyclerViewDefault" >
         <item name="android:scrollbars">vertical</item>
-        <item name="layoutManager">androidx.recyclerview.widget.LinearLayoutManager</item>
+        <item name="layoutManager">android.support.v7.widget.LinearLayoutManager</item>
     </style>
 
     <style name="EditTextDefault">
