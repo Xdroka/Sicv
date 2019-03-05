@@ -4,8 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import static com.tcc.sicv.Constants.PREF_KEY;
-import static com.tcc.sicv.Constants.USER_FIELD;
+import static com.tcc.sicv.utils.Constants.PREF_KEY;
+import static com.tcc.sicv.utils.Constants.USER_FIELD;
 
 public class PreferencesHelper {
     private SharedPreferences sp;

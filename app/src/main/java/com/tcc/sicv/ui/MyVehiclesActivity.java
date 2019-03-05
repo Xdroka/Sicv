@@ -1,6 +1,7 @@
 package com.tcc.sicv.ui;
 
 import android.arch.lifecycle.Observer;
+import android.content.Intent;
 import android.os.Bundle;
 import com.tcc.sicv.R;
 import java.util.ArrayList;
@@ -13,8 +14,9 @@ import com.tcc.sicv.presentation.MyVehiclesViewModel;
 import com.tcc.sicv.presentation.model.FlowState;
 import com.tcc.sicv.presentation.model.Vehicle;
 import com.tcc.sicv.ui.adapter.VehiclesAdapter;
+import com.tcc.sicv.utils.OnItemClick;
 
-public class MyVehiclesActivity extends BaseActivity {
+public class MyVehiclesActivity extends BaseActivity implements OnItemClick<Vehicle> {
     private VehiclesAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
     private MyVehiclesViewModel mViewModel;
@@ -30,7 +32,7 @@ public class MyVehiclesActivity extends BaseActivity {
 
     private void setupViews() {
         RecyclerView vehiclesRecyclerView = findViewById(R.id.list_vehicles);
-        adapter = new VehiclesAdapter(new ArrayList<Vehicle>());
+        adapter = new VehiclesAdapter(new ArrayList<Vehicle>(), this);
         vehiclesRecyclerView.setAdapter(adapter);
         refreshLayout = findViewById(R.id.refresh_layout);
         setupToolbar(R.id.toolbar_my_vehicles, R.string.my_vehicles, true);
@@ -75,5 +77,8 @@ public class MyVehiclesActivity extends BaseActivity {
         }
     }
 
-
+    @Override
+    public void onClick(Vehicle item) {
+        startActivity(new Intent(this, VehicleDetailsActivity.class));
+    }
 }

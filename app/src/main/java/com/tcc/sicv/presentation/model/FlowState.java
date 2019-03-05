@@ -23,6 +23,29 @@ public class FlowState<T> {
         this.status = status;
     }
 
-    public FlowState(){}
+    public <T> FlowState(){}
 
+    public void loading(){
+        data = null;
+        throwable = null;
+        status = Status.LOADING;
+    }
+
+    public FlowState<T> success(T data){
+        this.data = data;
+        throwable = null;
+        status = Status.SUCCESS;
+        return this;
+    }
+
+    public FlowState<T> error(Throwable throwable){
+        data = null;
+        this.throwable = throwable;
+        status = Status.ERROR;
+        return this;
+    }
+
+    public Boolean isLoading(){ return status == Status.LOADING; }
+
+    public Boolean hasData(){ return data != null; }
 }

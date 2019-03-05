@@ -25,10 +25,17 @@ import java.util.ArrayList;
 
 import static com.tcc.sicv.presentation.model.Status.ERROR;
 import static com.tcc.sicv.presentation.model.Status.SUCCESS;
+import static com.tcc.sicv.utils.Constants.IMAGE_FIELD;
+import static com.tcc.sicv.utils.Constants.MARK_FIELD;
+import static com.tcc.sicv.utils.Constants.MODEL_FIELD;
+import static com.tcc.sicv.utils.Constants.POWER_FIELD;
+import static com.tcc.sicv.utils.Constants.PRICE_FIELD;
+import static com.tcc.sicv.utils.Constants.SPEED_FIELD;
+import static com.tcc.sicv.utils.Constants.TYPE_FIELD;
+import static com.tcc.sicv.utils.Constants.USER_COLLECTION_PATH;
+import static com.tcc.sicv.utils.Constants.VEHICLES_COLLECTION_PATH;
 
 public class FirebaseRepository {
-    private static final String USER_COLLECTION_PATH = "usuarios";
-    private static final String VEHICLES_COLLECTION_PATH = "veiculos";
     private final FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
@@ -64,34 +71,6 @@ public class FirebaseRepository {
                 }
         );
     }
-
-//    private void postUserFromDb(final String email, final MutableLiveData<FlowState<String>> userMutableLiveData) {
-//        db.collection(USER_COLLECTION_PATH).document(email).get()
-//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-////                        String cpf = (String) documentSnapshot.get("cpf");
-////                        String date = (String) documentSnapshot.get("date");
-////                        String name = (String) documentSnapshot.get("name");
-////                        String tel = (String) documentSnapshot.get("tel");
-//                        userMutableLiveData.postValue(
-//                                new FlowState<>(
-//                                        email,
-//                                        null,
-//                                        SUCCESS
-//                                )
-//                        );
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        userMutableLiveData.postValue(
-//                                new FlowState<String>(null, new Exception(), ERROR)
-//                        );
-//                    }
-//                });
-//    }
 
     private void createUserDocument(final User user, final MutableLiveData<FlowState<Boolean>> result) {
         db.collection(USER_COLLECTION_PATH).document(user.getEmail())
@@ -166,13 +145,13 @@ public class FirebaseRepository {
                         ArrayList<Vehicle> list = new ArrayList<>();
                         for (DocumentSnapshot item : queryDocumentSnapshots.getDocuments()) {
                             list.add(new Vehicle(
-                                            (String) item.get("imagem"),
-                                            (String) item.get("modelo"),
-                                            (String) item.get("potencia"),
-                                            (String) item.get("preco"),
-                                            (String) item.get("velocidade"),
-                                            (String) item.get("marca"),
-                                            (String) item.get("tipo"),
+                                            (String) item.get(IMAGE_FIELD),
+                                            (String) item.get(MODEL_FIELD),
+                                            (String) item.get(POWER_FIELD),
+                                            (String) item.get(PRICE_FIELD),
+                                            (String) item.get(SPEED_FIELD),
+                                            (String) item.get(MARK_FIELD),
+                                            (String) item.get(TYPE_FIELD),
                                             item.getId()
                                     )
                             );

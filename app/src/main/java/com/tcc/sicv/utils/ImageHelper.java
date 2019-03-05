@@ -1,4 +1,4 @@
-package com.tcc.sicv;
+package com.tcc.sicv.utils;
 
 import android.widget.ImageView;
 

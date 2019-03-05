@@ -11,8 +11,9 @@ import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 
 public class HomeActivity extends BaseActivity {
-    Button purchaseButton;
-    Button myVehiclesButton;
+    private Button purchaseButton;
+    private Button myVehiclesButton;
+    private Button maintenanceButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +38,19 @@ public class HomeActivity extends BaseActivity {
                 startActivity(new Intent(HomeActivity.this, MyVehiclesActivity.class));
             }
         });
+
+        maintenanceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, MaintenanceActivity.class));
+            }
+        });
     }
 
     private void setupViews() {
         purchaseButton = findViewById(R.id.purchaseButton);
         myVehiclesButton = findViewById(R.id.vehiclesButton);
+        maintenanceButton = findViewById(R.id.maintenanceButton);
     }
 
     @Override

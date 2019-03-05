@@ -7,14 +7,17 @@ import android.view.ViewGroup;
 import com.tcc.sicv.R;
 import com.tcc.sicv.presentation.model.Vehicle;
 import com.tcc.sicv.ui.viewholder.VehiclesViewHolder;
+import com.tcc.sicv.utils.OnItemClick;
+
 import java.util.List;
 
 public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesViewHolder> {
-    @SuppressWarnings("WeakerAccess")
     public List<Vehicle> listVehicles;
+    private OnItemClick<Vehicle> listener;
 
-    public VehiclesAdapter(List<Vehicle> listVehicles) {
+    public VehiclesAdapter(List<Vehicle> listVehicles, OnItemClick<Vehicle> listener) {
         this.listVehicles = listVehicles;
+        this.listener = listener;
     }
 
     @NonNull
@@ -27,7 +30,7 @@ public class VehiclesAdapter extends RecyclerView.Adapter<VehiclesViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull VehiclesViewHolder holder, int position) {
-        holder.bind(listVehicles.get(position));
+        holder.bind(listVehicles.get(position), listener);
     }
 
     @Override

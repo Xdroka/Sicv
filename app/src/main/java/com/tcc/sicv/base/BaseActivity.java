@@ -73,7 +73,6 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-
     private void createErrorDialog(String message) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.ic_error_red_24dp);
