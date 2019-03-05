@@ -8,7 +8,6 @@ import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 import android.widget.Button;
 
-import com.tcc.sicv.HomeActivity;
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
@@ -43,7 +42,7 @@ public class LoginActivity extends BaseActivity {
 
     private void creatingObservers() {
         String email = mViewModel.getUser();
-        if(email != null){
+        if (email != null) {
             callHomeActivity();
         }
 
@@ -149,8 +148,8 @@ public class LoginActivity extends BaseActivity {
 
     private void callHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
 
 }

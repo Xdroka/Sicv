@@ -10,12 +10,11 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import com.tcc.sicv.R;
-import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.ui.Exceptions;
-import com.tcc.sicv.ui.LoadingDialogFragment;
+import android.view.MenuItem;
 
-import java.util.Objects;
+import com.tcc.sicv.R;
+import com.tcc.sicv.data.Exceptions;
+import com.tcc.sicv.ui.LoadingDialogFragment;
 
 public class BaseActivity extends AppCompatActivity {
     LoadingDialogFragment loadingDialog;
@@ -25,7 +24,27 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setupViews();
+    }
+
+    private void setupViews() {
         loadingDialog = new LoadingDialogFragment();
+    }
+
+    protected void showLoadingDialog() {
+        loadingDialog.show(getSupportFragmentManager(), "");
+    }
+
+    protected void hideLoadingDialog() {
+        loadingDialog.dismiss();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item != null && item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void setupToolbar(@IdRes int toolbarId, @StringRes int titleId,
@@ -38,29 +57,22 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void showLoadingDialog(){
-        loadingDialog.show(getSupportFragmentManager(),"");
-    }
-
-    protected void hideLoadingDialog(){
-        loadingDialog.dismiss();
-    }
-
     protected void handleErrors(Throwable throwable) {
-        if (throwable != null){
-            if (throwable instanceof Exceptions.NoInternetException){
+        if (throwable != null) {
+            if (throwable instanceof Exceptions.NoInternetException) {
                 createErrorDialog(getString(R.string.internetConnectionError));
-            }else if (throwable instanceof Exceptions.InvalidUserEmailData){
+            } else if (throwable instanceof Exceptions.InvalidUserEmailData) {
                 createErrorDialog(getString(R.string.invalidUserEmail));
-            }
-            else if(throwable instanceof Exceptions.InvalidLogin){
-                createErrorDialog(getString(R.string.invalid_login_error));
-            }
-            else{
+            } else if (throwable instanceof Exceptions.InvalidPasswordLogin) {
+                createErrorDialog(getString(R.string.invalid_password_login));
+            } else if (throwable instanceof Exceptions.InvalidEmailLogin) {
+                createErrorDialog(getString(R.string.invalid_email_login));
+            } else {
                 createErrorDialog(getString(R.string.problemsInServer));
             }
         }
     }
+
 
     private void createErrorDialog(String message) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -68,7 +80,8 @@ public class BaseActivity extends AppCompatActivity {
         builder.setTitle(getString(R.string.error));
         builder.setMessage(message);
         builder.setNegativeButton(getString(R.string.OK), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) { }
+            public void onClick(DialogInterface arg0, int arg1) {
+            }
         });
         alertDialog = builder.create();
         alertDialog.show();

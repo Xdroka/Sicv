@@ -10,7 +10,6 @@ import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 import android.widget.Button;
 
-import com.tcc.sicv.HomeActivity;
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.presentation.SignUpViewModel;
@@ -21,6 +20,7 @@ import com.vicmikhailau.maskededittext.MaskedEditText;
 import java.util.Objects;
 
 public class SignUpActivity extends BaseActivity {
+    AlertDialog successSignUpDialog;
     private SignUpViewModel mViewModel;
     private AppCompatEditText nameEt;
     private MaskedEditText cpfEt;
@@ -30,7 +30,6 @@ public class SignUpActivity extends BaseActivity {
     private AppCompatEditText passwordEt;
     private AppCompatEditText confirmPasswordEt;
     private Button button;
-    AlertDialog successSignUpDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -271,7 +270,7 @@ public class SignUpActivity extends BaseActivity {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         });
