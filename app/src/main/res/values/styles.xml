@@ -58,4 +58,9 @@
         <item name="android:fontFamily">@font/berkshire_swash</item>
     </style>
 
+    <style name="ToolbarStyleDefault">
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+    </style>
+
 </resources>

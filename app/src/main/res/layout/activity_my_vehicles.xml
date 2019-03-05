@@ -7,12 +7,16 @@
     tools:context=".ui.MyVehiclesActivity">
 
     <android.support.v7.widget.Toolbar
+        android:background="@color/colorPrimary"
         android:id="@+id/toolbar_my_vehicles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_arrow_back_white"
+        app:titleTextColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:title="@string/my_vehicles"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"

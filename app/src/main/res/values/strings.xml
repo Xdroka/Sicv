@@ -43,4 +43,5 @@
     <string name="invalid_password_login">Senha incorreta, por favor verifique a senha digitada</string>
     <string name="invalid_email_login">Email não encontrado, por favor verifique se o email foi digitado corretamente</string>
     <string name="todo_description">TODO</string>
+    <string name="code_format">Código: %s</string>
 </resources>

@@ -24,7 +24,10 @@ public class VehiclesViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(Vehicle item){
         typeModelTextView.setText(item.getModelo());
-        vehicleCodTextView.setText(item.getCodigo());
+        vehicleCodTextView.setText(
+                String.format(itemView.getContext().getString(R.string.code_format),
+                        item.getCodigo())
+        );
         ImageHelper.loadImageUrl(item.getImagem(), vehicleImageView);
     }
 }

@@ -13,20 +13,26 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.tcc.sicv.data.Exceptions;
 import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.presentation.model.FlowState;
+import com.tcc.sicv.presentation.model.Vehicle;
+
+import java.util.ArrayList;
 
 import static com.tcc.sicv.presentation.model.Status.ERROR;
 import static com.tcc.sicv.presentation.model.Status.SUCCESS;
 
-public class AuthRepository {
+public class FirebaseRepository {
     private static final String USER_COLLECTION_PATH = "usuarios";
+    private static final String VEHICLES_COLLECTION_PATH = "veiculos";
     private final FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
-    public AuthRepository() {
+    public FirebaseRepository() {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
     }
@@ -149,5 +155,37 @@ public class AuthRepository {
                         }
                     }
                 });
+    }
+
+    public void getMyVehicles(String email, final MutableLiveData<FlowState<ArrayList<Vehicle>>> flowState) {
+        db.collection(USER_COLLECTION_PATH).document(email).collection(VEHICLES_COLLECTION_PATH)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        ArrayList<Vehicle> list = new ArrayList<>();
+                        for (DocumentSnapshot item : queryDocumentSnapshots.getDocuments()) {
+                            list.add(new Vehicle(
+                                            (String) item.get("imagem"),
+                                            (String) item.get("modelo"),
+                                            (String) item.get("potencia"),
+                                            (String) item.get("preco"),
+                                            (String) item.get("velocidade"),
+                                            (String) item.get("marca"),
+                                            (String) item.get("tipo"),
+                                            item.getId()
+                                    )
+                            );
+                        }
+                        flowState.postValue(new FlowState<>(list, null, SUCCESS));
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        flowState.postValue(new FlowState<ArrayList<Vehicle>>(null, e, ERROR));
+                    }
+                })
+        ;
     }
 }

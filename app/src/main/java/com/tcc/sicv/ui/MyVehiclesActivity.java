@@ -8,7 +8,6 @@ import com.tcc.sicv.base.BaseActivity;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.MyVehiclesViewModel;
 import com.tcc.sicv.presentation.model.FlowState;
@@ -34,6 +33,7 @@ public class MyVehiclesActivity extends BaseActivity {
         adapter = new VehiclesAdapter(new ArrayList<Vehicle>());
         vehiclesRecyclerView.setAdapter(adapter);
         refreshLayout = findViewById(R.id.refresh_layout);
+        setupToolbar(R.id.toolbar_my_vehicles, R.string.my_vehicles, true);
     }
 
     private void creatingObservers() {
@@ -56,17 +56,18 @@ public class MyVehiclesActivity extends BaseActivity {
         });
     }
 
-    private void handleWithMainFlow(FlowState<ArrayList<Vehicle>> flowState){
-        switch (flowState.getStatus()){
+    private void handleWithMainFlow(FlowState<ArrayList<Vehicle>> flowState) {
+        switch (flowState.getStatus()) {
             case LOADING:
-                showLoadingDialog();
+                refreshLayout.setRefreshing(true);
                 break;
             case ERROR:
-                hideLoadingDialog();
+                refreshLayout.setRefreshing(false);
+                handleErrors(flowState.getThrowable());
                 break;
             case SUCCESS:
-                hideLoadingDialog();
-                if(flowState.getData() != null) {
+                refreshLayout.setRefreshing(false);
+                if (flowState.getData() != null) {
                     adapter.listVehicles.addAll(flowState.getData());
                     adapter.notifyDataSetChanged();
                 }

@@ -4,11 +4,15 @@ import java.util.regex.Pattern;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
+
 import com.tcc.sicv.presentation.model.State;
+
 import android.arch.lifecycle.MutableLiveData;
+
 import com.tcc.sicv.presentation.model.FlowState;
 import com.tcc.sicv.data.firebase.FirebaseRepository;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
+
 import static com.tcc.sicv.presentation.model.State.EMPTY;
 import static com.tcc.sicv.presentation.model.State.INVALID;
 import static com.tcc.sicv.presentation.model.State.VALID;
@@ -31,18 +35,19 @@ public class LoginViewModel extends ViewModel {
         passwordState = new MutableLiveData<>();
     }
 
-    public void saveUser(String email){
+    public void saveUser(String email) {
         preferencesHelper.saveUser(email);
     }
 
-    public String getUser(){
+    public String getUser() {
         return preferencesHelper.getEmail();
     }
 
     public void signIn(String email, String password) {
+        if (flowState.getValue() != null && flowState.getValue().getStatus() == LOADING) return;
         validateEmail(email);
         validatePassword(password);
-        if(emailState.getValue() != VALID || passwordState.getValue() != VALID) return;
+        if (emailState.getValue() != VALID || passwordState.getValue() != VALID) return;
 
         flowState.postValue(new FlowState<String>(null, null, LOADING));
         firebaseRepository.signIn(email, password, flowState);
