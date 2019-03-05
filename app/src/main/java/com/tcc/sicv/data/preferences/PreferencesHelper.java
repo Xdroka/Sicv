@@ -3,8 +3,7 @@ package com.tcc.sicv.data.preferences;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import com.google.gson.Gson;
-import com.tcc.sicv.data.model.User;
+
 import static com.tcc.sicv.Constants.PREF_KEY;
 import static com.tcc.sicv.Constants.USER_FIELD;
 
@@ -15,16 +14,15 @@ public class PreferencesHelper {
         sp = applicationContext.getSharedPreferences(PREF_KEY , Context.MODE_PRIVATE);
     }
 
-    public void saveUser(User user){
+    public void saveUser(String userEmail){
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString(USER_FIELD, new Gson().toJson(user));
+        editor.putString(USER_FIELD, userEmail);
         editor.apply();
     }
 
-    public User getUser(){
+    public String getEmail(){
         if(!sp.contains(USER_FIELD)) return null;
-        String userJson = sp.getString(USER_FIELD, "");
-        return new Gson().fromJson(userJson, User.class);
+        return sp.getString(USER_FIELD, "");
     }
 
     public void logout(){

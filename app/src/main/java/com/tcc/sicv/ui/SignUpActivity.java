@@ -41,13 +41,6 @@ public class SignUpActivity extends BaseActivity {
         creatingObservers();
     }
 
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
-        super.onBackPressed();
-    }
-
     private void setup() {
         nameEt = findViewById(R.id.nameEt);
         cpfEt = findViewById(R.id.cpfEt);
@@ -277,8 +270,9 @@ public class SignUpActivity extends BaseActivity {
         successSignUpDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
-                finish();
+                Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
     }

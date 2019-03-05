@@ -2,6 +2,7 @@ package com.tcc.sicv.data.firebase;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -11,13 +12,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.presentation.model.UserLogin;
 import com.tcc.sicv.ui.Exceptions;
+
 import static com.tcc.sicv.presentation.model.Status.ERROR;
 import static com.tcc.sicv.presentation.model.Status.SUCCESS;
 
@@ -35,24 +34,23 @@ public class AuthRepository {
         return true;
     }
 
-    public void signIn(final UserLogin user, final MutableLiveData<FlowState<User>> result) {
-        mAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword()).addOnCompleteListener(
+    public void signIn(final String email, String password, final MutableLiveData<FlowState<String>> result) {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser currentUser = mAuth.getCurrentUser();
-                            String phoneNumber = currentUser != null ? currentUser.getPhoneNumber()
-                                    : "";
-                            postUserFromDb(user.getEmail(), result);
+                            result.postValue(
+                                    new FlowState<>(email, null, SUCCESS)
+                            );
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                                 result.postValue(
-                                        new FlowState<User>(null, new Exceptions.InvalidLogin(), ERROR)
+                                        new FlowState<String>(null, new Exceptions.InvalidLogin(), ERROR)
                                 );
                             } else {
                                 result.postValue(
-                                        new FlowState<User>(null, new Exception(), ERROR)
+                                        new FlowState<String>(null, new Exception(), ERROR)
                                 );
                             }
                         }
@@ -61,34 +59,33 @@ public class AuthRepository {
         );
     }
 
-    private void postUserFromDb(final String email, final MutableLiveData<FlowState<User>> userMutableLiveData) {
-        db.collection(USER_COLLECTION_PATH).document(email).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        String cpf = (String) documentSnapshot.get("cpf");
-                        String date = (String) documentSnapshot.get("date");
-                        String name = (String) documentSnapshot.get("name");
-                        String tel = (String) documentSnapshot.get("tel");
-
-                        userMutableLiveData.postValue(
-                                new FlowState<>(
-                                        new User(email, "", name, cpf, tel, date),
-                                        null,
-                                        SUCCESS
-                                )
-                        );
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        userMutableLiveData.postValue(
-                                new FlowState<User>(null, new Exception(), ERROR)
-                        );
-                    }
-                });
-    }
+//    private void postUserFromDb(final String email, final MutableLiveData<FlowState<String>> userMutableLiveData) {
+//        db.collection(USER_COLLECTION_PATH).document(email).get()
+//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+////                        String cpf = (String) documentSnapshot.get("cpf");
+////                        String date = (String) documentSnapshot.get("date");
+////                        String name = (String) documentSnapshot.get("name");
+////                        String tel = (String) documentSnapshot.get("tel");
+//                        userMutableLiveData.postValue(
+//                                new FlowState<>(
+//                                        email,
+//                                        null,
+//                                        SUCCESS
+//                                )
+//                        );
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        userMutableLiveData.postValue(
+//                                new FlowState<String>(null, new Exception(), ERROR)
+//                        );
+//                    }
+//                });
+//    }
 
     private void createUserDocument(final User user, final MutableLiveData<FlowState<Boolean>> result) {
         db.collection(USER_COLLECTION_PATH).document(user.getEmail())

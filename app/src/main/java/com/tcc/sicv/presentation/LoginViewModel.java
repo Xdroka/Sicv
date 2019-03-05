@@ -7,8 +7,6 @@ import android.arch.lifecycle.ViewModel;
 import com.tcc.sicv.presentation.model.State;
 import android.arch.lifecycle.MutableLiveData;
 import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.presentation.model.Status;
-import com.tcc.sicv.presentation.model.UserLogin;
 import com.tcc.sicv.data.firebase.AuthRepository;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import static com.tcc.sicv.presentation.model.State.EMPTY;
@@ -19,39 +17,35 @@ import static com.tcc.sicv.presentation.model.Status.NEUTRAL;
 
 public class LoginViewModel extends ViewModel {
     private AuthRepository authRepository;
-    private MutableLiveData<FlowState<User>> flowState;
-    private UserLogin user;
+    private MutableLiveData<FlowState<String>> flowState;
     private MutableLiveData<State> emailState;
     private MutableLiveData<State> passwordState;
     private PreferencesHelper preferencesHelper;
 
     public LoginViewModel(PreferencesHelper preferences) {
-        user = new UserLogin("", "");
         flowState = new MutableLiveData<>();
-        flowState.setValue(new FlowState<User>(null, null, NEUTRAL));
+        flowState.setValue(new FlowState<String>(null, null, NEUTRAL));
         authRepository = new AuthRepository();
         preferencesHelper = preferences;
         emailState = new MutableLiveData<>();
         passwordState = new MutableLiveData<>();
     }
 
-    public void saveUser(User user){
-        preferencesHelper.saveUser(user);
+    public void saveUser(String email){
+        preferencesHelper.saveUser(email);
     }
 
-    public User getUser(){
-        return preferencesHelper.getUser();
+    public String getUser(){
+        return preferencesHelper.getEmail();
     }
 
     public void signIn(String email, String password) {
-        flowState.postValue(new FlowState<User>(null, null, LOADING));
+        flowState.postValue(new FlowState<String>(null, null, LOADING));
         validateEmail(email);
         validatePassword(password);
         if(emailState.getValue() != VALID || passwordState.getValue() != VALID) return;
 
-        user.setEmail(email);
-        user.setPassword(password);
-        authRepository.signIn(user, flowState);
+        authRepository.signIn(email, password, flowState);
     }
 
     private void validateEmail(String email) {
@@ -73,7 +67,7 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
-    public LiveData<FlowState<User>> getFlowState() {
+    public LiveData<FlowState<String>> getFlowState() {
         return flowState;
     }
 

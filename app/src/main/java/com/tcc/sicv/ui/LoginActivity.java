@@ -8,19 +8,15 @@ import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.gson.Gson;
 import com.tcc.sicv.HomeActivity;
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
-import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.LoginViewModel;
 import com.tcc.sicv.presentation.model.FlowState;
 import com.tcc.sicv.presentation.model.State;
 
 import java.util.Objects;
-
-import static com.tcc.sicv.Constants.USER_FIELD;
 
 public class LoginActivity extends BaseActivity {
     private LoginViewModel mViewModel;
@@ -46,14 +42,14 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void creatingObservers() {
-        User user = mViewModel.getUser();
-        if(user != null){
-            callHomeActivity(user);
+        String email = mViewModel.getUser();
+        if(email != null){
+            callHomeActivity();
         }
 
-        mViewModel.getFlowState().observe(this, new Observer<FlowState<User>>() {
+        mViewModel.getFlowState().observe(this, new Observer<FlowState<String>>() {
             @Override
-            public void onChanged(@Nullable FlowState<User> userFlowState) {
+            public void onChanged(@Nullable FlowState<String> userFlowState) {
                 if (userFlowState == null) return;
                 handleWithMainFlow(userFlowState);
             }
@@ -70,7 +66,6 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-                finish();
             }
         });
 
@@ -131,7 +126,7 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    private void handleWithMainFlow(FlowState<User> userFlowState) {
+    private void handleWithMainFlow(FlowState<String> userFlowState) {
         switch (userFlowState.getStatus()) {
             case ERROR:
                 hideLoadingDialog();
@@ -144,19 +139,18 @@ public class LoginActivity extends BaseActivity {
                 break;
             case SUCCESS:
                 hideLoadingDialog();
-                User user = userFlowState.getData();
-                if (user == null) return;
-                mViewModel.saveUser(user);
-                callHomeActivity(user);
+                String email = userFlowState.getData();
+                if (email == null) return;
+                mViewModel.saveUser(email);
+                callHomeActivity();
                 break;
         }
     }
 
-    private void callHomeActivity(User user) {
+    private void callHomeActivity() {
         Intent intent = new Intent(this, HomeActivity.class);
-        intent.putExtra(USER_FIELD, new Gson().toJson(user));
         startActivity(intent);
-        finish();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
 
 }
