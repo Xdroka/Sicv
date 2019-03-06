@@ -5,19 +5,19 @@ import java.util.regex.Pattern;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.tcc.sicv.presentation.model.State;
+import com.tcc.sicv.data.model.State;
 
 import android.arch.lifecycle.MutableLiveData;
 
-import com.tcc.sicv.presentation.model.FlowState;
+import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.firebase.AuthRepository;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 
-import static com.tcc.sicv.presentation.model.State.EMPTY;
-import static com.tcc.sicv.presentation.model.State.INVALID;
-import static com.tcc.sicv.presentation.model.State.VALID;
-import static com.tcc.sicv.presentation.model.Status.LOADING;
-import static com.tcc.sicv.presentation.model.Status.NEUTRAL;
+import static com.tcc.sicv.data.model.State.EMPTY;
+import static com.tcc.sicv.data.model.State.INVALID;
+import static com.tcc.sicv.data.model.State.VALID;
+import static com.tcc.sicv.data.model.Status.LOADING;
+import static com.tcc.sicv.data.model.Status.NEUTRAL;
 
 public class LoginViewModel extends ViewModel {
     private AuthRepository authRepository;

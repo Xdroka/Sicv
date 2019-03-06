@@ -6,18 +6,20 @@ import android.arch.lifecycle.ViewModel;
 import android.util.Patterns;
 import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.data.firebase.AuthRepository;
-import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.presentation.model.State;
-import com.tcc.sicv.presentation.model.Status;
+import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.data.model.State;
+import com.tcc.sicv.data.model.Status;
+import com.tcc.sicv.data.preferences.PreferencesHelper;
+
 import java.util.Calendar;
-import static com.tcc.sicv.presentation.model.State.EMPTY;
-import static com.tcc.sicv.presentation.model.State.INVALID;
-import static com.tcc.sicv.presentation.model.State.MIN_AGE;
-import static com.tcc.sicv.presentation.model.State.VALID;
+import static com.tcc.sicv.data.model.State.EMPTY;
+import static com.tcc.sicv.data.model.State.INVALID;
+import static com.tcc.sicv.data.model.State.MIN_AGE;
+import static com.tcc.sicv.data.model.State.VALID;
 
 public class SignUpViewModel extends ViewModel {
     private AuthRepository authRepository;
-    private MutableLiveData<FlowState<Boolean>> flowState;
+    private MutableLiveData<FlowState<String>> flowState;
     private MutableLiveData<State> nameState;
     private MutableLiveData<State> cpfState;
     private MutableLiveData<State> telState;
@@ -25,8 +27,9 @@ public class SignUpViewModel extends ViewModel {
     private MutableLiveData<State> emailState;
     private MutableLiveData<State> passwordState;
     private MutableLiveData<State> confirmPassState;
+    private PreferencesHelper preferencesHelper;
 
-    public SignUpViewModel() {
+    public SignUpViewModel(PreferencesHelper preferences) {
         authRepository = new AuthRepository();
         flowState = new MutableLiveData<>();
         nameState = new MutableLiveData<>();
@@ -36,10 +39,15 @@ public class SignUpViewModel extends ViewModel {
         emailState = new MutableLiveData<>();
         passwordState = new MutableLiveData<>();
         confirmPassState = new MutableLiveData<>();
+        preferencesHelper = preferences;
     }
 
     private boolean isEmail(String email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public void saveUser(String email) {
+        preferencesHelper.saveUser(email);
     }
 
     private Boolean processEmailData(String email) {
@@ -191,7 +199,7 @@ public class SignUpViewModel extends ViewModel {
                 validEmail && validName && validPassword && validConfirmPassword &&
                         validTelephone && validCpf && validDate
         ) {
-            flowState.postValue(new FlowState<Boolean>(null, null, Status.LOADING));
+            flowState.postValue(new FlowState<String>(null, null, Status.LOADING));
 
             authRepository.checkAccountExistAndCreateUser(
                     new User(
@@ -207,7 +215,7 @@ public class SignUpViewModel extends ViewModel {
         }
     }
 
-    public LiveData<FlowState<Boolean>> getFlowState() {
+    public LiveData<FlowState<String>> getFlowState() {
         return flowState;
     }
 

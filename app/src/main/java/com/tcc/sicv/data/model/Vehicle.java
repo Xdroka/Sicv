@@ -1,21 +1,21 @@
-package com.tcc.sicv.presentation.model;
+package com.tcc.sicv.data.model;
 
 public class Vehicle {
     private String imagem;
     private String modelo;
     private String potencia;
     private String preco;
-    private String velocidadeMaxima;
+    private String velocidade;
     private String marca;
     private String tipo;
     private String codigo;
 
-    public Vehicle(String imagem, String modelo, String potencia, String preco, String velocidadeMaxima, String marca, String tipo, String codigo) {
+    public Vehicle(String imagem, String modelo, String potencia, String preco, String velocidade, String marca, String tipo, String codigo) {
         this.imagem = imagem;
         this.modelo = modelo;
         this.potencia = potencia;
         this.preco = preco;
-        this.velocidadeMaxima = velocidadeMaxima;
+        this.velocidade = velocidade;
         this.marca = marca;
         this.tipo = tipo;
         this.codigo = codigo;
@@ -41,8 +41,8 @@ public class Vehicle {
         return preco;
     }
 
-    public String getVelocidadeMaxima() {
-        return velocidadeMaxima;
+    public String getVelocidade() {
+        return velocidade;
     }
 
     public String getMarca() {

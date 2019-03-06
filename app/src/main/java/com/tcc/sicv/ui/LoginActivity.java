@@ -12,8 +12,8 @@ import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.LoginViewModel;
-import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.presentation.model.State;
+import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.data.model.State;
 
 import java.util.Objects;
 

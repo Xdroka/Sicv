@@ -8,12 +8,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.presentation.model.Logs;
-import com.tcc.sicv.presentation.model.MaintenanceVehicle;
+import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.data.model.Logs;
+import com.tcc.sicv.data.model.MaintenanceVehicle;
 
 import java.util.ArrayList;
 
+import static com.tcc.sicv.utils.Constants.CODE;
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_FIELD;
 import static com.tcc.sicv.utils.Constants.COST_FIELD;
 import static com.tcc.sicv.utils.Constants.DATE_FIELD;
@@ -43,7 +44,7 @@ public class MaintenanceRepository {
                         ArrayList<MaintenanceVehicle> maintenanceList = new ArrayList<>();
                         for (DocumentSnapshot item : queryDocumentSnapshots.getDocuments()) {
                             MaintenanceVehicle maintenance = new MaintenanceVehicle(
-                                    item.getId(),
+                                    CODE + item.getId(),
                                     (String) item.get(MODEL_FIELD),
                                     (String) item.get(IMAGE_FIELD),
                                     (String) item.get(CODE_VEHICLE_FIELD),

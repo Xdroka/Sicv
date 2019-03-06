@@ -15,7 +15,7 @@ import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.ProfileViewModel;
-import com.tcc.sicv.presentation.model.FlowState;
+import com.tcc.sicv.data.model.FlowState;
 
 public class ProfileActivity extends BaseActivity {
     private ProfileViewModel mViewModel;
@@ -83,12 +83,14 @@ public class ProfileActivity extends BaseActivity {
         switch (flowState.getStatus()) {
             case LOADING:
                 showLoadingDialog();
+                logoutBt.setEnabled(false);
                 mViewModel.getUserProfile();
                 break;
             case SUCCESS:
                 hideLoadingDialog();
                 User userProfile = flowState.getData();
                 if (userProfile == null) return;
+                logoutBt.setEnabled(true);
                 nameTv.setText(userProfile.getName());
                 cpfTv.setText(userProfile.getCpf());
                 emailTv.setText(userProfile.getEmail());

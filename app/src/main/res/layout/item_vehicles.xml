@@ -41,7 +41,7 @@
             tools:text="Versailles" />
 
         <TextView
-            android:id="@+id/cod_vehicle"
+            android:id="@+id/option_vehicle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -53,6 +53,7 @@
             app:layout_constraintStart_toEndOf="@+id/iv_photo"
             app:layout_constraintTop_toBottomOf="@+id/tv_type_model"
             tools:text="COD 12312312312313" />
+
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

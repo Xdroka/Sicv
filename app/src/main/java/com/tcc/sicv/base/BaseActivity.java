@@ -12,8 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.tcc.sicv.R;
-import com.tcc.sicv.data.Exceptions;
 import com.tcc.sicv.ui.LoadingDialogFragment;
 
 public class BaseActivity extends AppCompatActivity {
@@ -57,16 +61,23 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+
     protected void handleErrors(Throwable throwable) {
         if (throwable != null) {
-            if (throwable instanceof Exceptions.NoInternetException) {
-                createErrorDialog(getString(R.string.internetConnectionError));
-            } else if (throwable instanceof Exceptions.InvalidUserEmailData) {
+            if (throwable instanceof FirebaseAuthUserCollisionException) {
                 createErrorDialog(getString(R.string.invalidUserEmail));
-            } else if (throwable instanceof Exceptions.InvalidPasswordLogin) {
+            } else if (throwable instanceof FirebaseAuthInvalidCredentialsException) {
                 createErrorDialog(getString(R.string.invalid_password_login));
-            } else if (throwable instanceof Exceptions.InvalidEmailLogin) {
+            } else if (throwable instanceof FirebaseAuthInvalidUserException) {
                 createErrorDialog(getString(R.string.invalid_email_login));
+            } else if (
+                    throwable instanceof FirebaseNetworkException ||
+                            (
+                                    throwable instanceof FirebaseFirestoreException &&
+                                            throwable.getMessage().matches(getString(R.string.regexFirebaseNetworkException))
+                            )
+            ) {
+                createErrorDialog(getString(R.string.internetConnectionError));
             } else {
                 createErrorDialog(getString(R.string.problemsInServer));
             }

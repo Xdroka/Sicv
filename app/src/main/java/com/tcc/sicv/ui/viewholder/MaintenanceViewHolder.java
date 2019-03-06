@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tcc.sicv.R;
-import com.tcc.sicv.presentation.model.MaintenanceVehicle;
+import com.tcc.sicv.data.model.MaintenanceVehicle;
 import com.tcc.sicv.utils.ImageHelper;
 import com.tcc.sicv.utils.OnItemClick;
 
@@ -23,12 +23,9 @@ public class MaintenanceViewHolder extends RecyclerView.ViewHolder {
         modelTextView = itemView.findViewById(R.id.modelMaintenanceTextView);
     }
 
-    public void bind(MaintenanceVehicle item, OnItemClick<MaintenanceVehicle> listener){
+    public void bind(MaintenanceVehicle item, OnItemClick<MaintenanceVehicle> listener) {
         ImageHelper.loadImageUrl(item.getVehiclePhotoUrl(), imageView);
-        codeTextView.setText(String.format(
-                itemView.getContext().getString(R.string.code_format),
-                item.getMaintenanceCode()
-        ));
+        codeTextView.setText(item.getMaintenanceCode());
         modelTextView.setText(item.getModelVehicle());
     }
 }

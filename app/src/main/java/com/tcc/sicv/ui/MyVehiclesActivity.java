@@ -3,18 +3,22 @@ package com.tcc.sicv.ui;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
-import com.tcc.sicv.R;
-import java.util.ArrayList;
-import com.tcc.sicv.base.BaseActivity;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+
+import com.tcc.sicv.R;
+import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.MyVehiclesViewModel;
-import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.presentation.model.Vehicle;
+import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.data.model.Vehicle;
 import com.tcc.sicv.ui.adapter.VehiclesAdapter;
 import com.tcc.sicv.utils.OnItemClick;
+
+import java.util.ArrayList;
+
+import static com.tcc.sicv.data.model.VehicleOption.CODE;
 
 public class MyVehiclesActivity extends BaseActivity implements OnItemClick<Vehicle> {
     private VehiclesAdapter adapter;
@@ -32,7 +36,7 @@ public class MyVehiclesActivity extends BaseActivity implements OnItemClick<Vehi
 
     private void setupViews() {
         RecyclerView vehiclesRecyclerView = findViewById(R.id.list_vehicles);
-        adapter = new VehiclesAdapter(new ArrayList<Vehicle>(), this);
+        adapter = new VehiclesAdapter(new ArrayList<Vehicle>(), this, CODE);
         vehiclesRecyclerView.setAdapter(adapter);
         refreshLayout = findViewById(R.id.refresh_layout);
         setupToolbar(R.id.main_toolbar, R.string.my_vehicles, true);

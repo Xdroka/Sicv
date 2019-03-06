@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.tcc.sicv.R;
-import com.tcc.sicv.presentation.model.MaintenanceVehicle;
+import com.tcc.sicv.data.model.MaintenanceVehicle;
 import com.tcc.sicv.ui.viewholder.MaintenanceViewHolder;
 import com.tcc.sicv.utils.OnItemClick;
 

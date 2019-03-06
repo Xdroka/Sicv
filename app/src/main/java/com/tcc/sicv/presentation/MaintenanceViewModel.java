@@ -6,8 +6,8 @@ import android.arch.lifecycle.ViewModel;
 
 import com.tcc.sicv.data.firebase.MaintenanceRepository;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
-import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.presentation.model.MaintenanceVehicle;
+import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.data.model.MaintenanceVehicle;
 
 import java.util.ArrayList;
 

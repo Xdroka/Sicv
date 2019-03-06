@@ -49,5 +49,7 @@
     <string name="telephone_profile">Telefone:</string>
     <string name="logout">Deslogar</string>
     <string name="todo_description">TODO</string>
-    <string name="code_format">Código: %s</string>
+    <string name="regexFirebaseNetworkException">.*\\boffline\\b.*</string>
+    <string name="success">SUCESSO</string>
+    <string name="successfulSignUp">Cadastro realizado com sucesso!</string>
 </resources>

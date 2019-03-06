@@ -1,4 +1,4 @@
-package com.tcc.sicv.presentation.model;
+package com.tcc.sicv.data.model;
 
 import java.util.List;
 

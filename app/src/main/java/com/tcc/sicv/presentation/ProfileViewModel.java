@@ -7,9 +7,9 @@ import android.arch.lifecycle.ViewModel;
 import com.tcc.sicv.data.firebase.AuthRepository;
 import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
-import com.tcc.sicv.presentation.model.FlowState;
+import com.tcc.sicv.data.model.FlowState;
 
-import static com.tcc.sicv.presentation.model.Status.LOADING;
+import static com.tcc.sicv.data.model.Status.LOADING;
 
 public class ProfileViewModel extends ViewModel {
     private AuthRepository authRepository;

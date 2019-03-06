@@ -14,8 +14,8 @@ import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.MaintenanceViewModel;
-import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.presentation.model.MaintenanceVehicle;
+import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.data.model.MaintenanceVehicle;
 import com.tcc.sicv.ui.adapter.MaintenanceAdapter;
 import com.tcc.sicv.utils.OnItemClick;
 

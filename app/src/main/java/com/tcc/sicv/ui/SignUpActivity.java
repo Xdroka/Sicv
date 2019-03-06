@@ -12,9 +12,10 @@ import android.widget.Button;
 
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
+import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.data.model.State;
+import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.SignUpViewModel;
-import com.tcc.sicv.presentation.model.FlowState;
-import com.tcc.sicv.presentation.model.State;
 import com.vicmikhailau.maskededittext.MaskedEditText;
 
 import java.util.Objects;
@@ -35,7 +36,7 @@ public class SignUpActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        mViewModel = new SignUpViewModel();
+        mViewModel = new SignUpViewModel(new PreferencesHelper(getApplication()));
         setup();
         creatingObservers();
     }
@@ -52,9 +53,9 @@ public class SignUpActivity extends BaseActivity {
     }
 
     private void creatingObservers() {
-        mViewModel.getFlowState().observe(this, new Observer<FlowState<Boolean>>() {
+        mViewModel.getFlowState().observe(this, new Observer<FlowState<String>>() {
             @Override
-            public void onChanged(@Nullable FlowState<Boolean> flowState) {
+            public void onChanged(@Nullable FlowState<String> flowState) {
                 if (flowState != null) {
                     handleWithMainFlow(flowState);
                 }
@@ -238,13 +239,16 @@ public class SignUpActivity extends BaseActivity {
         }
     }
 
-    private void handleWithMainFlow(FlowState<Boolean> flowState) {
+    private void handleWithMainFlow(FlowState<String> flowState) {
         switch (flowState.getStatus()) {
             case LOADING:
                 showLoadingDialog();
                 break;
             case SUCCESS:
                 hideLoadingDialog();
+                String email = flowState.getData();
+                if (email == null) return;
+                mViewModel.saveUser(email);
                 createSignUpDialog();
                 break;
             case ERROR:
@@ -257,9 +261,9 @@ public class SignUpActivity extends BaseActivity {
     private void createSignUpDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.drawable.ic_done_blue_24dp);
-        builder.setTitle("SUCESSO");
-        builder.setMessage("Cadastro realizado com sucesso!");
-        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.success));
+        builder.setMessage(getString(R.string.successfulSignUp));
+        builder.setNegativeButton(getString(R.string.OK), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface arg0, int arg1) {
                 successSignUpDialog.dismiss();
             }
