@@ -52,4 +52,5 @@
     <string name="regexFirebaseNetworkException">.*\\boffline\\b.*</string>
     <string name="success">SUCESSO</string>
     <string name="successfulSignUp">Cadastro realizado com sucesso!</string>
+    <string name="code_format">Código: %s</string>
 </resources>

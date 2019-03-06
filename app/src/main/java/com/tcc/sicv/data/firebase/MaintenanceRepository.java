@@ -14,7 +14,6 @@ import com.tcc.sicv.data.model.MaintenanceVehicle;
 
 import java.util.ArrayList;
 
-import static com.tcc.sicv.utils.Constants.CODE;
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_FIELD;
 import static com.tcc.sicv.utils.Constants.COST_FIELD;
 import static com.tcc.sicv.utils.Constants.DATE_FIELD;
@@ -44,7 +43,7 @@ public class MaintenanceRepository {
                         ArrayList<MaintenanceVehicle> maintenanceList = new ArrayList<>();
                         for (DocumentSnapshot item : queryDocumentSnapshots.getDocuments()) {
                             MaintenanceVehicle maintenance = new MaintenanceVehicle(
-                                    CODE + item.getId(),
+                                    item.getId(),
                                     (String) item.get(MODEL_FIELD),
                                     (String) item.get(IMAGE_FIELD),
                                     (String) item.get(CODE_VEHICLE_FIELD),
@@ -86,7 +85,6 @@ public class MaintenanceRepository {
                         }
                         maintenance.setLogs(logsList);
                         maintenanceList.add(maintenance);
-                        FlowState<ArrayList<MaintenanceVehicle>> value = result.getValue();
                         if (result.getValue() != null) result.postValue(result.getValue()
                                 .success(maintenanceList)
                         );
