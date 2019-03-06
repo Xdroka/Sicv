@@ -81,7 +81,10 @@ public class BaseActivity extends AppCompatActivity {
             } else {
                 createErrorDialog(getString(R.string.problemsInServer));
             }
+        } else{
+            createErrorDialog(getString(R.string.problemsInServer));
         }
+
     }
 
     private void createErrorDialog(String message) {

@@ -4,6 +4,7 @@ public class Constants {
     //Key
     public static final String PREF_KEY = "preferences";
     public static final String MAINTENANCE_KEY = "manutencao";
+    public static final String TICKET_KEY = "ticket_maintenance";
 
     //Colection
     public static final String USER_COLLECTION_PATH = "usuarios";
@@ -24,6 +25,7 @@ public class Constants {
     public static final String DATE_FIELD = "data";
     public static final String DESCRIPTION_FIELD = "descricao";
     public static final String COST_FIELD = "gasto";
+    public static final String TOTAL_COST_FIELD = "total_gasto";
 
     //String
     public static final String CODE = "Código: ";

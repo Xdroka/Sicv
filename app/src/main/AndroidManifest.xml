@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.DetailsMaintenanceActivity"></activity>
+        <activity android:name=".ui.TicketActivity"></activity>
+        <activity android:name=".ui.DetailsMaintenanceActivity" />
         <activity android:name=".ui.VehicleDetailsActivity" />
         <activity android:name=".ui.MaintenanceActivity" />
         <activity android:name=".ui.MyVehiclesActivity" />

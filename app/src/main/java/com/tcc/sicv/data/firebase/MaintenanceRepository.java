@@ -14,6 +14,8 @@ import com.tcc.sicv.data.model.MaintenanceVehicle;
 
 import java.util.ArrayList;
 
+import static com.tcc.sicv.data.model.Status.ERROR;
+import static com.tcc.sicv.data.model.Status.SUCCESS;
 import static com.tcc.sicv.utils.Constants.CODE;
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_FIELD;
 import static com.tcc.sicv.utils.Constants.COST_FIELD;
@@ -23,6 +25,7 @@ import static com.tcc.sicv.utils.Constants.IMAGE_FIELD;
 import static com.tcc.sicv.utils.Constants.LOGS_COLLECTION_PATH;
 import static com.tcc.sicv.utils.Constants.MAINTENANCE_COLLECTION_PATH;
 import static com.tcc.sicv.utils.Constants.MODEL_FIELD;
+import static com.tcc.sicv.utils.Constants.TOTAL_COST_FIELD;
 import static com.tcc.sicv.utils.Constants.USER_COLLECTION_PATH;
 
 public class MaintenanceRepository {
@@ -48,29 +51,31 @@ public class MaintenanceRepository {
                                     (String) item.get(MODEL_FIELD),
                                     (String) item.get(IMAGE_FIELD),
                                     (String) item.get(CODE_VEHICLE_FIELD),
-                                    new ArrayList<Logs>()
+                                    (String) item.get(TOTAL_COST_FIELD)
                             );
-                            getLogsInMaintenance(email, maintenance, maintenanceList, result);
+                            maintenanceList.add(maintenance);
                         }
+                        result.postValue(new FlowState<>(maintenanceList, null, SUCCESS));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        if (result.getValue() != null) result.postValue(result.getValue().error(e));
+                        result.postValue(
+                                new FlowState<ArrayList<MaintenanceVehicle>>(null, e, ERROR)
+                        );
                     }
                 });
     }
 
-    private void getLogsInMaintenance(
+    public void getLogsInMaintenance(
             String email,
-            final MaintenanceVehicle maintenance,
-            final ArrayList<MaintenanceVehicle> maintenanceList,
-            final MutableLiveData<FlowState<ArrayList<MaintenanceVehicle>>> result
+            String maintenanceCode,
+            final MutableLiveData<FlowState<ArrayList<Logs>>> result
     ) {
         db.collection(USER_COLLECTION_PATH).document(email)
                 .collection(MAINTENANCE_COLLECTION_PATH)
-                .document(maintenance.getMaintenanceCode())
+                .document(maintenanceCode)
                 .collection(LOGS_COLLECTION_PATH)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -84,18 +89,15 @@ public class MaintenanceRepository {
                                     (String) item.get(COST_FIELD)
                             ));
                         }
-                        maintenance.setLogs(logsList);
-                        maintenanceList.add(maintenance);
-                        FlowState<ArrayList<MaintenanceVehicle>> value = result.getValue();
-                        if (result.getValue() != null) result.postValue(result.getValue()
-                                .success(maintenanceList)
-                        );
+                        result.postValue(new FlowState<>(logsList, null, SUCCESS));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        if (result.getValue() != null) result.postValue(result.getValue().error(e));
+                        result.postValue(new FlowState<ArrayList<Logs>>(
+                                null, e, ERROR
+                        ));
                     }
                 });
     }

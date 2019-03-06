@@ -102,7 +102,7 @@ public class MaintenanceActivity extends BaseActivity implements OnItemClick<Mai
     @Override
     public void onClick(MaintenanceVehicle item) {
         Intent intent = new Intent(this, DetailsMaintenanceActivity.class);
-        intent.putExtra(MAINTENANCE_KEY, new Gson().toJson(item));
+        intent.putExtra(MAINTENANCE_KEY, item.getMaintenanceCode());
         startActivity(intent);
     }
 }

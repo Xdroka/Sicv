@@ -72,4 +72,8 @@
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
 
+    <style name="RoundendButtonStyle">
+        <item name="android:background">@drawable/rounded_bg</item>
+    </style>
+
 </resources>

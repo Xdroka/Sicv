@@ -1,20 +1,18 @@
 package com.tcc.sicv.data.model;
 
-import java.util.List;
-
 public class MaintenanceVehicle {
     private String maintenanceCode;
     private String modelVehicle;
     private String vehiclePhotoUrl;
     private String vehicleCode;
-    private List<Logs> logs;
+    private String totalCost;
 
-    public MaintenanceVehicle(String maintenanceCode, String modelVehicle, String vehiclePhoto, String vehicleCode, List<Logs> logs) {
+    public MaintenanceVehicle(String maintenanceCode, String modelVehicle, String vehiclePhotoUrl, String vehicleCode, String totalCost) {
         this.maintenanceCode = maintenanceCode;
         this.modelVehicle = modelVehicle;
-        this.vehiclePhotoUrl = vehiclePhoto;
+        this.vehiclePhotoUrl = vehiclePhotoUrl;
         this.vehicleCode = vehicleCode;
-        this.logs = logs;
+        this.totalCost = totalCost;
     }
 
     public String getVehicleCode() {
@@ -33,11 +31,11 @@ public class MaintenanceVehicle {
         return vehiclePhotoUrl;
     }
 
-    public List<Logs> getLogs() {
-        return logs;
+    public String getTotalCost() {
+        return totalCost;
     }
 
-    public void setLogs(List<Logs> logs) {
-        this.logs = logs;
+    public void setTotalCost(String totalCost) {
+        this.totalCost = totalCost;
     }
 }
