@@ -22,7 +22,7 @@ public class ProfileViewModel extends ViewModel {
         logoutState = new MutableLiveData<>();
         flowState = new MutableLiveData<>();
         preferencesHelper = preferences;
-        flowState.postValue(new FlowState<User>(null, null, LOADING));
+        getUserProfile();
     }
 
     public void logout() {
@@ -32,6 +32,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void getUserProfile() {
+        flowState.postValue(new FlowState<User>(null, null, LOADING));
         authRepository.getUserProfile(preferencesHelper.getEmail(), flowState);
     }
 

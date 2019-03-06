@@ -24,4 +24,5 @@ public class Constants {
     public static final String DATE_FIELD = "data";
     public static final String DESCRIPTION_FIELD = "descricao";
     public static final String COST_FIELD = "gasto";
+    public static final String RESULT_TAG = "result_tag";
 }

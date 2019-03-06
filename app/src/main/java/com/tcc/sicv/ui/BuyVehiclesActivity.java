@@ -18,6 +18,7 @@ import com.tcc.sicv.utils.OnItemClick;
 import java.util.ArrayList;
 
 import static com.tcc.sicv.data.model.VehicleOption.PRICE;
+import static com.tcc.sicv.utils.Constants.RESULT_TAG;
 
 public class BuyVehiclesActivity extends BaseActivity implements OnItemClick<Vehicle> {
     private VehiclesAdapter adapter;
@@ -82,6 +83,8 @@ public class BuyVehiclesActivity extends BaseActivity implements OnItemClick<Veh
 
     @Override
     public void onClick(Vehicle item) {
-        startActivity(new Intent(this, VehicleDetailsActivity.class));
+        Intent intent = new Intent(this, VehicleDetailsActivity.class);
+        intent.putExtra(RESULT_TAG,toJson(item));
+        startActivity(intent);
     }
 }

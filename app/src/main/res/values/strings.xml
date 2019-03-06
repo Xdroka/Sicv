@@ -53,4 +53,12 @@
     <string name="success">SUCESSO</string>
     <string name="successfulSignUp">Cadastro realizado com sucesso!</string>
     <string name="code_format">Código: %s</string>
+    <string name="type_format">Tipo do veículo: %s</string>
+    <string name="mark_format">Marca: %s</string>
+    <string name="model_format">Modelo: %s</string>
+    <string name="power_format">Potência: %s</string>
+    <string name="price_format">Preço: %s</string>
+    <string name="speed_format">Velocidade máxima: %s</string>
+    <string name="buy_vehicle">Comprar veículo</string>
+    <string name="vehicle_details">Detalhes do veículo</string>
 </resources>
