@@ -25,7 +25,11 @@ public class MaintenanceViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(final MaintenanceVehicle item, final OnItemClick<MaintenanceVehicle> listener) {
         ImageHelper.loadImageUrl(item.getVehiclePhotoUrl(), imageView);
-        codeTextView.setText(item.getMaintenanceCode());
+        codeTextView.setText(
+                String.format(itemView.getContext().getString(R.string.code_format),
+                        item.getMaintenanceCode()
+                )
+        );
         modelTextView.setText(item.getModelVehicle());
         if (listener != null) {
             itemView.setOnClickListener(new View.OnClickListener() {

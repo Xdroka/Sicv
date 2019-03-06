@@ -28,7 +28,11 @@ public class VehiclesViewHolder extends RecyclerView.ViewHolder {
         typeModelTextView.setText(item.getModelo());
         switch (vehicleOption) {
             case CODE:
-                vehicleOptionTextView.setText(item.getCodigo());
+                vehicleOptionTextView.setText(
+                        String.format(itemView.getContext().getString(R.string.code_format),
+                                item.getCodigo()
+                        )
+                );
                 break;
             case PRICE:
                 vehicleOptionTextView.setText(item.getPreco());

@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import static com.tcc.sicv.data.model.Status.ERROR;
 import static com.tcc.sicv.data.model.Status.SUCCESS;
-import static com.tcc.sicv.utils.Constants.CODE;
 import static com.tcc.sicv.utils.Constants.IMAGE_FIELD;
 import static com.tcc.sicv.utils.Constants.MARK_FIELD;
 import static com.tcc.sicv.utils.Constants.MODEL_FIELD;
@@ -50,7 +49,7 @@ public class VehiclesRepository {
                                             (String) item.get(SPEED_FIELD),
                                             (String) item.get(MARK_FIELD),
                                             (String) item.get(TYPE_FIELD),
-                                    CODE + item.getId()
+                                    item.getId()
                                     )
                             );
                         }
