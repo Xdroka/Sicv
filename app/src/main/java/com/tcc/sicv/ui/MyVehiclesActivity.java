@@ -76,6 +76,13 @@ public class MyVehiclesActivity extends BaseActivity implements OnItemClick<Vehi
                 if (flowState.getData() != null) {
                     adapter.listVehicles.addAll(flowState.getData());
                     adapter.notifyDataSetChanged();
+                    if(adapter.listVehicles.size() == 0){
+                        createConfirmLogoutDialog(
+                                getString(R.string.no_vehicle_found_message),
+                                null,
+                                null
+                        );
+                    }
                 }
                 break;
         }

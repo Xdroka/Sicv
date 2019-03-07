@@ -87,6 +87,13 @@ public class MaintenanceActivity extends BaseActivity implements OnItemClick<Mai
                 if (flowState.hasData()) {
                     adapter.list.addAll(flowState.getData());
                     adapter.notifyDataSetChanged();
+                    if(adapter.list.size() == 0){
+                        createConfirmLogoutDialog(
+                                getString(R.string.no_vehicle_found_message),
+                                null,
+                                null
+                        );
+                    }
                 }
                 break;
             case ERROR:
