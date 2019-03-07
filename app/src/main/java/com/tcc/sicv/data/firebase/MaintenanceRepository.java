@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 import static com.tcc.sicv.data.model.Status.ERROR;
 import static com.tcc.sicv.data.model.Status.SUCCESS;
-import static com.tcc.sicv.utils.Constants.CODE;
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_FIELD;
 import static com.tcc.sicv.utils.Constants.COST_FIELD;
 import static com.tcc.sicv.utils.Constants.DATE_FIELD;
@@ -35,6 +34,27 @@ public class MaintenanceRepository {
         db = FirebaseFirestore.getInstance();
     }
 
+    public void setVehicleInMaintenance(
+            String email,
+            MaintenanceVehicle maintenanceVehicle,
+            final MutableLiveData<FlowState<Boolean>> result
+    ) {
+        db.collection(USER_COLLECTION_PATH).document(email).
+                set(maintenanceVehicle)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        result.postValue(new FlowState<Boolean>(null, e, ERROR));
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        result.postValue(new FlowState<>(true, null, SUCCESS));
+                    }
+                });
+    }
+
     public void getVehiclesInMaintenance(
             final String email,
             final MutableLiveData<FlowState<ArrayList<MaintenanceVehicle>>> result
@@ -47,7 +67,7 @@ public class MaintenanceRepository {
                         ArrayList<MaintenanceVehicle> maintenanceList = new ArrayList<>();
                         for (DocumentSnapshot item : queryDocumentSnapshots.getDocuments()) {
                             MaintenanceVehicle maintenance = new MaintenanceVehicle(
-                                    CODE + item.getId(),
+                                    item.getId(),
                                     (String) item.get(MODEL_FIELD),
                                     (String) item.get(IMAGE_FIELD),
                                     (String) item.get(CODE_VEHICLE_FIELD),

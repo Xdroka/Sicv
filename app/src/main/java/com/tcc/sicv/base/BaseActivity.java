@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.tcc.sicv.R;
 import com.tcc.sicv.ui.LoadingDialogFragment;
+import com.tcc.sicv.utils.OnAlertButtonClick;
 
 public class BaseActivity extends AppCompatActivity {
     LoadingDialogFragment loadingDialog;
@@ -81,7 +82,7 @@ public class BaseActivity extends AppCompatActivity {
             } else {
                 createErrorDialog(getString(R.string.problemsInServer));
             }
-        } else{
+        } else {
             createErrorDialog(getString(R.string.problemsInServer));
         }
 
@@ -98,5 +99,36 @@ public class BaseActivity extends AppCompatActivity {
         });
         alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void createConfirmLogoutDialog(
+            String message,
+            final OnAlertButtonClick positiveListener,
+            final OnAlertButtonClick negativeListener
+    ) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(message);
+        if (positiveListener != null) {
+            builder.setPositiveButton(positiveListener.getText(),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            positiveListener.onClickButton(dialog);
+                        }
+                    });
+        }
+        else{
+            builder.setPositiveButton(getString(R.string.ok_button_text), null);
+        }
+        if (negativeListener != null) {
+            builder.setNegativeButton(negativeListener.getText(),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int arg1) {
+                            negativeListener.onClickButton(dialog);
+                        }
+                    });
+        }
+        AlertDialog logoutDialog = builder.create();
+        logoutDialog.show();
     }
 }

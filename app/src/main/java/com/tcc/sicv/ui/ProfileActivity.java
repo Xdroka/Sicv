@@ -1,6 +1,5 @@
 package com.tcc.sicv.ui;
 
-import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,10 +11,11 @@ import android.widget.TextView;
 
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
+import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.ProfileViewModel;
-import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.utils.OnAlertButtonClick;
 
 public class ProfileActivity extends BaseActivity {
     private ProfileViewModel mViewModel;
@@ -54,7 +54,10 @@ public class ProfileActivity extends BaseActivity {
         logoutBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createConfirmLogoutDialog();
+                createConfirmLogoutDialog(
+                        getString(R.string.logout_message_confirm),
+                        positiveListener,
+                        negativeListener);
             }
         });
     }
@@ -113,19 +116,16 @@ public class ProfileActivity extends BaseActivity {
         telTv = findViewById(R.id.telephoneTv);
     }
 
-    private void createConfirmLogoutDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Tem certeza que deseja deslogar?");
-        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mViewModel.logout();
-            }
-        });
-        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) { }
-        });
-        AlertDialog logoutDialog = builder.create();
-        logoutDialog.show();
-    }
+    private OnAlertButtonClick positiveListener = new OnAlertButtonClick() {
+        @Override
+        public void onClickButton(DialogInterface dialog) { mViewModel.logout(); }
+        @Override
+        public String getText() { return getString(R.string.positive_button_text); }
+    };
+
+    private OnAlertButtonClick negativeListener = new OnAlertButtonClick() {
+        public void onClickButton(DialogInterface dialog) { }
+        @Override
+        public String getText() { return getString(R.string.negative_button_text); }
+    };
 }

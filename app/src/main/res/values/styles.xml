@@ -76,4 +76,12 @@
         <item name="android:background">@drawable/rounded_bg</item>
     </style>
 
+    <style name="TienneTextView">
+        <item name="android:fontFamily">@font/tienne</item>
+    </style>
+
+    <style name="TienneTextView.Bold" parent="TienneTextView">
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

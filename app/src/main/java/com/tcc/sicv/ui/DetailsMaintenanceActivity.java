@@ -8,8 +8,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.model.FlowState;
@@ -17,18 +17,17 @@ import com.tcc.sicv.data.model.Logs;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.DetailsMaintenanceViewModel;
 import com.tcc.sicv.ui.adapter.LogsMaintenanceAdapter;
-import com.tcc.sicv.utils.OnItemClick;
 
 import java.util.ArrayList;
 
 import static com.tcc.sicv.utils.Constants.MAINTENANCE_KEY;
-import static com.tcc.sicv.utils.Constants.TICKET_KEY;
 
-public class DetailsMaintenanceActivity extends BaseActivity implements OnItemClick<Logs> {
+public class DetailsMaintenanceActivity extends BaseActivity {
     private LogsMaintenanceAdapter adapter;
     private DetailsMaintenanceViewModel mViewModel;
     private Button generateTicketButton;
     private SwipeRefreshLayout refreshLayout;
+    private TextView totalCostTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +45,13 @@ public class DetailsMaintenanceActivity extends BaseActivity implements OnItemCl
     }
 
     private void setupViews() {
+        setupToolbar(R.id.main_toolbar, R.string.details_maintenance, true);
         RecyclerView recyclerView = findViewById(R.id.logsMDetailsRecyclerView);
-        adapter = new LogsMaintenanceAdapter(new ArrayList<Logs>(), this);
+        adapter = new LogsMaintenanceAdapter(new ArrayList<Logs>(), null);
         recyclerView.setAdapter(adapter);
         generateTicketButton = findViewById(R.id.generateTicketButton);
         refreshLayout = findViewById(R.id.refreshDetailsMaintenanceLayout);
+        totalCostTextView = findViewById(R.id.totalCostMaintenanceTextView);
     }
 
     private void creatingObservers() {
@@ -75,7 +76,10 @@ public class DetailsMaintenanceActivity extends BaseActivity implements OnItemCl
         generateTicketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(
+                        DetailsMaintenanceActivity.this,
+                        TicketActivity.class
+                ));
             }
         });
     }
@@ -93,15 +97,13 @@ public class DetailsMaintenanceActivity extends BaseActivity implements OnItemCl
                 if (flowState.hasData()) {
                     adapter.logsList.addAll(flowState.getData());
                     adapter.notifyDataSetChanged();
+                    String totalCost = mViewModel.getTotalCost();
+                    totalCostTextView.setText(
+                            String.format(getString(R.string.money_format), totalCost)
+                    );
                 }
                 break;
         }
     }
 
-    @Override
-    public void onClick(Logs item) {
-        Intent intent = new Intent(this, TicketActivity.class);
-        intent.putExtra(TICKET_KEY, new Gson().toJson(item));
-        startActivity(intent);
-    }
 }
