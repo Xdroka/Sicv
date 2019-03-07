@@ -65,7 +65,7 @@
     <string name="date_log_format">Data Agendada: %s</string>
     <string name="cost_log_format">Custo: %s</string>
     <string name="generate_ticket">Gerar Boleto</string>
-    <string name="vehicle_code">Código do veiculo:</string>
+    <string name="vehicle_code">Código do veículo:</string>
     <string name="vehicle_model">Modelo: </string>
     <string name="vehicle_model_maintenance">Modelo do Veiculo:</string>
     <string name="maintenance_code">Código da Manutenção: </string>
