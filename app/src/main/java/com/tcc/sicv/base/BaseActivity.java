@@ -108,19 +108,19 @@ public class BaseActivity extends AppCompatActivity {
 
     @NonNull
     protected Spannable setPartTextColor(String text, int textPositionStart, int textPositionEnd, int color) {
-        Spannable wordtoSpan = new SpannableString(text);
-        wordtoSpan.setSpan(new ForegroundColorSpan(
+        Spannable wordToSpan = new SpannableString(text);
+        wordToSpan.setSpan(new ForegroundColorSpan(
                         getResources().getColor(color)), textPositionStart, textPositionEnd,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         );
-        return wordtoSpan;
+        return wordToSpan;
     }
 
     protected String toJson(Object item){
         return new Gson().toJson(item);
     }
 
-    public void createConfirmLogoutDialog(
+    public void createDialog(
             String message,
             final OnAlertButtonClick positiveListener,
             final OnAlertButtonClick negativeListener

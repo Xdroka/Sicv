@@ -65,7 +65,7 @@
     <string name="date_log_format">Data Agendada: %s</string>
     <string name="cost_log_format">Custo: %s</string>
     <string name="generate_ticket">Gerar Boleto</string>
-    <string name="vehicle_code">Código do veiculo:</string>
+    <string name="vehicle_code">Código do veículo:</string>
     <string name="vehicle_model">Modelo: </string>
     <string name="vehicle_model_maintenance">Modelo do Veiculo:</string>
     <string name="maintenance_code">Código da Manutenção: </string>
@@ -75,7 +75,7 @@
     <string name="logout_message_confirm">Tem certeza que deseja deslogar?</string>
     <string name="positive_button_text">Sim</string>
     <string name="negative_button_text">Não</string>
-    <string name="no_vehicle_found_message">Não foi encontrado nenhum veiculo</string>
+    <string name="no_vehicle_found_message">Não foi encontrado nenhum veículo</string>
     <string name="sicv_full_name">Sistema de Concecionarias de Veiculos</string>
     <string name="cnpj_fake">CNPJ: 111.111.111/1111-11</string>
     <string name="type_ticket">Tipo da Nota</string>

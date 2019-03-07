@@ -30,12 +30,10 @@
             android:id="@+id/tv_type_model"
             style="@style/TextViewBerkshire"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/labelModel"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/labelModel"
-            app:layout_constraintTop_toBottomOf="@+id/iv_photo"
+            app:layout_constraintTop_toTopOf="@+id/labelModel"
             tools:text="Versailles" />
 
         <TextView
@@ -43,14 +41,11 @@
             android:layout_width="0dp"
             android:layout_height="16dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="2dp"
-            app:layout_constraintBottom_toBottomOf="@+id/labelCode"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/labelCode"
-            app:layout_constraintTop_toBottomOf="@+id/tv_type_model"
+            app:layout_constraintTop_toTopOf="@+id/labelCode"
             tools:text="COD 12312312312313" />
 
         <TextView
@@ -59,20 +54,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/vehicle_code"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_type_model" />
 
         <TextView
-            style="@style/TienneTextView.Bold"
             android:id="@+id/labelModel"
+            style="@style/TienneTextView.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/vehicle_model"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_photo" />
