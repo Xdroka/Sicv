@@ -77,7 +77,7 @@ public class MyVehiclesActivity extends BaseActivity implements OnItemClick<Vehi
                     adapter.listVehicles.addAll(flowState.getData());
                     adapter.notifyDataSetChanged();
                     if(adapter.listVehicles.size() == 0){
-                        createConfirmLogoutDialog(
+                        createConfirmDialog(
                                 getString(R.string.no_vehicle_found_message),
                                 null,
                                 null

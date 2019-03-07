@@ -56,7 +56,7 @@ public class ProfileActivity extends BaseActivity {
         logoutBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createConfirmLogoutDialog(
+                createConfirmDialog(
                         getString(R.string.logout_message_confirm),
                         positiveListener,
                         negativeListener);
