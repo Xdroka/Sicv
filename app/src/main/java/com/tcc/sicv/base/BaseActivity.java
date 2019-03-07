@@ -120,7 +120,7 @@ public class BaseActivity extends AppCompatActivity {
         return new Gson().toJson(item);
     }
 
-    public void createConfirmDialog(
+    public void createDialog(
             String message,
             final OnAlertButtonClick positiveListener,
             final OnAlertButtonClick negativeListener

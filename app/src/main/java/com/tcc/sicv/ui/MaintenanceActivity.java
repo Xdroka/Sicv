@@ -87,7 +87,7 @@ public class MaintenanceActivity extends BaseActivity implements OnItemClick<Mai
                     adapter.list.addAll(flowState.getData());
                     adapter.notifyDataSetChanged();
                     if(adapter.list.size() == 0){
-                        createConfirmDialog(
+                        createDialog(
                                 getString(R.string.no_vehicle_found_message),
                                 null,
                                 null
