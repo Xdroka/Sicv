@@ -35,6 +35,7 @@ public class VehiclesRepository {
 
     public void getMyVehicles(String email, final MutableLiveData<FlowState<ArrayList<Vehicle>>> flowState) {
         db.collection(USER_COLLECTION_PATH).document(email).collection(VEHICLES_COLLECTION_PATH)
+                .orderBy(MODEL_FIELD)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -67,6 +68,7 @@ public class VehiclesRepository {
 
     public void getAllVehicles(final MutableLiveData<FlowState<ArrayList<Vehicle>>> flowState) {
         db.collection(VEHICLES_COLLECTION_PATH)
+                .orderBy(MODEL_FIELD)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

@@ -10,10 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.Logs;
+import com.tcc.sicv.data.model.MaintenanceVehicle;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.DetailsMaintenanceViewModel;
 import com.tcc.sicv.ui.adapter.LogsMaintenanceAdapter;
@@ -21,6 +23,7 @@ import com.tcc.sicv.ui.adapter.LogsMaintenanceAdapter;
 import java.util.ArrayList;
 
 import static com.tcc.sicv.utils.Constants.MAINTENANCE_KEY;
+import static com.tcc.sicv.utils.Constants.TICKET_KEY;
 
 public class DetailsMaintenanceActivity extends BaseActivity {
     private LogsMaintenanceAdapter adapter;
@@ -33,12 +36,15 @@ public class DetailsMaintenanceActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_maintenance);
-        String codeMaintenance = "";
+        MaintenanceVehicle maintenance = null;
         if (getIntent() != null && getIntent().getExtras() != null) {
-            codeMaintenance = getIntent().getExtras().getString(MAINTENANCE_KEY, "");
+            maintenance = new Gson().fromJson(getIntent().getExtras()
+                                    .getString(MAINTENANCE_KEY, ""),
+                            MaintenanceVehicle.class
+                    );
         }
         mViewModel = new DetailsMaintenanceViewModel(
-                new PreferencesHelper(getApplication()), codeMaintenance
+                new PreferencesHelper(getApplication()), maintenance
         );
         setupViews();
         creatingObservers();
@@ -76,10 +82,13 @@ public class DetailsMaintenanceActivity extends BaseActivity {
         generateTicketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(
+                if(mViewModel.getTicket() == null) return;
+                Intent intent = new Intent(
                         DetailsMaintenanceActivity.this,
                         TicketActivity.class
-                ));
+                );
+                intent.putExtra(TICKET_KEY, new Gson().toJson(mViewModel.getTicket()));
+                startActivity(intent);
             }
         });
     }

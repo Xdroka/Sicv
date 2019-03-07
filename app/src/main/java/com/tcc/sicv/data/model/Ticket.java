@@ -3,13 +3,13 @@ package com.tcc.sicv.data.model;
 public class Ticket {
     private String valorDoVeiculo;
     private String tipo;
-    private String codigo;
+    private String codigoVeiculo;
     private String data;
 
     public Ticket(String valorDoVeiculo, String tipo, String codigo, String data) {
         this.valorDoVeiculo = valorDoVeiculo;
         this.tipo = tipo;
-        this.codigo = codigo;
+        this.codigoVeiculo = codigo;
         this.data = data;
     }
 
@@ -21,8 +21,8 @@ public class Ticket {
         return tipo;
     }
 
-    public String getCodigo() {
-        return codigo;
+    public String getCodigoVeiculo() {
+        return codigoVeiculo;
     }
 
     public String getData() {

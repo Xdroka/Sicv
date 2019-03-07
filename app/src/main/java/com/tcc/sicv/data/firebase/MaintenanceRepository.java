@@ -24,7 +24,6 @@ import static com.tcc.sicv.utils.Constants.IMAGE_FIELD;
 import static com.tcc.sicv.utils.Constants.LOGS_COLLECTION_PATH;
 import static com.tcc.sicv.utils.Constants.MAINTENANCE_COLLECTION_PATH;
 import static com.tcc.sicv.utils.Constants.MODEL_FIELD;
-import static com.tcc.sicv.utils.Constants.TOTAL_COST_FIELD;
 import static com.tcc.sicv.utils.Constants.USER_COLLECTION_PATH;
 
 public class MaintenanceRepository {
@@ -60,6 +59,7 @@ public class MaintenanceRepository {
             final MutableLiveData<FlowState<ArrayList<MaintenanceVehicle>>> result
     ) {
         db.collection(USER_COLLECTION_PATH).document(email).collection(MAINTENANCE_COLLECTION_PATH)
+                .orderBy(MODEL_FIELD)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -70,8 +70,7 @@ public class MaintenanceRepository {
                                     item.getId(),
                                     (String) item.get(MODEL_FIELD),
                                     (String) item.get(IMAGE_FIELD),
-                                    (String) item.get(CODE_VEHICLE_FIELD),
-                                    (String) item.get(TOTAL_COST_FIELD)
+                                    (String) item.get(CODE_VEHICLE_FIELD)
                             );
                             maintenanceList.add(maintenance);
                         }
@@ -97,6 +96,7 @@ public class MaintenanceRepository {
                 .collection(MAINTENANCE_COLLECTION_PATH)
                 .document(maintenanceCode)
                 .collection(LOGS_COLLECTION_PATH)
+                .orderBy(DATE_FIELD)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
