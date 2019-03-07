@@ -16,12 +16,16 @@ public class VehiclesViewHolder extends RecyclerView.ViewHolder {
     private ImageView vehicleImageView;
     private TextView typeModelTextView;
     private TextView vehicleOptionTextView;
+    private TextView labelOptionTextView;
+    private TextView labelModelTextView;
 
     public VehiclesViewHolder(@NonNull View itemView) {
         super(itemView);
         vehicleOptionTextView = itemView.findViewById(R.id.option_vehicle);
         typeModelTextView = itemView.findViewById(R.id.tv_type_model);
         vehicleImageView = itemView.findViewById(R.id.iv_photo);
+        labelOptionTextView = itemView.findViewById(R.id.labelCode);
+        labelModelTextView = itemView.findViewById(R.id.labelModel);
     }
 
     public void bind(final Vehicle item, final OnItemClick<Vehicle> listener, final VehicleOption vehicleOption) {
@@ -31,6 +35,8 @@ public class VehiclesViewHolder extends RecyclerView.ViewHolder {
                 vehicleOptionTextView.setText(item.getCodigo());
                 break;
             case PRICE:
+                labelOptionTextView.setVisibility(View.GONE);
+                labelModelTextView.setVisibility(View.GONE);
                 vehicleOptionTextView.setText(item.getPreco());
                 break;
         }
