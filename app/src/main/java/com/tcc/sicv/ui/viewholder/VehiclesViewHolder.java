@@ -35,8 +35,8 @@ public class VehiclesViewHolder extends RecyclerView.ViewHolder {
                 vehicleOptionTextView.setText(item.getCodigo());
                 break;
             case PRICE:
-                labelOptionTextView.setVisibility(View.GONE);
-                labelModelTextView.setVisibility(View.GONE);
+                labelOptionTextView.setText("");
+                labelModelTextView.setText("");
                 vehicleOptionTextView.setText(item.getPreco());
                 break;
         }

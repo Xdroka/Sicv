@@ -66,9 +66,9 @@
     <string name="cost_log_format">Custo: %s</string>
     <string name="generate_ticket">Gerar Boleto</string>
     <string name="vehicle_code">Código do veiculo:</string>
-    <string name="vehicle_model">Modelo:</string>
+    <string name="vehicle_model">Modelo: </string>
     <string name="vehicle_model_maintenance">Modelo do Veiculo:</string>
-    <string name="maintenance_code">Código da Manutenção:</string>
+    <string name="maintenance_code">Código da Manutenção: </string>
     <string name="money_format">Gasto Total: R$%s</string>
     <string name="details_maintenance">Detalhes da Manutenção</string>
     <string name="ok_button_text">Ok</string>

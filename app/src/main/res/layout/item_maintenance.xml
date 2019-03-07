@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="6dp"
+    android:layout_margin="4dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -12,27 +14,22 @@
 
         <ImageView
             android:id="@+id/vehicleMaintenanceImageView"
-            android:layout_width="385dp"
-            android:layout_height="121dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:contentDescription="@string/todo_description"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="16dp"
             tools:srcCompat="@tools:sample/backgrounds/scenic[15]" />
 
         <TextView
             android:id="@+id/codeMaintenanceTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView13"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView13"
-            app:layout_constraintTop_toTopOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/vehicleMaintenanceImageView"
             tools:text="IWZ9jDmVGgsFiar9In9H" />
 
         <TextView
@@ -53,22 +50,21 @@
             style="@style/TienneTextView.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
             android:text="@string/maintenance_code"
+            app:layout_constraintBottom_toBottomOf="@+id/codeMaintenanceTextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vehicleMaintenanceImageView" />
+            app:layout_constraintTop_toTopOf="@+id/codeMaintenanceTextView" />
 
         <TextView
             android:id="@+id/textView14"
             style="@style/TienneTextView.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:text="@string/vehicle_model_maintenance"
-            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
