@@ -53,8 +53,9 @@ public class DetailsMaintenanceViewModel extends ViewModel {
     private void setTicket(String totalCost){
         Date date = new Date();
         ticket = new Ticket(totalCost, MAINTENANCE_COLLECTION_PATH, "",
-                String.format("%s/%s/%s",
-                        date.getDay(), date.getMonth(), date.getYear()));
+                String.format("%s/%s/%s %s",
+                        date.getDay(), date.getMonth(), date.getYear(), date.getTime()
+                ));
     }
 
     public String getTotalCost() {

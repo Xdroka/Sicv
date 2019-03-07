@@ -4,13 +4,13 @@ public class Ticket {
     private String valorDoVeiculo;
     private String tipo;
     private String codigoVeiculo;
-    private String data;
+    private String time;
 
-    public Ticket(String valorDoVeiculo, String tipo, String codigo, String data) {
+    public Ticket(String valorDoVeiculo, String tipo, String codigo, String time) {
         this.valorDoVeiculo = valorDoVeiculo;
         this.tipo = tipo;
         this.codigoVeiculo = codigo;
-        this.data = data;
+        this.time = time;
     }
 
     public String getValorDoVeiculo() {
@@ -25,7 +25,7 @@ public class Ticket {
         return codigoVeiculo;
     }
 
-    public String getData() {
-        return data;
+    public String getTime() {
+        return time;
     }
 }
