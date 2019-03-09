@@ -11,6 +11,7 @@ public class Constants {
     public static final String VEHICLES_COLLECTION_PATH = "veiculos";
     public static final String MAINTENANCE_COLLECTION_PATH = "manutencao";
     public static final String LOGS_COLLECTION_PATH = "logs";
+    public static final String TICKET_COLLECTION_PATH = "ticket";
 
     //Field
     public static final String USER_FIELD = "user";

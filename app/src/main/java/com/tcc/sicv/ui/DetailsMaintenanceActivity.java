@@ -85,7 +85,7 @@ public class DetailsMaintenanceActivity extends BaseActivity {
                 if(mViewModel.getTicket() == null) return;
                 Intent intent = new Intent(
                         DetailsMaintenanceActivity.this,
-                        TicketActivity.class
+                        TicketDetailsActivity.class
                 );
                 intent.putExtra(TICKET_KEY, new Gson().toJson(mViewModel.getTicket()));
                 startActivity(intent);
