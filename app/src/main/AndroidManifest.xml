@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ui.MyTicketsActivity"></activity>
         <activity android:name=".ui.TicketDetailsActivity" />
         <activity android:name=".ui.DetailsMaintenanceActivity" />
         <activity android:name=".ui.VehicleDetailsActivity" />
@@ -34,10 +35,6 @@
             android:name=".ui.SignUpActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".base.BaseActivity" />
-
-        <!--<meta-time-->
-            <!--android:name="preloaded_fonts"-->
-            <!--android:resource="@array/preloaded_fonts" />-->
     </application>
 
 </manifest>
