@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.gson.Gson;
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
@@ -108,7 +109,7 @@ public class MaintenanceActivity extends BaseActivity implements OnItemClick<Mai
     @Override
     public void onClick(MaintenanceVehicle item) {
         Intent intent = new Intent(this, DetailsMaintenanceActivity.class);
-        intent.putExtra(MAINTENANCE_KEY, item.getMaintenanceCode());
+        intent.putExtra(MAINTENANCE_KEY, new Gson().toJson(item));
         startActivity(intent);
     }
 }

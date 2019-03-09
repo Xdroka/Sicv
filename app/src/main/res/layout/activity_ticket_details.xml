@@ -117,7 +117,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/costLabelTextView" />
 
             <TextView
-                android:id="@+id/vehicleCodeLabelTv"
+                android:id="@+id/vehicleCodeTicketTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -133,7 +133,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vehicleCodeLabelTv"
+                app:layout_constraintTop_toBottomOf="@+id/vehicleCodeTicketTv"
                 tools:text="Tipo: Manutenção" />
 
             <TextView

@@ -1,20 +1,22 @@
 package com.tcc.sicv.data.model;
 
 public class Ticket {
-    private String valorDoVeiculo;
+    private String custoTotal;
     private String tipo;
     private String codigoVeiculo;
     private String time;
+    private String ticketId = "";
 
-    public Ticket(String valorDoVeiculo, String tipo, String codigo, String time) {
-        this.valorDoVeiculo = valorDoVeiculo;
+    public Ticket(String custoTotal, String tipo, String codigo, String time, String ticketId) {
+        this.custoTotal = custoTotal;
         this.tipo = tipo;
         this.codigoVeiculo = codigo;
         this.time = time;
+        this.ticketId = ticketId;
     }
 
-    public String getValorDoVeiculo() {
-        return valorDoVeiculo;
+    public String getCustoTotal() {
+        return custoTotal;
     }
 
     public String getTipo() {
@@ -28,4 +30,10 @@ public class Ticket {
     public String getTime() {
         return time;
     }
+
+    public void setTime(String time) { this.time = time; }
+
+    public String getTicketId() { return ticketId; }
+
+    public void setTicketId(String ticketId) { this.ticketId = ticketId; }
 }

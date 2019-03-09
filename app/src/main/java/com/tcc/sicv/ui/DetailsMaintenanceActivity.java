@@ -56,6 +56,7 @@ public class DetailsMaintenanceActivity extends BaseActivity {
         adapter = new LogsMaintenanceAdapter(new ArrayList<Logs>(), null);
         recyclerView.setAdapter(adapter);
         generateTicketButton = findViewById(R.id.generateTicketButton);
+        generateTicketButton.setVisibility(View.GONE);
         refreshLayout = findViewById(R.id.refreshDetailsMaintenanceLayout);
         totalCostTextView = findViewById(R.id.totalCostMaintenanceTextView);
     }
@@ -110,6 +111,10 @@ public class DetailsMaintenanceActivity extends BaseActivity {
                     totalCostTextView.setText(
                             String.format(getString(R.string.money_format), totalCost)
                     );
+                    if(mViewModel.isVehicleFixed()){
+                        generateTicketButton.setVisibility(View.VISIBLE);
+                    }
+
                 }
                 break;
         }

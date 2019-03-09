@@ -52,10 +52,15 @@ public class DetailsMaintenanceViewModel extends ViewModel {
 
     private void setTicket(String totalCost){
         Date date = new Date();
-        ticket = new Ticket(totalCost, MAINTENANCE_COLLECTION_PATH, "",
-                String.format("%s/%s/%s %s",
-                        date.getDay(), date.getMonth(), date.getYear(), date.getTime()
-                ));
+        if(flowState.getValue() == null || !flowState.getValue().hasData()) return;
+
+        ticket = new Ticket(
+                totalCost,
+                MAINTENANCE_COLLECTION_PATH,
+                maintenance.getCod_veiculo(),
+                "",
+                maintenance.getMaintenanceCode()
+        );
     }
 
     public String getTotalCost() {
@@ -92,6 +97,11 @@ public class DetailsMaintenanceViewModel extends ViewModel {
         }
 
         return numberString;
+    }
+
+    public Boolean isVehicleFixed() {
+        if(maintenance == null) return false;
+        return maintenance.getVeiculo_liberado();
     }
 
     public Ticket getTicket() {

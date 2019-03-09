@@ -25,6 +25,7 @@ public class Constants {
     public static final String CODE_VEHICLE_FIELD = "cod_veiculo";
     public static final String DATE_FIELD = "data";
     public static final String DESCRIPTION_FIELD = "descricao";
+    public static final String RELEASE_VEHICLE_FIELD = "veiculo_liberado";
     public static final String COST_FIELD = "gasto";
     public static final String RESULT_TAG = "result_tag";
     public static final String TOTAL_COST_FIELD = "total_gasto";

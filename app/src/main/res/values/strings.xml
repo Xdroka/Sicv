@@ -78,5 +78,7 @@
     <string name="no_vehicle_found_message">Não foi encontrado nenhum veículo</string>
     <string name="sicv_full_name">Sistema de Concecionarias de Veiculos</string>
     <string name="cnpj_fake">CNPJ: 111.111.111/1111-11</string>
-    <string name="type_ticket">Tipo da Nota</string>
+    <string name="type_ticket">Tipo da Nota: %s</string>
+    <string name="ticket_title">Nota Fiscal</string>
+    <string name="my_tickets_title">Minhas Notas Fiscais</string>
 </resources>
