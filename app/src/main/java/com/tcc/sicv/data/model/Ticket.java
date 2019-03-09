@@ -7,10 +7,10 @@ public class Ticket {
     private String time;
     private String ticketId = "";
 
-    public Ticket(String custoTotal, String tipo, String codigo, String time, String ticketId) {
+    public Ticket(String custoTotal, String tipo, String codigoVeiculo, String time, String ticketId) {
         this.custoTotal = custoTotal;
         this.tipo = tipo;
-        this.codigoVeiculo = codigo;
+        this.codigoVeiculo = codigoVeiculo;
         this.time = time;
         this.ticketId = ticketId;
     }

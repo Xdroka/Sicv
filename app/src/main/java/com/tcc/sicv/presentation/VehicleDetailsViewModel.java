@@ -6,8 +6,10 @@ import android.arch.lifecycle.ViewModel;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.tcc.sicv.data.firebase.MaintenanceRepository;
 import com.tcc.sicv.data.firebase.VehiclesRepository;
 import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.data.model.MaintenanceVehicle;
 import com.tcc.sicv.data.model.State;
 import com.tcc.sicv.data.model.Vehicle;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
@@ -32,10 +34,13 @@ import static com.tcc.sicv.utils.Constants.DATE_MIN_LENGHT;
 public class VehicleDetailsViewModel extends ViewModel {
     private MutableLiveData<FlowState<Vehicle>> flowState;
     private MutableLiveData<FlowState<Boolean>> buyState;
+    private MutableLiveData<FlowState<MaintenanceVehicle>> maintenanceFlow;
     private MutableLiveData<State> dateState;
     private VehiclesRepository vehiclesRepository;
+    private MaintenanceRepository maintenanceRepository;
     private PreferencesHelper preferencesHelper;
     private Vehicle selectedVehicle;
+
 
     public VehicleDetailsViewModel(PreferencesHelper preferences) {
         preferencesHelper = preferences;
@@ -43,6 +48,7 @@ public class VehicleDetailsViewModel extends ViewModel {
         dateState = new MutableLiveData<>();
         buyState = new MutableLiveData<>();
         vehiclesRepository = new VehiclesRepository();
+        maintenanceRepository = new MaintenanceRepository();
     }
 
     public void getVehicle(String gson) {
@@ -116,11 +122,11 @@ public class VehicleDetailsViewModel extends ViewModel {
         return flowState;
     }
 
-    public LiveData<FlowState<Boolean>> getBuyState() {
-        return buyState;
-    }
+    public LiveData<FlowState<Boolean>> getBuyState() { return buyState; }
 
     public LiveData<State> getDateState() {
         return dateState;
     }
+
+    public MutableLiveData<FlowState<MaintenanceVehicle>> getMaintenanceFlow() { return maintenanceFlow; }
 }

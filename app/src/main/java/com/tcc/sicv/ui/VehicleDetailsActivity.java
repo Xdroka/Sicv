@@ -16,10 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.State;
+import com.tcc.sicv.data.model.Ticket;
 import com.tcc.sicv.data.model.Vehicle;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.VehicleDetailsViewModel;
@@ -30,6 +32,7 @@ import java.util.Objects;
 import static com.tcc.sicv.utils.Constants.BUY_VEHICLE;
 import static com.tcc.sicv.utils.Constants.FROM_ACTIVITY;
 import static com.tcc.sicv.utils.Constants.MY_VEHICLES;
+import static com.tcc.sicv.utils.Constants.TICKET_KEY;
 
 public class VehicleDetailsActivity extends BaseActivity {
     AlertDialog confirmDialog;
@@ -52,9 +55,7 @@ public class VehicleDetailsActivity extends BaseActivity {
     private ProgressBar progressBar;
     private DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
         @Override
-        public void onDismiss(DialogInterface dialog) {
-            Intent intent = new Intent(VehicleDetailsActivity.this, TicketActivity.class);
-            startActivity(intent);
+        public void onDismiss(DialogInterface dialog) { generateTicket();
         }
     };
 
@@ -244,6 +245,19 @@ public class VehicleDetailsActivity extends BaseActivity {
         setupDialogViews(view);
         builder.setView(view);
         confirmDialog = builder.create();
+    }
+
+    private void generateTicket() {
+        FlowState<Vehicle> value = mViewModel.getFlowState().getValue();
+        if(value == null || value.getData() == null) return;
+        Vehicle vehicle = value.getData();
+        Ticket ticket = new Ticket(vehicle.getPreco(), "compra", vehicle.getCodigo(),""
+            , vehicle.getCodigo().hashCode() + ""
+        );
+        Intent intent = new Intent(VehicleDetailsActivity.this, TicketDetailsActivity.class);
+        intent.putExtra(TICKET_KEY, new Gson().toJson(ticket));
+        startActivity(intent);
+        finish();
     }
 
     public void setupDialogViews(View view) {
