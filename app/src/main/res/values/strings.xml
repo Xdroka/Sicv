@@ -25,8 +25,8 @@
     <string name="invalid_cpf">CPF inválido</string>
     <string name="empty_telephone">Campo de telefone vazio</string>
     <string name="invalid_telephone">Telefone inválido</string>
-    <string name="empty_date">Campo de nascimento vazio</string>
-    <string name="invalid_date">Data de nascimento inválida</string>
+    <string name="empty_date">Campo vazio</string>
+    <string name="invalid_date">Data inválida</string>
     <string name="invalid_age_date">Para acesso ao aplicativo é preciso ter no mínimo 18 anos</string>
     <string name="internetConnectionError">Falha na conexão com a Internet</string>
     <string name="invalidUserEmail">Já existe um usuário cadastrado com este email</string>
@@ -76,6 +76,15 @@
     <string name="positive_button_text">Sim</string>
     <string name="negative_button_text">Não</string>
     <string name="no_vehicle_found_message">Não foi encontrado nenhum veículo</string>
+    <string name="confirmDialogTitle">Tem certeza que deseja comprar o veículo selecionado?</string>
+    <string name="schedule_a_date">Digite a data para retirada do veículo:</string>
+    <string name="scheduleDate">Agendar data</string>
+    <string name="cancel">Cancelar</string>
+    <string name="buy">Comprar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="doMaintenance">Fazer manutenção</string>
+    <string name="title_dialog_do_maintenance">Tem certeza que deseja fazer manutenção do veículo selecionado?</string>
+    <string name="successful_buy">Compra realizada com sucesso!</string>
     <string name="sicv_full_name">Sistema de Concecionarias de Veiculos</string>
     <string name="cnpj_fake">CNPJ: 111.111.111/1111-11</string>
     <string name="type_ticket">Tipo da Nota: %s</string>

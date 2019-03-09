@@ -29,6 +29,7 @@ import com.tcc.sicv.utils.OnAlertButtonClick;
 public class BaseActivity extends AppCompatActivity {
     LoadingDialogFragment loadingDialog;
     AlertDialog alertDialog;
+    AlertDialog confirmAndExitDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void showLoadingDialog() {
-        loadingDialog.show(getSupportFragmentManager(), "");
+        loadingDialog.show(getSupportFragmentManager(), "loading");
     }
 
     protected void hideLoadingDialog() {
@@ -132,7 +133,7 @@ public class BaseActivity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            positiveListener.onClickButton(dialog);
+                            positiveListener.onClickButton();
                         }
                     });
         }
@@ -143,11 +144,29 @@ public class BaseActivity extends AppCompatActivity {
             builder.setNegativeButton(negativeListener.getText(),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int arg1) {
-                            negativeListener.onClickButton(dialog);
+                            negativeListener.onClickButton();
                         }
                     });
         }
         AlertDialog logoutDialog = builder.create();
         logoutDialog.show();
+    }
+
+    public void createConfirmAndExitDialog(
+            String message,
+            final DialogInterface.OnDismissListener dismissListener
+    ) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.ic_done_blue_24dp);
+        builder.setTitle(getString(R.string.success));
+        builder.setMessage(message);
+        builder.setNegativeButton(getString(R.string.OK), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface arg0, int arg1) {
+                confirmAndExitDialog.dismiss();
+            }
+        });
+        confirmAndExitDialog = builder.create();
+        confirmAndExitDialog.show();
+        confirmAndExitDialog.setOnDismissListener(dismissListener);
     }
 }

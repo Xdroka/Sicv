@@ -2,13 +2,16 @@ package com.tcc.sicv.data.firebase;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.data.model.Vehicle;
 
 import java.util.ArrayList;
@@ -50,7 +53,7 @@ public class VehiclesRepository {
                                             (String) item.get(SPEED_FIELD),
                                             (String) item.get(MARK_FIELD),
                                             (String) item.get(TYPE_FIELD),
-                                    item.getId()
+                                            item.getId()
                                     )
                             );
                         }
@@ -98,4 +101,72 @@ public class VehiclesRepository {
                 })
         ;
     }
+
+    public void buyVehicle(final String email, String model,
+                           final MutableLiveData<FlowState<Boolean>> result) {
+
+        db.collection(VEHICLES_COLLECTION_PATH).document(model).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String imagem = (String) documentSnapshot.get("imagem");
+                        String modelo = (String) documentSnapshot.get("modelo");
+                        String potencia = (String) documentSnapshot.get("potencia");
+                        String preco = (String) documentSnapshot.get("preco");
+                        String velocidade = (String) documentSnapshot.get("velocidade");
+                        String marca = (String) documentSnapshot.get("marca");
+                        String tipo = (String) documentSnapshot.get("tipo");
+
+                        putVehicleInUserVehicles(imagem, modelo, potencia, preco, velocidade,
+                                marca, tipo, email, result);
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                            result.postValue(
+                                    new FlowState<Boolean>(null, e, ERROR)
+                            );
+                    }
+                });
+
+    }
+
+    private void putVehicleInUserVehicles(String imagem, String modelo,
+                                          String potencia, String preco,
+                                          String velocidade, String marca,
+                                          String tipo, String email,
+                                          final MutableLiveData<FlowState<Boolean>> result) {
+        db.collection(USER_COLLECTION_PATH).document(email).collection(VEHICLES_COLLECTION_PATH)
+                .add(
+                        new Vehicle(
+                                imagem,
+                                modelo,
+                                potencia,
+                                preco,
+                                velocidade,
+                                marca,
+                                tipo,
+                                null
+                        )
+                )
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        result.postValue(
+                                new FlowState<Boolean>(null, null, SUCCESS)
+                        );
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                            result.postValue(
+                                    new FlowState<Boolean>(null, e, ERROR)
+                            );
+                    }
+                });
+    }
 }
+

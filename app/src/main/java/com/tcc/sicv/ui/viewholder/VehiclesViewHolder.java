@@ -8,9 +8,11 @@ import android.widget.TextView;
 
 import com.tcc.sicv.R;
 import com.tcc.sicv.data.model.Vehicle;
-import com.tcc.sicv.data.model.VehicleOption;
 import com.tcc.sicv.utils.ImageHelper;
 import com.tcc.sicv.utils.OnItemClick;
+
+import static com.tcc.sicv.utils.Constants.BUY_VEHICLE;
+import static com.tcc.sicv.utils.Constants.MY_VEHICLES;
 
 public class VehiclesViewHolder extends RecyclerView.ViewHolder {
     private ImageView vehicleImageView;
@@ -28,13 +30,13 @@ public class VehiclesViewHolder extends RecyclerView.ViewHolder {
         labelModelTextView = itemView.findViewById(R.id.labelModel);
     }
 
-    public void bind(final Vehicle item, final OnItemClick<Vehicle> listener, final VehicleOption vehicleOption) {
+    public void bind(final Vehicle item, final OnItemClick<Vehicle> listener, final String vehicleOption) {
         typeModelTextView.setText(item.getModelo());
         switch (vehicleOption) {
-            case CODE:
+            case MY_VEHICLES:
                 vehicleOptionTextView.setText(item.getCodigo());
                 break;
-            case PRICE:
+            case BUY_VEHICLE:
                 labelOptionTextView.setText("");
                 labelModelTextView.setText("");
                 vehicleOptionTextView.setText(item.getPreco());

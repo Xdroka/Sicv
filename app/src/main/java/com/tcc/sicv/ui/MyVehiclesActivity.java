@@ -9,16 +9,17 @@ import android.support.v7.widget.RecyclerView;
 
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
-import com.tcc.sicv.data.preferences.PreferencesHelper;
-import com.tcc.sicv.presentation.MyVehiclesViewModel;
 import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.Vehicle;
+import com.tcc.sicv.data.preferences.PreferencesHelper;
+import com.tcc.sicv.presentation.MyVehiclesViewModel;
 import com.tcc.sicv.ui.adapter.VehiclesAdapter;
 import com.tcc.sicv.utils.OnItemClick;
 
 import java.util.ArrayList;
 
-import static com.tcc.sicv.data.model.VehicleOption.CODE;
+import static com.tcc.sicv.utils.Constants.FROM_ACTIVITY;
+import static com.tcc.sicv.utils.Constants.MY_VEHICLES;
 
 public class MyVehiclesActivity extends BaseActivity implements OnItemClick<Vehicle> {
     private VehiclesAdapter adapter;
@@ -36,7 +37,7 @@ public class MyVehiclesActivity extends BaseActivity implements OnItemClick<Vehi
 
     private void setupViews() {
         RecyclerView vehiclesRecyclerView = findViewById(R.id.list_vehicles);
-        adapter = new VehiclesAdapter(new ArrayList<Vehicle>(), this, CODE);
+        adapter = new VehiclesAdapter(new ArrayList<Vehicle>(), this, MY_VEHICLES);
         vehiclesRecyclerView.setAdapter(adapter);
         refreshLayout = findViewById(R.id.refresh_layout);
         setupToolbar(R.id.main_toolbar, R.string.my_vehicles, true);
@@ -90,6 +91,9 @@ public class MyVehiclesActivity extends BaseActivity implements OnItemClick<Vehi
 
     @Override
     public void onClick(Vehicle item) {
-        startActivity(new Intent(this, VehicleDetailsActivity.class));
+        Intent intent = new Intent(this, VehicleDetailsActivity.class);
+        intent.putExtra(MY_VEHICLES,toJson(item));
+        intent.putExtra(FROM_ACTIVITY,MY_VEHICLES);
+        startActivity(intent);
     }
 }
