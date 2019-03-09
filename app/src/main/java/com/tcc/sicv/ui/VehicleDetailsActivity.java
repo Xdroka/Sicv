@@ -2,6 +2,8 @@ package com.tcc.sicv.ui;
 
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.tcc.sicv.R;
@@ -18,6 +21,7 @@ import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.State;
 import com.tcc.sicv.data.model.Vehicle;
+import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.VehicleDetailsViewModel;
 import com.tcc.sicv.utils.ImageHelper;
 
@@ -32,7 +36,7 @@ public class VehicleDetailsActivity extends BaseActivity {
     private VehicleDetailsViewModel mViewModel;
     private String fromActivity;
     private ImageView vehicleIv;
-    private Button buyVehicleBt;
+    private Button operationVehicleBt;
     private TextView dialogTitleTv;
     private TextView markTv;
     private TextView modelTv;
@@ -44,15 +48,23 @@ public class VehicleDetailsActivity extends BaseActivity {
     private TextView dialogAtributeTv;
     private EditText dialogDateEt;
     private Button dialogCancelBt;
-    private Button dialogBuyBt;
+    private Button dialogOperationBt;
+    private ProgressBar progressBar;
+    private DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            Intent intent = new Intent(VehicleDetailsActivity.this, TicketActivity.class);
+            startActivity(intent);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_details);
-        createConfirmBuyDialog();
+        createConfirmOperationDialog();
         setupViews();
-        mViewModel = new VehicleDetailsViewModel();
+        mViewModel = new VehicleDetailsViewModel(new PreferencesHelper(getApplication()));
         creatingObservers();
         getDataFromBundle();
     }
@@ -66,7 +78,15 @@ public class VehicleDetailsActivity extends BaseActivity {
                 }
             }
         });
-        buyVehicleBt.setOnClickListener(new View.OnClickListener() {
+        mViewModel.getBuyState().observe(this, new Observer<FlowState<Boolean>>() {
+            @Override
+            public void onChanged(@Nullable FlowState<Boolean> buyState) {
+                if (buyState != null) {
+                    handleWithBuyFlow(buyState);
+                }
+            }
+        });
+        operationVehicleBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 confirmDialog.show();
@@ -78,10 +98,10 @@ public class VehicleDetailsActivity extends BaseActivity {
                 confirmDialog.dismiss();
             }
         });
-        dialogBuyBt.setOnClickListener(new View.OnClickListener() {
+        dialogOperationBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewModel.processBuy(dialogDateEt.getText().toString());
+                mViewModel.processOperation(dialogDateEt.getText().toString(), fromActivity);
             }
         });
         mViewModel.getDateState().observe(this, new Observer<State>() {
@@ -108,6 +128,24 @@ public class VehicleDetailsActivity extends BaseActivity {
         }
     }
 
+    private void handleWithBuyFlow(FlowState<Boolean> buyState) {
+        switch (buyState.getStatus()) {
+            case LOADING:
+                confirmDialog.dismiss();
+                progressBar.setVisibility(View.VISIBLE);
+            case ERROR:
+                if (buyState.getThrowable() != null) {
+                    progressBar.setVisibility(View.GONE);
+                    handleErrors(buyState.getThrowable());
+                }
+                break;
+            case SUCCESS:
+                progressBar.setVisibility(View.GONE);
+                createConfirmAndExitDialog(getString(R.string.successful_buy), dismissListener);
+                break;
+        }
+    }
+
     private void handleWithMainFlow(FlowState<Vehicle> flowState) {
         switch (flowState.getStatus()) {
             case ERROR:
@@ -122,33 +160,33 @@ public class VehicleDetailsActivity extends BaseActivity {
         }
     }
 
-    private void handleWithSuccessMainFlow(Vehicle clickedVehicle) {
-        ImageHelper.loadImageUrl(clickedVehicle.getImagem(), vehicleIv);
+    private void handleWithSuccessMainFlow(Vehicle selectedVehicle) {
+        ImageHelper.loadImageUrl(selectedVehicle.getImagem(), vehicleIv);
         typeTv.setText(
                 setupVehicleText(R.string.type_format,
-                        clickedVehicle.getTipo(), 16)
+                        selectedVehicle.getTipo(), 16)
         );
         markTv.setText(
                 setupVehicleText(
                         R.string.mark_format,
-                        clickedVehicle.getMarca(), 6
+                        selectedVehicle.getMarca(), 6
                 )
         );
         speedTv.setText(
                 setupVehicleText(
                         R.string.speed_format,
-                        clickedVehicle.getVelocidade(), 18
+                        selectedVehicle.getVelocidade(), 18
                 )
         );
         powerTv.setText(
                 setupVehicleText(
                         R.string.power_format,
-                        clickedVehicle.getPotencia(), 9
+                        selectedVehicle.getPotencia(), 9
                 )
         );
         Spannable modelText = setupVehicleText(
                 R.string.model_format,
-                clickedVehicle.getModelo(), 7
+                selectedVehicle.getModelo(), 7
         );
         modelTv.setText(modelText);
         dialogVehicleTv.setText(modelText);
@@ -156,17 +194,17 @@ public class VehicleDetailsActivity extends BaseActivity {
         if (fromActivity.equals(BUY_VEHICLE)) {
             Spannable priceText = setupVehicleText(
                     R.string.price_format,
-                    clickedVehicle.getPreco(), 6
+                    selectedVehicle.getPreco(), 6
             );
             atributeTv.setText(priceText);
             dialogAtributeTv.setText(priceText);
         } else {
             dialogTitleTv.setText(getString(R.string.title_dialog_do_maintenance));
-            buyVehicleBt.setText(getString(R.string.doMaintenance));
-            dialogBuyBt.setText(getString(R.string.confirm));
+            operationVehicleBt.setText(getString(R.string.doMaintenance));
+            dialogOperationBt.setText(getString(R.string.confirm));
             Spannable codeText = setupVehicleText(
                     R.string.code_format,
-                    clickedVehicle.getCodigo(), 7
+                    selectedVehicle.getCodigo(), 7
             );
             atributeTv.setText(codeText);
             dialogAtributeTv.setText(codeText);
@@ -192,14 +230,14 @@ public class VehicleDetailsActivity extends BaseActivity {
             fromActivity = (String) bundle.get(FROM_ACTIVITY);
             if (Objects.equals(fromActivity, BUY_VEHICLE)) {
                 gson = (String) bundle.get(BUY_VEHICLE);
-            }else{
+            } else {
                 gson = (String) bundle.get(MY_VEHICLES);
             }
             mViewModel.getVehicle(gson);
         }
     }
 
-    private void createConfirmBuyDialog() {
+    private void createConfirmOperationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_confirm_operation,
                 new LinearLayout(this), false);
@@ -214,18 +252,19 @@ public class VehicleDetailsActivity extends BaseActivity {
         dialogAtributeTv = view.findViewById(R.id.confirmAtributeTv);
         dialogDateEt = view.findViewById(R.id.confirmDateEt);
         dialogCancelBt = view.findViewById(R.id.confirmExitBt);
-        dialogBuyBt = view.findViewById(R.id.confirmBuyBt);
+        dialogOperationBt = view.findViewById(R.id.confirmOperationBt);
     }
 
     private void setupViews() {
         vehicleIv = findViewById(R.id.detailsVehicleIv);
-        buyVehicleBt = findViewById(R.id.detailsBuyVehicleBt);
+        operationVehicleBt = findViewById(R.id.detailsOperationVehicleBt);
         markTv = findViewById(R.id.detailsMarkTv);
         modelTv = findViewById(R.id.detailsModelTv);
         powerTv = findViewById(R.id.detailsPowerTv);
         atributeTv = findViewById(R.id.detailsAtributeTv);
         typeTv = findViewById(R.id.detailsTypeTv);
         speedTv = findViewById(R.id.detailsSpeedTv);
+        progressBar = findViewById(R.id.vehicleDetailsProgressBar);
         setupToolbar(R.id.main_toolbar, R.string.vehicle_details, true);
     }
 }

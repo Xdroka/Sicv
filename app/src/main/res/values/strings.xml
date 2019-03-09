@@ -84,4 +84,5 @@
     <string name="confirm">Confirmar</string>
     <string name="doMaintenance">Fazer manutenção</string>
     <string name="title_dialog_do_maintenance">Tem certeza que deseja fazer manutenção do veículo selecionado?</string>
+    <string name="successful_buy">Compra realizada com sucesso!</string>
 </resources>

@@ -61,12 +61,12 @@
         android:text="@string/cancel"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/confirmBuyBt"
+        app:layout_constraintEnd_toStartOf="@id/confirmOperationBt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmDateTextInputLayout" />
 
     <Button
-        android:id="@+id/confirmBuyBt"
+        android:id="@+id/confirmOperationBt"
         style="@style/ButtonStyle"
         android:layout_width="0dp"
         android:layout_height="40dp"

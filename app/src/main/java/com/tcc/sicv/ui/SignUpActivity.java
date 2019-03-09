@@ -16,6 +16,7 @@ import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.State;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.SignUpViewModel;
+import com.tcc.sicv.utils.OnAlertButtonClick;
 import com.vicmikhailau.maskededittext.MaskedEditText;
 
 import java.util.Objects;
@@ -249,7 +250,7 @@ public class SignUpActivity extends BaseActivity {
                 String email = flowState.getData();
                 if (email == null) return;
                 mViewModel.saveUser(email);
-                createSignUpDialog();
+                createConfirmAndExitDialog(getString(R.string.successfulSignUp),dismissListener);
                 break;
             case ERROR:
                 hideLoadingDialog();
@@ -258,25 +259,12 @@ public class SignUpActivity extends BaseActivity {
         }
     }
 
-    private void createSignUpDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.drawable.ic_done_blue_24dp);
-        builder.setTitle(getString(R.string.success));
-        builder.setMessage(getString(R.string.successfulSignUp));
-        builder.setNegativeButton(getString(R.string.OK), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) {
-                successSignUpDialog.dismiss();
-            }
-        });
-        successSignUpDialog = builder.create();
-        successSignUpDialog.show();
-        successSignUpDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
-    }
+    private DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
+        @Override
+        public void onDismiss(DialogInterface dialog) {
+            Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    };
 }

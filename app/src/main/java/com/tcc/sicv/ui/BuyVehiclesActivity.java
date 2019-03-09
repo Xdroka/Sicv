@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 import static com.tcc.sicv.utils.Constants.BUY_VEHICLE;
 import static com.tcc.sicv.utils.Constants.FROM_ACTIVITY;
-import static com.tcc.sicv.utils.Constants.RESULT_TAG;
 
 public class BuyVehiclesActivity extends BaseActivity implements OnItemClick<Vehicle> {
     private VehiclesAdapter adapter;
