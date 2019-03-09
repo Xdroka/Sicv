@@ -17,7 +17,8 @@ import com.tcc.sicv.utils.OnItemClick;
 
 import java.util.ArrayList;
 
-import static com.tcc.sicv.data.model.VehicleOption.PRICE;
+import static com.tcc.sicv.utils.Constants.BUY_VEHICLE;
+import static com.tcc.sicv.utils.Constants.FROM_ACTIVITY;
 import static com.tcc.sicv.utils.Constants.RESULT_TAG;
 
 public class BuyVehiclesActivity extends BaseActivity implements OnItemClick<Vehicle> {
@@ -36,7 +37,7 @@ public class BuyVehiclesActivity extends BaseActivity implements OnItemClick<Veh
 
     private void setupViews() {
         RecyclerView vehiclesRecyclerView = findViewById(R.id.buyVehycles_list_vehicles);
-        adapter = new VehiclesAdapter(new ArrayList<Vehicle>(), this, PRICE);
+        adapter = new VehiclesAdapter(new ArrayList<Vehicle>(), this, BUY_VEHICLE);
         vehiclesRecyclerView.setAdapter(adapter);
         refreshLayout = findViewById(R.id.buyVehycles_refreshLayout);
         setupToolbar(R.id.main_toolbar, R.string.purchase, true);
@@ -84,7 +85,8 @@ public class BuyVehiclesActivity extends BaseActivity implements OnItemClick<Veh
     @Override
     public void onClick(Vehicle item) {
         Intent intent = new Intent(this, VehicleDetailsActivity.class);
-        intent.putExtra(RESULT_TAG,toJson(item));
+        intent.putExtra(BUY_VEHICLE,toJson(item));
+        intent.putExtra(FROM_ACTIVITY,BUY_VEHICLE);
         startActivity(intent);
     }
 }

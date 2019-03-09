@@ -12,12 +12,19 @@ import com.tcc.sicv.data.model.Status;
 import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 
-import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import static com.tcc.sicv.data.model.State.EMPTY;
 import static com.tcc.sicv.data.model.State.INVALID;
 import static com.tcc.sicv.data.model.State.MIN_AGE;
 import static com.tcc.sicv.data.model.State.VALID;
+import static com.tcc.sicv.utils.Constants.DATE_FORMAT;
+import static com.tcc.sicv.utils.Constants.DATE_MIN_LENGHT;
+import static com.tcc.sicv.utils.Constants.USER_MIN_AGE;
 
 public class SignUpViewModel extends ViewModel {
     private AuthRepository authRepository;
@@ -42,6 +49,17 @@ public class SignUpViewModel extends ViewModel {
         passwordState = new MutableLiveData<>();
         confirmPassState = new MutableLiveData<>();
         preferencesHelper = preferences;
+    }
+
+    private static boolean isDateValid(String date) {
+        try {
+            DateFormat df = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            df.setLenient(false);
+            df.parse(date);
+            return true;
+        } catch (ParseException e) {
+            return false;
+        }
     }
 
     private boolean isEmail(String email) {
@@ -128,47 +146,28 @@ public class SignUpViewModel extends ViewModel {
     }
 
     private int getAge(int year, int month, int day) {
-        Date now = new Date();
-        int nowMonth = now.getMonth() + 1;
-        int nowYear = now.getYear() + 1900;
-        int result = nowYear - year;
-
-        if (month > nowMonth) {
-            result--;
-        } else if (month == nowMonth) {
-            int nowDay = now.getDate();
-
-            if (day > nowDay) {
-                result--;
-            }
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+        dob.set(year, month - 1, day);
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
         }
-        return result;
-    }
-
-    private boolean validDate(int year, int month, int day) {
-        return year >= 1900 && month >= 1 && month <= 12 && day >= 1 && day <= 32;
+        return age;
     }
 
     private Boolean processDateData(String date) {
-        int DATE_MIN_LENGHT = 10;
-        int USER_MIN_AGE = 18;
         int userAge = 0;
-        int day = 0;
-        int month = 0;
-        int year = 0;
-        if (date.length() == DATE_MIN_LENGHT) {
-            day = Integer.parseInt(date.split("/")[0]);
-            month = Integer.parseInt(date.split("/")[1]);
-            year = Integer.parseInt(date.split("/")[2]);
+        if (date.length() == DATE_MIN_LENGHT && isDateValid(date)) {
+            int day = Integer.parseInt(date.split("/")[0]);
+            int month = Integer.parseInt(date.split("/")[1]);
+            int year = Integer.parseInt(date.split("/")[2]);
             userAge = getAge(year, month, day);
         }
         if (date.isEmpty()) {
             dateState.postValue(EMPTY);
             return false;
-        } else if (date.length() != DATE_MIN_LENGHT) {
-            dateState.postValue(INVALID);
-            return false;
-        } else if (!validDate(year, month, day)) {
+        } else if (date.length() != DATE_MIN_LENGHT || !isDateValid(date)) {
             dateState.postValue(INVALID);
             return false;
         } else if (userAge < USER_MIN_AGE) {

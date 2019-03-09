@@ -131,13 +131,13 @@ public class ProfileActivity extends BaseActivity {
 
     private OnAlertButtonClick positiveListener = new OnAlertButtonClick() {
         @Override
-        public void onClickButton(DialogInterface dialog) { mViewModel.logout(); }
+        public void onClickButton() { mViewModel.logout(); }
         @Override
         public String getText() { return getString(R.string.positive_button_text); }
     };
 
     private OnAlertButtonClick negativeListener = new OnAlertButtonClick() {
-        public void onClickButton(DialogInterface dialog) { }
+        public void onClickButton() { }
         @Override
         public String getText() { return getString(R.string.negative_button_text); }
     };

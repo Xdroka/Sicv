@@ -14,17 +14,18 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="dialogDefault" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@drawable/bg_dialog_white</item>
+        <item name="android:windowMinWidthMajor">85%</item>
+        <item name="android:windowMinWidthMinor">85%</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="BaseScreenStyle" parent="AppTheme">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textColorHint">@color/greyish</item>
         <item name="buttonStyle">@style/ButtonStyle</item>
-        <item name="android:textViewStyle">@style/TextViewStyle</item>
-    </style>
-
-    <style name="TextViewStyle" parent="Base.Widget.AppCompat.AutoCompleteTextView">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textViewStyle">@style/TextViewDefault</item>
     </style>
 
     <style name="TextViewDefault" parent="TextAppearance.AppCompat">
@@ -38,7 +39,7 @@
 
     <style name="ButtonStyle">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/rounded_bg</item>
+        <item name="android:background">@drawable/rounded_bluemarine_bg</item>
     </style>
 
     <style name="RecyclerViewDefault" >
@@ -78,6 +79,13 @@
 
     <style name="TienneTextView.Bold" parent="TienneTextView">
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextViewDefaultBlack" parent="TextViewDefault">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextViewCenterBlack" parent="TextViewDefaultBlack">
     </style>
 
 </resources>

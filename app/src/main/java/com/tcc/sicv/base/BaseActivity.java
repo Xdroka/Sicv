@@ -132,7 +132,7 @@ public class BaseActivity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            positiveListener.onClickButton(dialog);
+                            positiveListener.onClickButton();
                         }
                     });
         }
@@ -143,7 +143,7 @@ public class BaseActivity extends AppCompatActivity {
             builder.setNegativeButton(negativeListener.getText(),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int arg1) {
-                            negativeListener.onClickButton(dialog);
+                            negativeListener.onClickButton();
                         }
                     });
         }

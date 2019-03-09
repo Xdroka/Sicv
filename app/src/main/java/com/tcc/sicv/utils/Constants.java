@@ -25,6 +25,16 @@ public class Constants {
     public static final String DATE_FIELD = "data";
     public static final String DESCRIPTION_FIELD = "descricao";
     public static final String COST_FIELD = "gasto";
-    public static final String RESULT_TAG = "result_tag";
     public static final String TOTAL_COST_FIELD = "total_gasto";
+
+    //Numbers
+    public static final int DATE_MIN_LENGHT = 10;
+    public static final int USER_MIN_AGE = 18;
+
+    //Strings
+    public static final String DATE_FORMAT = "dd/MM/yyyy";
+    public static final String RESULT_TAG = "result_tag";
+    public static final String BUY_VEHICLE = "buy_vehicle";
+    public static final String MY_VEHICLES = "my_vehicles";
+    public static final String FROM_ACTIVITY = "from_activity";
 }
