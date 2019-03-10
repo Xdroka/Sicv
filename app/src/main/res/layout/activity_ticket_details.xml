@@ -97,7 +97,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/codeTicketTextView"
-                tools:text="Cupom Fiscal" />
+                android:text="@string/ticket" />
 
             <View
                 android:id="@+id/divider2"
@@ -127,7 +127,7 @@
             <TextView
                 android:id="@+id/typeLabelTextView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="17dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 app:layout_constraintStart_toStartOf="parent"

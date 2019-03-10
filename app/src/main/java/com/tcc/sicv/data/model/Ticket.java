@@ -5,7 +5,7 @@ public class Ticket {
     private String tipo;
     private String codigoVeiculo;
     private String time;
-    private String ticketId = "";
+    private String ticketId;
 
     public Ticket(String custoTotal, String tipo, String codigoVeiculo, String time, String ticketId) {
         this.custoTotal = custoTotal;

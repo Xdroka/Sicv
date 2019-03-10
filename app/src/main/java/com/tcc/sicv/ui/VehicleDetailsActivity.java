@@ -298,8 +298,12 @@ public class VehicleDetailsActivity extends BaseActivity {
 
     private void generateTicket(Vehicle vehicle) {
         if (vehicle == null) return;
-        Ticket ticket = new Ticket(vehicle.getPreco(), "compra", vehicle.getCodigo(), ""
-                , vehicle.getCodigo().hashCode() + ""
+        int ticketId = vehicle.getCodigo().hashCode();
+        if (ticketId < 0){
+            ticketId = -ticketId;
+        }
+        Ticket ticket = new Ticket(vehicle.getPreco(), "Compra", vehicle.getCodigo(), ""
+                , ticketId + ""
         );
         Intent intent = new Intent(VehicleDetailsActivity.this, TicketDetailsActivity.class);
         intent.putExtra(TICKET_KEY, new Gson().toJson(ticket));
