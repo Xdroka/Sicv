@@ -114,13 +114,13 @@ public class VehiclesRepository {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        String imagem = (String) documentSnapshot.get("imagem");
-                        String modelo = (String) documentSnapshot.get("modelo");
-                        String potencia = (String) documentSnapshot.get("potencia");
-                        String preco = (String) documentSnapshot.get("preco");
-                        String velocidade = (String) documentSnapshot.get("velocidade");
-                        String marca = (String) documentSnapshot.get("marca");
-                        String tipo = (String) documentSnapshot.get("tipo");
+                        String imagem = (String) documentSnapshot.get(IMAGE_FIELD);
+                        String modelo = (String) documentSnapshot.get(MODEL_FIELD);
+                        String potencia = (String) documentSnapshot.get(POWER_FIELD);
+                        String preco = (String) documentSnapshot.get(PRICE_FIELD);
+                        String velocidade = (String) documentSnapshot.get(SPEED_FIELD);
+                        String marca = (String) documentSnapshot.get(MARK_FIELD);
+                        String tipo = (String) documentSnapshot.get(TYPE_FIELD);
 
                         putVehicleInUserVehicles(imagem, modelo, potencia, preco, velocidade,
                                 marca, tipo, email, result);
