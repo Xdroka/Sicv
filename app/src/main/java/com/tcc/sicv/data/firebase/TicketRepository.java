@@ -21,6 +21,7 @@ import static com.tcc.sicv.data.model.Status.SUCCESS;
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_FIELD;
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_TICKET_FIELD;
 import static com.tcc.sicv.utils.Constants.COST_TICKET_FIELD;
+import static com.tcc.sicv.utils.Constants.DATE_BUY_TICKET_FIELD;
 import static com.tcc.sicv.utils.Constants.MAINTENANCE_COLLECTION_PATH;
 import static com.tcc.sicv.utils.Constants.MAINTENANCE_FIELD;
 import static com.tcc.sicv.utils.Constants.TICKET_COLLECTION_PATH;
@@ -137,7 +138,8 @@ public class TicketRepository {
                                     (String) item.get(TYPE_FIELD),
                                     (String) item.get(CODE_VEHICLE_TICKET_FIELD),
                                     (String) item.get(TIME_TICKET_FIELD),
-                                    item.getId()
+                                    item.getId(),
+                                    (String) item.get(DATE_BUY_TICKET_FIELD)
                             ));
                         }
                         result.postValue(new FlowState<>(ticketList, null, SUCCESS));

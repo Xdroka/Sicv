@@ -92,4 +92,6 @@
     <string name="ticket_title">Nota Fiscal</string>
     <string name="my_tickets_title">Minhas Notas Fiscais</string>
     <string name="ticket">Cupom Fiscal</string>
+    <string name="date_genereted">Data de emissão: %s</string>
+    <string name="date_buy_type">Data agendada para retirada: %s</string>
 </resources>

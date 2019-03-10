@@ -59,7 +59,8 @@ public class DetailsMaintenanceViewModel extends ViewModel {
                 MAINTENANCE_COLLECTION_PATH,
                 maintenance.getCod_veiculo(),
                 "",
-                maintenance.getMaintenanceCode()
+                maintenance.getMaintenanceCode(),
+                null
         );
     }
 

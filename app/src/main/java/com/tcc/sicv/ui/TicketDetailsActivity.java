@@ -3,6 +3,7 @@ package com.tcc.sicv.ui;
 import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.TextView;
 
 import com.tcc.sicv.R;
@@ -22,6 +23,7 @@ public class TicketDetailsActivity extends BaseActivity {
     private TextView typeTicketTextView;
     private TextView vehicleCodeTextView;
     private TicketDetailsViewModel mViewModel;
+    private TextView dateSelectedTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class TicketDetailsActivity extends BaseActivity {
         totalCostTextView = findViewById(R.id.costLabelTextView);
         typeTicketTextView = findViewById(R.id.typeLabelTextView);
         vehicleCodeTextView = findViewById(R.id.vehicleCodeTicketTv);
+        dateSelectedTextView = findViewById(R.id.dateBuyTextView);
     }
 
     private void creatingObservers(){
@@ -77,7 +80,13 @@ public class TicketDetailsActivity extends BaseActivity {
 
     private void handleWithSuccessFlow() {
         Ticket ticket = mViewModel.getTicket();
-        timeTextView.setText(ticket.getTime());
+        if(ticket.getDataAgendada() != null){
+            dateSelectedTextView.setVisibility(View.VISIBLE);
+            dateSelectedTextView.setText(
+                    String.format(getString(R.string.date_buy_type), ticket.getDataAgendada())
+            );
+        }
+        timeTextView.setText(String.format(getString(R.string.date_genereted),ticket.getTime()));
         codeTicketTextView.setText(String.format(getString(R.string.code_format), ticket.getTicketId()));
         totalCostTextView.setText(
                 String.format(getString(R.string.money_format), ticket.getCustoTotal())

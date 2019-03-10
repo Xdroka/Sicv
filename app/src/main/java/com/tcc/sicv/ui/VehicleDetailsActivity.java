@@ -303,7 +303,7 @@ public class VehicleDetailsActivity extends BaseActivity {
             ticketId = -ticketId;
         }
         Ticket ticket = new Ticket(vehicle.getPreco(), "Compra", vehicle.getCodigo(), ""
-                , ticketId + ""
+                , ticketId + "", mViewModel.getSelectedDate()
         );
         Intent intent = new Intent(VehicleDetailsActivity.this, TicketDetailsActivity.class);
         intent.putExtra(TICKET_KEY, new Gson().toJson(ticket));

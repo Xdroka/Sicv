@@ -31,6 +31,7 @@ public class Constants {
     public static final String COST_TICKET_FIELD = "custoTotal";
     public static final String CODE_VEHICLE_TICKET_FIELD = "codigoVeiculo";
     public static final String TIME_TICKET_FIELD = "time";
+    public static final String DATE_BUY_TICKET_FIELD = "dataAgendada";
 
     //Numbers
     public static final int DATE_MIN_LENGHT = 10;

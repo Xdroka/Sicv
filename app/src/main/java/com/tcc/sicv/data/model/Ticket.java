@@ -6,14 +6,21 @@ public class Ticket {
     private String codigoVeiculo;
     private String time;
     private String ticketId;
+    private String dataAgendada;
 
-    public Ticket(String custoTotal, String tipo, String codigoVeiculo, String time, String ticketId) {
+    public Ticket(
+            String custoTotal, String tipo, String codigoVeiculo,
+            String time, String ticketId, String dataAgendada
+    ) {
         this.custoTotal = custoTotal;
         this.tipo = tipo;
         this.codigoVeiculo = codigoVeiculo;
         this.time = time;
         this.ticketId = ticketId;
+        this.dataAgendada = dataAgendada;
     }
+
+    public String getDataAgendada() { return dataAgendada; }
 
     public String getCustoTotal() {
         return custoTotal;

@@ -39,7 +39,7 @@ public class VehicleDetailsViewModel extends ViewModel {
     private MaintenanceRepository maintenanceRepository;
     private PreferencesHelper preferencesHelper;
     private Vehicle selectedVehicle;
-
+    private String date = null;
 
     public VehicleDetailsViewModel(PreferencesHelper preferences) {
         preferencesHelper = preferences;
@@ -111,6 +111,7 @@ public class VehicleDetailsViewModel extends ViewModel {
         if (!validDate) return;
 
         if (fromActivity.equals(BUY_VEHICLE)) {
+            this.date = date;
             buyFlow.postValue(new FlowState<Vehicle>(null, null, LOADING));
             vehiclesRepository.buyVehicle(preferencesHelper.getEmail(), selectedVehicle.getModelo()
                     , buyFlow);
@@ -133,4 +134,6 @@ public class VehicleDetailsViewModel extends ViewModel {
     }
 
     public LiveData<FlowState<MaintenanceVehicle>> getMaintenanceFlow() { return maintenanceFlow; }
+
+    public String getSelectedDate(){ return date; }
 }
