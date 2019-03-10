@@ -28,6 +28,9 @@ public class Constants {
     public static final String RELEASE_VEHICLE_FIELD = "veiculo_liberado";
     public static final String COST_FIELD = "gasto";
     public static final String MAINTENANCE_FIELD = "manutencao";
+    public static final String COST_TICKET_FIELD = "custoTotal";
+    public static final String CODE_VEHICLE_TICKET_FIELD = "codigoVeiculo";
+    public static final String TIME_TICKET_FIELD = "time";
 
     //Numbers
     public static final int DATE_MIN_LENGHT = 10;

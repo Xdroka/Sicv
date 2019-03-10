@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.model.FlowState;
@@ -13,6 +12,7 @@ import com.tcc.sicv.data.model.Ticket;
 import com.tcc.sicv.data.preferences.PreferencesHelper;
 import com.tcc.sicv.presentation.TicketDetailsViewModel;
 
+import static com.tcc.sicv.utils.Constants.RESULT_TAG;
 import static com.tcc.sicv.utils.Constants.TICKET_KEY;
 
 public class TicketDetailsActivity extends BaseActivity {
@@ -29,9 +29,11 @@ public class TicketDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_ticket_details);
         if(getIntent() != null && getIntent().getExtras() != null){
             String ticketJson = getIntent().getExtras().getString(TICKET_KEY,"");
+            Boolean loadedTicket = getIntent().getExtras().getBoolean(RESULT_TAG);
             mViewModel = new TicketDetailsViewModel(
-                    new Gson().fromJson(ticketJson, Ticket.class),
-                    new PreferencesHelper(getApplication())
+                    ticketJson,
+                    new PreferencesHelper(getApplication()),
+                    loadedTicket
             );
         }
         setupViews();

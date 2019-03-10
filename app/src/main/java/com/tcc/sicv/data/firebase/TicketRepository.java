@@ -12,15 +12,20 @@ import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.Ticket;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 import static com.tcc.sicv.data.model.Status.ERROR;
 import static com.tcc.sicv.data.model.Status.SUCCESS;
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_FIELD;
+import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_TICKET_FIELD;
+import static com.tcc.sicv.utils.Constants.COST_TICKET_FIELD;
 import static com.tcc.sicv.utils.Constants.MAINTENANCE_COLLECTION_PATH;
 import static com.tcc.sicv.utils.Constants.MAINTENANCE_FIELD;
 import static com.tcc.sicv.utils.Constants.TICKET_COLLECTION_PATH;
+import static com.tcc.sicv.utils.Constants.TIME_TICKET_FIELD;
+import static com.tcc.sicv.utils.Constants.TYPE_FIELD;
 import static com.tcc.sicv.utils.Constants.USER_COLLECTION_PATH;
 
 public class TicketRepository {
@@ -96,4 +101,33 @@ public class TicketRepository {
                 });
     }
 
+    public void getTickets(String email, final MutableLiveData<FlowState<ArrayList<Ticket>>> result) {
+        db.collection(USER_COLLECTION_PATH).document(email)
+                .collection(TICKET_COLLECTION_PATH)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        ArrayList<Ticket> ticketList = new ArrayList<>();
+                        for(DocumentSnapshot item: queryDocumentSnapshots.getDocuments()){
+                            ticketList.add(new Ticket(
+                                    (String) item.get(COST_TICKET_FIELD),
+                                    (String) item.get(TYPE_FIELD),
+                                    (String) item.get(CODE_VEHICLE_TICKET_FIELD),
+                                    (String) item.get(TIME_TICKET_FIELD),
+                                    item.getId()
+                            ));
+                        }
+                        result.postValue(new FlowState<>(ticketList, null, SUCCESS));
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        result.postValue(
+                                new FlowState<ArrayList<Ticket>>(null, null, ERROR)
+                        );
+                    }
+                });
+    }
 }

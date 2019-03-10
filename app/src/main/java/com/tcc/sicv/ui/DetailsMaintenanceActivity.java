@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
@@ -55,6 +56,9 @@ public class DetailsMaintenanceActivity extends BaseActivity {
         RecyclerView recyclerView = findViewById(R.id.logsMDetailsRecyclerView);
         adapter = new LogsMaintenanceAdapter(new ArrayList<Logs>(), null);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(
+                new DividerItemDecoration(this, getRequestedOrientation())
+        );
         generateTicketButton = findViewById(R.id.generateTicketButton);
         generateTicketButton.setVisibility(View.GONE);
         refreshLayout = findViewById(R.id.refreshDetailsMaintenanceLayout);

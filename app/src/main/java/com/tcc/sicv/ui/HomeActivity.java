@@ -14,6 +14,7 @@ public class HomeActivity extends BaseActivity {
     private Button purchaseButton;
     private Button myVehiclesButton;
     private Button maintenanceButton;
+    private Button nfButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +46,20 @@ public class HomeActivity extends BaseActivity {
                 startActivity(new Intent(HomeActivity.this, MaintenanceActivity.class));
             }
         });
+
+        nfButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, MyTicketsActivity.class));
+            }
+        });
     }
 
     private void setupViews() {
         purchaseButton = findViewById(R.id.purchaseButton);
         myVehiclesButton = findViewById(R.id.vehiclesButton);
         maintenanceButton = findViewById(R.id.maintenanceButton);
+        nfButton = findViewById(R.id.nfButton);
     }
 
     @Override
