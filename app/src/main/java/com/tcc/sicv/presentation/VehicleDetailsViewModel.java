@@ -25,7 +25,6 @@ import static com.tcc.sicv.data.model.State.INVALID;
 import static com.tcc.sicv.data.model.State.VALID;
 import static com.tcc.sicv.data.model.Status.ERROR;
 import static com.tcc.sicv.data.model.Status.LOADING;
-import static com.tcc.sicv.data.model.Status.NEUTRAL;
 import static com.tcc.sicv.data.model.Status.SUCCESS;
 import static com.tcc.sicv.utils.Constants.BUY_VEHICLE;
 import static com.tcc.sicv.utils.Constants.DATE_FORMAT;
@@ -33,7 +32,7 @@ import static com.tcc.sicv.utils.Constants.DATE_MIN_LENGHT;
 
 public class VehicleDetailsViewModel extends ViewModel {
     private MutableLiveData<FlowState<Vehicle>> flowState;
-    private MutableLiveData<FlowState<Vehicle>> buyState;
+    private MutableLiveData<FlowState<Vehicle>> buyFlow;
     private MutableLiveData<FlowState<MaintenanceVehicle>> maintenanceFlow;
     private MutableLiveData<State> dateState;
     private VehiclesRepository vehiclesRepository;
@@ -46,7 +45,7 @@ public class VehicleDetailsViewModel extends ViewModel {
         preferencesHelper = preferences;
         flowState = new MutableLiveData<>();
         dateState = new MutableLiveData<>();
-        buyState = new MutableLiveData<>();
+        buyFlow = new MutableLiveData<>();
         vehiclesRepository = new VehiclesRepository();
         maintenanceRepository = new MaintenanceRepository();
         maintenanceFlow = new MutableLiveData<>();
@@ -112,9 +111,9 @@ public class VehicleDetailsViewModel extends ViewModel {
         if (!validDate) return;
 
         if (fromActivity.equals(BUY_VEHICLE)) {
-            buyState.postValue(new FlowState<Vehicle>(null, null, LOADING));
+            buyFlow.postValue(new FlowState<Vehicle>(null, null, LOADING));
             vehiclesRepository.buyVehicle(preferencesHelper.getEmail(), selectedVehicle.getModelo()
-                    , buyState);
+                    , buyFlow);
         } else {
             maintenanceFlow.postValue(
                     new FlowState<MaintenanceVehicle>(null, null, LOADING)
@@ -127,7 +126,7 @@ public class VehicleDetailsViewModel extends ViewModel {
 
     public LiveData<FlowState<Vehicle>> getFlowState() { return flowState; }
 
-    public LiveData<FlowState<Vehicle>> getBuyState() { return buyState; }
+    public LiveData<FlowState<Vehicle>> getBuyFlow() { return buyFlow; }
 
     public LiveData<State> getDateState() {
         return dateState;

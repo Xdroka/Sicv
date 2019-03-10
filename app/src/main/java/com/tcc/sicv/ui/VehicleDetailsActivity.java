@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -54,7 +53,6 @@ public class VehicleDetailsActivity extends BaseActivity {
     private EditText dialogDateEt;
     private Button dialogCancelBt;
     private Button dialogOperationBt;
-    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +80,11 @@ public class VehicleDetailsActivity extends BaseActivity {
                 }
             }
         });
-        mViewModel.getBuyState().observe(this, new Observer<FlowState<Vehicle>>() {
+        mViewModel.getBuyFlow().observe(this, new Observer<FlowState<Vehicle>>() {
             @Override
-            public void onChanged(@Nullable FlowState<Vehicle> buyState) {
-                if (buyState != null) {
-                    handleWithBuyFlow(buyState);
+            public void onChanged(@Nullable FlowState<Vehicle> buyFlow) {
+                if (buyFlow != null) {
+                    handleWithBuyFlow(buyFlow);
                 }
             }
         });
@@ -118,7 +116,7 @@ public class VehicleDetailsActivity extends BaseActivity {
         });
     }
 
-    private void handleWithMaintenanceFlow(FlowState<MaintenanceVehicle> maintenanceFlow) {
+    private void handleWithMaintenanceFlow(final FlowState<MaintenanceVehicle> maintenanceFlow) {
         switch (maintenanceFlow.getStatus()) {
             case LOADING:
                 confirmDialog.dismiss();
@@ -126,11 +124,25 @@ public class VehicleDetailsActivity extends BaseActivity {
                 break;
             case SUCCESS:
                 hideLoadingDialog();
-                if (maintenanceFlow.hasData()) {
-                    Intent intent = new Intent(this, DetailsMaintenanceActivity.class);
-                    intent.putExtra(MAINTENANCE_KEY, new Gson().toJson(maintenanceFlow.getData()));
-                    startActivity(intent);
-                }
+                DialogInterface.OnDismissListener dismissListener =
+                        new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                if (maintenanceFlow.hasData()) {
+                                    Intent intent = new Intent(
+                                            VehicleDetailsActivity.this,
+                                            DetailsMaintenanceActivity.class
+                                    );
+                                    intent.putExtra(
+                                            MAINTENANCE_KEY,
+                                            new Gson().toJson(maintenanceFlow.getData())
+                                    );
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        };
+                createConfirmAndExitDialog(getString(R.string.successful_maintenance), dismissListener);
                 break;
             case ERROR:
                 hideLoadingDialog();
@@ -155,24 +167,23 @@ public class VehicleDetailsActivity extends BaseActivity {
         }
     }
 
-    private void handleWithBuyFlow(final FlowState<Vehicle> buyState) {
-        switch (buyState.getStatus()) {
+    private void handleWithBuyFlow(final FlowState<Vehicle> buyFlow) {
+        switch (buyFlow.getStatus()) {
             case LOADING:
                 confirmDialog.dismiss();
-                progressBar.setVisibility(View.VISIBLE);
+                showLoadingDialog();
             case ERROR:
-                if (buyState.getThrowable() != null) {
-                    progressBar.setVisibility(View.GONE);
-                    handleErrors(buyState.getThrowable());
+                hideLoadingDialog();
+                if (buyFlow.getThrowable() != null) {
+                    handleErrors(buyFlow.getThrowable());
                 }
                 break;
             case SUCCESS:
-                progressBar.setVisibility(View.GONE);
                 DialogInterface.OnDismissListener dismissListener =
                         new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
-                                if (buyState.hasData()) generateTicket(buyState.getData());
+                                if (buyFlow.hasData()) generateTicket(buyFlow.getData());
                             }
                         };
                 createConfirmAndExitDialog(getString(R.string.successful_buy), dismissListener);
@@ -313,7 +324,6 @@ public class VehicleDetailsActivity extends BaseActivity {
         atributeTv = findViewById(R.id.detailsAtributeTv);
         typeTv = findViewById(R.id.detailsTypeTv);
         speedTv = findViewById(R.id.detailsSpeedTv);
-        progressBar = findViewById(R.id.vehicleDetailsProgressBar);
         setupToolbar(R.id.main_toolbar, R.string.vehicle_details, true);
     }
 }
