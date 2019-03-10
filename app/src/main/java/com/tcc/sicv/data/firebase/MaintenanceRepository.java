@@ -73,7 +73,7 @@ public class MaintenanceRepository {
             String date,
             final MutableLiveData<FlowState<MaintenanceVehicle>> result
     ){
-        String firstLogDescription = "Entrega do veiculo a concessionária";
+        String firstLogDescription = "Entrega do veículo a concessionária";
         db.collection(USER_COLLECTION_PATH).document(email).collection(MAINTENANCE_COLLECTION_PATH)
                 .document(maintenanceVehicle.getMaintenanceCode())
                 .collection(LOGS_COLLECTION_PATH)

@@ -67,7 +67,7 @@
     <string name="generate_ticket">Gerar Boleto</string>
     <string name="vehicle_code">Código do veículo:</string>
     <string name="vehicle_model">Modelo: </string>
-    <string name="vehicle_model_maintenance">Modelo do Veiculo:</string>
+    <string name="vehicle_model_maintenance">Modelo do veículo:</string>
     <string name="maintenance_code">Código da Manutenção: </string>
     <string name="money_format">Gasto Total: %s</string>
     <string name="details_maintenance">Detalhes da Manutenção</string>
@@ -85,9 +85,11 @@
     <string name="doMaintenance">Fazer manutenção</string>
     <string name="title_dialog_do_maintenance">Tem certeza que deseja fazer manutenção do veículo selecionado?</string>
     <string name="successful_buy">Compra realizada com sucesso!</string>
-    <string name="sicv_full_name">Sistema de Concecionarias de Veiculos</string>
+    <string name="successful_maintenance">Seu veículo agora está em manutenção!</string>
+    <string name="sicv_full_name">Sistema para Concessionárias de Veículos</string>
     <string name="cnpj_fake">CNPJ: 111.111.111/1111-11</string>
-    <string name="type_ticket">Tipo da Nota: %s</string>
+    <string name="type_ticket">Tipo da nota: %s</string>
     <string name="ticket_title">Nota Fiscal</string>
     <string name="my_tickets_title">Minhas Notas Fiscais</string>
+    <string name="ticket">Cupom Fiscal</string>
 </resources>
