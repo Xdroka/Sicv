@@ -173,12 +173,13 @@ public class VehicleDetailsActivity extends BaseActivity {
                 confirmDialog.dismiss();
                 showLoadingDialog();
             case ERROR:
-                hideLoadingDialog();
                 if (buyFlow.getThrowable() != null) {
+                    hideLoadingDialog();
                     handleErrors(buyFlow.getThrowable());
                 }
                 break;
             case SUCCESS:
+                hideLoadingDialog();
                 DialogInterface.OnDismissListener dismissListener =
                         new DialogInterface.OnDismissListener() {
                             @Override
