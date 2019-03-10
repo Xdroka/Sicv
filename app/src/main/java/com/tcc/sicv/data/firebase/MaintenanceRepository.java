@@ -5,12 +5,14 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.Logs;
 import com.tcc.sicv.data.model.MaintenanceVehicle;
+import com.tcc.sicv.data.model.Vehicle;
 
 import java.util.ArrayList;
 
@@ -23,9 +25,11 @@ import static com.tcc.sicv.utils.Constants.DESCRIPTION_FIELD;
 import static com.tcc.sicv.utils.Constants.IMAGE_FIELD;
 import static com.tcc.sicv.utils.Constants.LOGS_COLLECTION_PATH;
 import static com.tcc.sicv.utils.Constants.MAINTENANCE_COLLECTION_PATH;
+import static com.tcc.sicv.utils.Constants.MAINTENANCE_FIELD;
 import static com.tcc.sicv.utils.Constants.MODEL_FIELD;
 import static com.tcc.sicv.utils.Constants.RELEASE_VEHICLE_FIELD;
 import static com.tcc.sicv.utils.Constants.USER_COLLECTION_PATH;
+import static com.tcc.sicv.utils.Constants.VEHICLES_COLLECTION_PATH;
 
 public class MaintenanceRepository {
     private final FirebaseFirestore db;
@@ -35,22 +39,76 @@ public class MaintenanceRepository {
     }
 
     public void setVehicleInMaintenance(
-            String email,
-            MaintenanceVehicle maintenanceVehicle,
-            final MutableLiveData<FlowState<Boolean>> result
+            final String email,
+            Vehicle vehicle,
+            final String date,
+            final MutableLiveData<FlowState<MaintenanceVehicle>> result
     ) {
-        db.collection(USER_COLLECTION_PATH).document(email).
-                set(maintenanceVehicle)
+        DocumentReference document = db.collection(USER_COLLECTION_PATH)
+                .document(email)
+                .collection(MAINTENANCE_COLLECTION_PATH)
+                .document();
+
+        final MaintenanceVehicle maintenanceVehicle = new MaintenanceVehicle(
+                document.getId(), vehicle.getModelo(), vehicle.getImagem(),
+                vehicle.getCodigo(), false
+        );
+        document
+                .set(maintenanceVehicle)
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(new FlowState<Boolean>(null, e, ERROR));
+                        result.postValue(new FlowState<MaintenanceVehicle>(null, e, ERROR));
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                        public void onSuccess(Void aVoid) {
+                        setFirstLogInMaintenance(email, maintenanceVehicle, date, result);
+                    }
+                });
+    }
+
+    private void setFirstLogInMaintenance(
+            final String email, final MaintenanceVehicle maintenanceVehicle,
+            String date,
+            final MutableLiveData<FlowState<MaintenanceVehicle>> result
+    ){
+        String firstLogDescription = "Entrega do veiculo a concessionária";
+        db.collection(USER_COLLECTION_PATH).document(email).collection(MAINTENANCE_COLLECTION_PATH)
+                .document(maintenanceVehicle.getMaintenanceCode())
+                .collection(LOGS_COLLECTION_PATH)
+                .add(new Logs(date, firstLogDescription, "R$ 0,00"))
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        setMyVehicleInMaintenance(email, maintenanceVehicle, result);
                     }
                 })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        result.postValue(new FlowState<MaintenanceVehicle>(null, e, ERROR));
+                    }
+                });
+    }
+
+    private void setMyVehicleInMaintenance(
+            String email, final MaintenanceVehicle maintenance,
+            final MutableLiveData<FlowState<MaintenanceVehicle>> result
+    ){
+        db.collection(USER_COLLECTION_PATH).document(email).collection(VEHICLES_COLLECTION_PATH)
+                .document(maintenance.getCod_veiculo())
+                .update(MAINTENANCE_FIELD, true)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        result.postValue(new FlowState<>(true, null, SUCCESS));
+                        result.postValue(new FlowState<>(maintenance, null, SUCCESS));
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        result.postValue(new FlowState<MaintenanceVehicle>(null, e, ERROR));
                     }
                 });
     }
@@ -98,7 +156,6 @@ public class MaintenanceRepository {
                 .collection(MAINTENANCE_COLLECTION_PATH)
                 .document(maintenanceCode)
                 .collection(LOGS_COLLECTION_PATH)
-                .orderBy(DATE_FIELD)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

@@ -1,25 +1,25 @@
 package com.tcc.sicv.data.model;
 
 public class Logs {
-    private String date;
-    private String description;
-    private String cost;
+    private String data;
+    private String descricao;
+    private String gasto;
 
-    public Logs(String date, String description, String cost) {
-        this.date = date;
-        this.description = description;
-        this.cost = cost;
+    public Logs(String data, String descricao, String gasto) {
+        this.data = data;
+        this.descricao = descricao;
+        this.gasto = gasto;
     }
 
-    public String getDate() {
-        return date;
+    public String getData() {
+        return data;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public String getCost() {
-        return cost;
+    public String getGasto() {
+        return gasto;
     }
 }

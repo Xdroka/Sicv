@@ -76,23 +76,12 @@ public class TicketDetailsActivity extends BaseActivity {
     private void handleWithSuccessFlow() {
         Ticket ticket = mViewModel.getTicket();
         timeTextView.setText(ticket.getTime());
-        codeTicketTextView.setText(
-                String.format(
-                        getString(R.string.code_format),
-                        ticket.getTime()
-                )
-        );
+        codeTicketTextView.setText(String.format(getString(R.string.code_format), ticket.getTicketId()));
         totalCostTextView.setText(
-                String.format(
-                        getString(R.string.money_format),
-                        ticket.getCustoTotal()
-                )
+                String.format(getString(R.string.money_format), ticket.getCustoTotal())
         );
         typeTicketTextView.setText(
-                String.format(
-                        getString(R.string.type_ticket),
-                        ticket.getTipo()
-                )
+                String.format(getString(R.string.type_ticket), ticket.getTipo())
         );
         String vehicleCodeFormat = getString(R.string.vehicle_code) + " " + ticket.getCodigoVeiculo();
         vehicleCodeTextView.setText(vehicleCodeFormat);

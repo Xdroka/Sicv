@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.tcc.sicv.R;
 import com.tcc.sicv.base.BaseActivity;
 import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.data.model.MaintenanceVehicle;
 import com.tcc.sicv.data.model.State;
 import com.tcc.sicv.data.model.Ticket;
 import com.tcc.sicv.data.model.Vehicle;
@@ -31,6 +32,7 @@ import java.util.Objects;
 
 import static com.tcc.sicv.utils.Constants.BUY_VEHICLE;
 import static com.tcc.sicv.utils.Constants.FROM_ACTIVITY;
+import static com.tcc.sicv.utils.Constants.MAINTENANCE_KEY;
 import static com.tcc.sicv.utils.Constants.MY_VEHICLES;
 import static com.tcc.sicv.utils.Constants.TICKET_KEY;
 
@@ -53,11 +55,6 @@ public class VehicleDetailsActivity extends BaseActivity {
     private Button dialogCancelBt;
     private Button dialogOperationBt;
     private ProgressBar progressBar;
-    private DialogInterface.OnDismissListener dismissListener = new DialogInterface.OnDismissListener() {
-        @Override
-        public void onDismiss(DialogInterface dialog) { generateTicket();
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +68,12 @@ public class VehicleDetailsActivity extends BaseActivity {
     }
 
     private void creatingObservers() {
+        mViewModel.getMaintenanceFlow().observe(this, new Observer<FlowState<MaintenanceVehicle>>() {
+            @Override
+            public void onChanged(@Nullable FlowState<MaintenanceVehicle> flowState) {
+                if (flowState != null) handleWithMaintenanceFlow(flowState);
+            }
+        });
         mViewModel.getFlowState().observe(this, new Observer<FlowState<Vehicle>>() {
             @Override
             public void onChanged(@Nullable FlowState<Vehicle> flowState) {
@@ -79,9 +82,9 @@ public class VehicleDetailsActivity extends BaseActivity {
                 }
             }
         });
-        mViewModel.getBuyState().observe(this, new Observer<FlowState<Boolean>>() {
+        mViewModel.getBuyState().observe(this, new Observer<FlowState<Vehicle>>() {
             @Override
-            public void onChanged(@Nullable FlowState<Boolean> buyState) {
+            public void onChanged(@Nullable FlowState<Vehicle> buyState) {
                 if (buyState != null) {
                     handleWithBuyFlow(buyState);
                 }
@@ -115,6 +118,29 @@ public class VehicleDetailsActivity extends BaseActivity {
         });
     }
 
+    private void handleWithMaintenanceFlow(FlowState<MaintenanceVehicle> maintenanceFlow) {
+        switch (maintenanceFlow.getStatus()) {
+            case LOADING:
+                confirmDialog.dismiss();
+                showLoadingDialog();
+                break;
+            case SUCCESS:
+                hideLoadingDialog();
+                if (maintenanceFlow.hasData()) {
+                    Intent intent = new Intent(this, DetailsMaintenanceActivity.class);
+                    intent.putExtra(MAINTENANCE_KEY, new Gson().toJson(maintenanceFlow.getData()));
+                    startActivity(intent);
+                }
+                break;
+            case ERROR:
+                hideLoadingDialog();
+                if(maintenanceFlow.getThrowable() != null){
+                    handleErrors(maintenanceFlow.getThrowable());
+                }
+                break;
+        }
+    }
+
     private void handleWithDateState(State state) {
         switch (state) {
             case EMPTY:
@@ -129,7 +155,7 @@ public class VehicleDetailsActivity extends BaseActivity {
         }
     }
 
-    private void handleWithBuyFlow(FlowState<Boolean> buyState) {
+    private void handleWithBuyFlow(final FlowState<Vehicle> buyState) {
         switch (buyState.getStatus()) {
             case LOADING:
                 confirmDialog.dismiss();
@@ -142,6 +168,13 @@ public class VehicleDetailsActivity extends BaseActivity {
                 break;
             case SUCCESS:
                 progressBar.setVisibility(View.GONE);
+                DialogInterface.OnDismissListener dismissListener =
+                        new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                if (buyState.hasData()) generateTicket(buyState.getData());
+                            }
+                        };
                 createConfirmAndExitDialog(getString(R.string.successful_buy), dismissListener);
                 break;
         }
@@ -201,7 +234,11 @@ public class VehicleDetailsActivity extends BaseActivity {
             dialogAtributeTv.setText(priceText);
         } else {
             dialogTitleTv.setText(getString(R.string.title_dialog_do_maintenance));
-            operationVehicleBt.setText(getString(R.string.doMaintenance));
+            if (selectedVehicle.getManutencao()) {
+                operationVehicleBt.setVisibility(View.GONE);
+            } else {
+                operationVehicleBt.setText(getString(R.string.doMaintenance));
+            }
             dialogOperationBt.setText(getString(R.string.confirm));
             Spannable codeText = setupVehicleText(
                     R.string.code_format,
@@ -247,12 +284,10 @@ public class VehicleDetailsActivity extends BaseActivity {
         confirmDialog = builder.create();
     }
 
-    private void generateTicket() {
-        FlowState<Vehicle> value = mViewModel.getFlowState().getValue();
-        if(value == null || value.getData() == null) return;
-        Vehicle vehicle = value.getData();
-        Ticket ticket = new Ticket(vehicle.getPreco(), "compra", vehicle.getCodigo(),""
-            , vehicle.getCodigo().hashCode() + ""
+    private void generateTicket(Vehicle vehicle) {
+        if (vehicle == null) return;
+        Ticket ticket = new Ticket(vehicle.getPreco(), "compra", vehicle.getCodigo(), ""
+                , vehicle.getCodigo().hashCode() + ""
         );
         Intent intent = new Intent(VehicleDetailsActivity.this, TicketDetailsActivity.class);
         intent.putExtra(TICKET_KEY, new Gson().toJson(ticket));

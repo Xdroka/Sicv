@@ -2,7 +2,6 @@ package com.tcc.sicv.data.firebase;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -11,7 +10,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tcc.sicv.data.model.FlowState;
-import com.tcc.sicv.data.model.User;
 import com.tcc.sicv.data.model.Vehicle;
 
 import java.util.ArrayList;
@@ -19,6 +17,8 @@ import java.util.ArrayList;
 import static com.tcc.sicv.data.model.Status.ERROR;
 import static com.tcc.sicv.data.model.Status.SUCCESS;
 import static com.tcc.sicv.utils.Constants.IMAGE_FIELD;
+import static com.tcc.sicv.utils.Constants.MAINTENANCE_COLLECTION_PATH;
+import static com.tcc.sicv.utils.Constants.MAINTENANCE_FIELD;
 import static com.tcc.sicv.utils.Constants.MARK_FIELD;
 import static com.tcc.sicv.utils.Constants.MODEL_FIELD;
 import static com.tcc.sicv.utils.Constants.POWER_FIELD;
@@ -36,7 +36,10 @@ public class VehiclesRepository {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void getMyVehicles(String email, final MutableLiveData<FlowState<ArrayList<Vehicle>>> flowState) {
+    public void getMyVehicles(
+            String email,
+            final MutableLiveData<FlowState<ArrayList<Vehicle>>> flowState
+    ) {
         db.collection(USER_COLLECTION_PATH).document(email).collection(VEHICLES_COLLECTION_PATH)
                 .orderBy(MODEL_FIELD)
                 .get()
@@ -53,7 +56,8 @@ public class VehiclesRepository {
                                             (String) item.get(SPEED_FIELD),
                                             (String) item.get(MARK_FIELD),
                                             (String) item.get(TYPE_FIELD),
-                                            item.getId()
+                                            item.getId(),
+                                            item.getBoolean(MAINTENANCE_FIELD)
                                     )
                             );
                         }
@@ -65,8 +69,7 @@ public class VehiclesRepository {
                     public void onFailure(@NonNull Exception e) {
                         flowState.postValue(new FlowState<ArrayList<Vehicle>>(null, e, ERROR));
                     }
-                })
-        ;
+                });
     }
 
     public void getAllVehicles(final MutableLiveData<FlowState<ArrayList<Vehicle>>> flowState) {
@@ -78,6 +81,7 @@ public class VehiclesRepository {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         ArrayList<Vehicle> list = new ArrayList<>();
                         for (DocumentSnapshot item : queryDocumentSnapshots.getDocuments()) {
+                            list.size();
                             list.add(new Vehicle(
                                             (String) item.get(IMAGE_FIELD),
                                             (String) item.get(MODEL_FIELD),
@@ -86,7 +90,8 @@ public class VehiclesRepository {
                                             (String) item.get(SPEED_FIELD),
                                             (String) item.get(MARK_FIELD),
                                             (String) item.get(TYPE_FIELD),
-                                            ""
+                                            "",
+                                            item.getBoolean(MAINTENANCE_FIELD)
                                     )
                             );
                         }
@@ -98,13 +103,13 @@ public class VehiclesRepository {
                     public void onFailure(@NonNull Exception e) {
                         flowState.postValue(new FlowState<ArrayList<Vehicle>>(null, e, ERROR));
                     }
-                })
-        ;
+                });
     }
 
-    public void buyVehicle(final String email, String model,
-                           final MutableLiveData<FlowState<Boolean>> result) {
-
+    public void buyVehicle(
+            final String email, String model,
+            final MutableLiveData<FlowState<Vehicle>> result
+    ) {
         db.collection(VEHICLES_COLLECTION_PATH).document(model).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -125,46 +130,34 @@ public class VehiclesRepository {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                            result.postValue(
-                                    new FlowState<Boolean>(null, e, ERROR)
-                            );
+                        result.postValue(new FlowState<Vehicle>(null, e, ERROR));
                     }
                 });
-
     }
 
-    private void putVehicleInUserVehicles(String imagem, String modelo,
-                                          String potencia, String preco,
-                                          String velocidade, String marca,
-                                          String tipo, String email,
-                                          final MutableLiveData<FlowState<Boolean>> result) {
+    private void putVehicleInUserVehicles(
+            String imagem, String modelo,
+            String potencia, String preco,
+            String velocidade, String marca,
+            String tipo, String email,
+            final MutableLiveData<FlowState<Vehicle>> result
+    ) {
+        final Vehicle vehicle = new Vehicle(
+                imagem, modelo, potencia, preco, velocidade, marca, tipo, null, false
+        );
         db.collection(USER_COLLECTION_PATH).document(email).collection(VEHICLES_COLLECTION_PATH)
-                .add(
-                        new Vehicle(
-                                imagem,
-                                modelo,
-                                potencia,
-                                preco,
-                                velocidade,
-                                marca,
-                                tipo,
-                                null
-                        )
-                )
+                .add(vehicle)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        result.postValue(
-                                new FlowState<Boolean>(null, null, SUCCESS)
-                        );
+                        vehicle.setCodigo(documentReference.getId());
+                        result.postValue(new FlowState<>(vehicle, null, SUCCESS));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                            result.postValue(
-                                    new FlowState<Boolean>(null, e, ERROR)
-                            );
+                        result.postValue(new FlowState<Vehicle>(null, e, ERROR));
                     }
                 });
     }

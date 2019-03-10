@@ -33,7 +33,7 @@ import static com.tcc.sicv.utils.Constants.DATE_MIN_LENGHT;
 
 public class VehicleDetailsViewModel extends ViewModel {
     private MutableLiveData<FlowState<Vehicle>> flowState;
-    private MutableLiveData<FlowState<Boolean>> buyState;
+    private MutableLiveData<FlowState<Vehicle>> buyState;
     private MutableLiveData<FlowState<MaintenanceVehicle>> maintenanceFlow;
     private MutableLiveData<State> dateState;
     private VehiclesRepository vehiclesRepository;
@@ -49,6 +49,8 @@ public class VehicleDetailsViewModel extends ViewModel {
         buyState = new MutableLiveData<>();
         vehiclesRepository = new VehiclesRepository();
         maintenanceRepository = new MaintenanceRepository();
+        maintenanceFlow = new MutableLiveData<>();
+        maintenanceFlow.setValue(new FlowState<MaintenanceVehicle>());
     }
 
     public void getVehicle(String gson) {
@@ -110,23 +112,26 @@ public class VehicleDetailsViewModel extends ViewModel {
         if (!validDate) return;
 
         if (fromActivity.equals(BUY_VEHICLE)) {
-            buyState.postValue(new FlowState<Boolean>(null, null, LOADING));
+            buyState.postValue(new FlowState<Vehicle>(null, null, LOADING));
             vehiclesRepository.buyVehicle(preferencesHelper.getEmail(), selectedVehicle.getModelo()
                     , buyState);
         } else {
-            //fluxo da manutenção
+            maintenanceFlow.postValue(
+                    new FlowState<MaintenanceVehicle>(null, null, LOADING)
+            );
+            maintenanceRepository.setVehicleInMaintenance(
+                    preferencesHelper.getEmail(), selectedVehicle, date, maintenanceFlow
+            );
         }
     }
 
-    public LiveData<FlowState<Vehicle>> getFlowState() {
-        return flowState;
-    }
+    public LiveData<FlowState<Vehicle>> getFlowState() { return flowState; }
 
-    public LiveData<FlowState<Boolean>> getBuyState() { return buyState; }
+    public LiveData<FlowState<Vehicle>> getBuyState() { return buyState; }
 
     public LiveData<State> getDateState() {
         return dateState;
     }
 
-    public MutableLiveData<FlowState<MaintenanceVehicle>> getMaintenanceFlow() { return maintenanceFlow; }
+    public LiveData<FlowState<MaintenanceVehicle>> getMaintenanceFlow() { return maintenanceFlow; }
 }

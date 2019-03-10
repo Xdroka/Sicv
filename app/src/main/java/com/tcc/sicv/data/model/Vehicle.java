@@ -9,9 +9,10 @@ public class Vehicle {
     private String marca;
     private String tipo;
     private String codigo;
+    private Boolean manutencao = false;
 
-    public Vehicle(String imagem, String modelo, String potencia, String preco,
-                   String velocidade, String marca, String tipo, String codigo) {
+    public Vehicle(String imagem, String modelo, String potencia, String preco, String velocidade,
+                   String marca, String tipo, String codigo, Boolean estaReparando) {
         this.imagem = imagem;
         this.modelo = modelo;
         this.potencia = potencia;
@@ -20,11 +21,16 @@ public class Vehicle {
         this.marca = marca;
         this.tipo = tipo;
         this.codigo = codigo;
+        if(manutencao != null) this.manutencao = estaReparando;
     }
 
-    public String getCodigo() {
-        return codigo;
-    }
+    public Boolean getManutencao() { return manutencao; }
+
+    public void setManutencao(Boolean manutencao) { this.manutencao = manutencao; }
+
+    public void setCodigo(String codigo) { this.codigo = codigo; }
+
+    public String getCodigo() { return codigo; }
 
     public String getImagem() {
         return imagem;

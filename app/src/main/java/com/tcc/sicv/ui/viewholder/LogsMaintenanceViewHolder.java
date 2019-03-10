@@ -24,17 +24,17 @@ public class LogsMaintenanceViewHolder extends RecyclerView.ViewHolder {
     public void bind(final Logs item, final OnItemClick<Logs> listener) {
         dateDetailsTextView.setText(String.format(
                 itemView.getContext().getString(R.string.date_log_format),
-                item.getDate()
+                item.getData()
         ));
 
         descriptionLogTextView.setText(String.format(
                 itemView.getContext().getString(R.string.description_log_format),
-                item.getDescription()
+                item.getDescricao()
         ));
 
         costLogTextView.setText(String.format(
                 itemView.getContext().getString(R.string.cost_log_format),
-                item.getCost()
+                item.getGasto()
         ));
         if (listener != null) {
             itemView.setOnClickListener(new View.OnClickListener() {

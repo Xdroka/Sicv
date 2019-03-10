@@ -74,7 +74,7 @@ public class DetailsMaintenanceViewModel extends ViewModel {
         ArrayList<Logs> logsList = flowState.getValue().getData();
         for (Logs log : logsList) {
             try {
-                totalCost += Float.parseFloat(log.getCost()
+                totalCost += Float.parseFloat(log.getGasto()
                         .replace("R$", "")
                         .replace(",", "."));
             } catch (NullPointerException ignored) {
@@ -96,7 +96,7 @@ public class DetailsMaintenanceViewModel extends ViewModel {
             numberString = "0,00";
         }
 
-        return numberString;
+        return "R$ " + numberString;
     }
 
     public Boolean isVehicleFixed() {

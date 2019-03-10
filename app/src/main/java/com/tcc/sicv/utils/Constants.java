@@ -27,7 +27,7 @@ public class Constants {
     public static final String DESCRIPTION_FIELD = "descricao";
     public static final String RELEASE_VEHICLE_FIELD = "veiculo_liberado";
     public static final String COST_FIELD = "gasto";
-    public static final String TOTAL_COST_FIELD = "total_gasto";
+    public static final String MAINTENANCE_FIELD = "manutencao";
 
     //Numbers
     public static final int DATE_MIN_LENGHT = 10;
