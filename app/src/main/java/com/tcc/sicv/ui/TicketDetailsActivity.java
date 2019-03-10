@@ -83,7 +83,7 @@ public class TicketDetailsActivity extends BaseActivity {
                 String.format(getString(R.string.money_format), ticket.getCustoTotal())
         );
         typeTicketTextView.setText(
-                String.format(getString(R.string.type_ticket), ticket.getTipo())
+                String.format(getString(R.string.type_ticket), ticket.getTipo().toUpperCase())
         );
         String vehicleCodeFormat = getString(R.string.vehicle_code) + " " + ticket.getCodigoVeiculo();
         vehicleCodeTextView.setText(vehicleCodeFormat);

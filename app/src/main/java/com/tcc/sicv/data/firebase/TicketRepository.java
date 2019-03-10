@@ -27,6 +27,7 @@ import static com.tcc.sicv.utils.Constants.TICKET_COLLECTION_PATH;
 import static com.tcc.sicv.utils.Constants.TIME_TICKET_FIELD;
 import static com.tcc.sicv.utils.Constants.TYPE_FIELD;
 import static com.tcc.sicv.utils.Constants.USER_COLLECTION_PATH;
+import static com.tcc.sicv.utils.Constants.VEHICLES_COLLECTION_PATH;
 
 public class TicketRepository {
     private final FirebaseFirestore db;
@@ -79,7 +80,7 @@ public class TicketRepository {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            result.postValue(new FlowState<>(true, null, SUCCESS));
+                                       updateFieldInVehicle(email, ticket.getCodigoVeiculo(), result);
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -97,6 +98,27 @@ public class TicketRepository {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         result.postValue(new FlowState<Boolean>(null, e, ERROR));
+                    }
+                });
+    }
+
+    private void updateFieldInVehicle(
+            String email, String codeVehicle, final MutableLiveData<FlowState<Boolean>> result
+    ){
+        db.collection(USER_COLLECTION_PATH).document(email)
+                .collection(VEHICLES_COLLECTION_PATH)
+                .document(codeVehicle)
+                .update(MAINTENANCE_FIELD, false)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        result.postValue(new FlowState<Boolean>(null, e, ERROR));
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        result.postValue(new FlowState<>(true, null, SUCCESS));
                     }
                 });
     }
