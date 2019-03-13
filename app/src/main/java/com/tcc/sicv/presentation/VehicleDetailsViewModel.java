@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModel;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.tcc.sicv.base.Result;
+import com.tcc.sicv.base.ResultListenerFactory;
 import com.tcc.sicv.data.firebase.MaintenanceRepository;
 import com.tcc.sicv.data.firebase.VehiclesRepository;
 import com.tcc.sicv.data.model.FlowState;
@@ -34,6 +36,8 @@ public class VehicleDetailsViewModel extends ViewModel {
     private MutableLiveData<FlowState<Vehicle>> flowState;
     private MutableLiveData<FlowState<Vehicle>> buyFlow;
     private MutableLiveData<FlowState<MaintenanceVehicle>> maintenanceFlow;
+    private Result<Vehicle> buyResult;
+    private Result<MaintenanceVehicle> maintenanceResult;
     private MutableLiveData<State> dateState;
     private VehiclesRepository vehiclesRepository;
     private MaintenanceRepository maintenanceRepository;
@@ -46,9 +50,11 @@ public class VehicleDetailsViewModel extends ViewModel {
         flowState = new MutableLiveData<>();
         dateState = new MutableLiveData<>();
         buyFlow = new MutableLiveData<>();
+        buyResult = new ResultListenerFactory<Vehicle>().create(buyFlow);
         vehiclesRepository = new VehiclesRepository();
         maintenanceRepository = new MaintenanceRepository();
         maintenanceFlow = new MutableLiveData<>();
+        maintenanceResult = new ResultListenerFactory<MaintenanceVehicle>().create(maintenanceFlow);
         maintenanceFlow.setValue(new FlowState<MaintenanceVehicle>());
     }
 
@@ -114,13 +120,13 @@ public class VehicleDetailsViewModel extends ViewModel {
             this.date = date;
             buyFlow.postValue(new FlowState<Vehicle>(null, null, LOADING));
             vehiclesRepository.buyVehicle(preferencesHelper.getEmail(), selectedVehicle.getModelo()
-                    , buyFlow);
+                    , buyResult);
         } else {
             maintenanceFlow.postValue(
                     new FlowState<MaintenanceVehicle>(null, null, LOADING)
             );
             maintenanceRepository.setVehicleInMaintenance(
-                    preferencesHelper.getEmail(), selectedVehicle, date, maintenanceFlow
+                    preferencesHelper.getEmail(), selectedVehicle, date, maintenanceResult
             );
         }
     }

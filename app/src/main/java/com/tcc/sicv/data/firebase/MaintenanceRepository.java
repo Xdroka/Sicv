@@ -1,6 +1,5 @@
 package com.tcc.sicv.data.firebase;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -9,15 +8,13 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.base.Result;
 import com.tcc.sicv.data.model.Logs;
 import com.tcc.sicv.data.model.MaintenanceVehicle;
 import com.tcc.sicv.data.model.Vehicle;
 
 import java.util.ArrayList;
 
-import static com.tcc.sicv.data.model.Status.ERROR;
-import static com.tcc.sicv.data.model.Status.SUCCESS;
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_FIELD;
 import static com.tcc.sicv.utils.Constants.COST_FIELD;
 import static com.tcc.sicv.utils.Constants.DATE_FIELD;
@@ -42,7 +39,7 @@ public class MaintenanceRepository {
             final String email,
             Vehicle vehicle,
             final String date,
-            final MutableLiveData<FlowState<MaintenanceVehicle>> result
+            final Result<MaintenanceVehicle> result
     ) {
         DocumentReference document = db.collection(USER_COLLECTION_PATH)
                 .document(email)
@@ -58,7 +55,7 @@ public class MaintenanceRepository {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(new FlowState<MaintenanceVehicle>(null, e, ERROR));
+                        result.onFailure(e);
                     }
                 }).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -71,7 +68,7 @@ public class MaintenanceRepository {
     private void setFirstLogInMaintenance(
             final String email, final MaintenanceVehicle maintenanceVehicle,
             String date,
-            final MutableLiveData<FlowState<MaintenanceVehicle>> result
+            final Result<MaintenanceVehicle> result
     ){
         String firstLogDescription = "Entrega do veículo a concessionária";
         db.collection(USER_COLLECTION_PATH).document(email).collection(MAINTENANCE_COLLECTION_PATH)
@@ -87,14 +84,14 @@ public class MaintenanceRepository {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(new FlowState<MaintenanceVehicle>(null, e, ERROR));
+                        result.onFailure(e);
                     }
                 });
     }
 
     private void setMyVehicleInMaintenance(
             String email, final MaintenanceVehicle maintenance,
-            final MutableLiveData<FlowState<MaintenanceVehicle>> result
+            final Result<MaintenanceVehicle> result
     ){
         db.collection(USER_COLLECTION_PATH).document(email).collection(VEHICLES_COLLECTION_PATH)
                 .document(maintenance.getCod_veiculo())
@@ -102,20 +99,20 @@ public class MaintenanceRepository {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        result.postValue(new FlowState<>(maintenance, null, SUCCESS));
+                        result.onSuccess(maintenance);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(new FlowState<MaintenanceVehicle>(null, e, ERROR));
+                        result.onFailure(e);
                     }
                 });
     }
 
     public void getVehiclesInMaintenance(
             final String email,
-            final MutableLiveData<FlowState<ArrayList<MaintenanceVehicle>>> result
+            final Result<ArrayList<MaintenanceVehicle>> result
     ) {
         db.collection(USER_COLLECTION_PATH).document(email).collection(MAINTENANCE_COLLECTION_PATH)
                 .orderBy(MODEL_FIELD)
@@ -134,15 +131,13 @@ public class MaintenanceRepository {
                             );
                             maintenanceList.add(maintenance);
                         }
-                        result.postValue(new FlowState<>(maintenanceList, null, SUCCESS));
+                        result.onSuccess(maintenanceList);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(
-                                new FlowState<ArrayList<MaintenanceVehicle>>(null, e, ERROR)
-                        );
+                        result.onFailure(e);
                     }
                 });
     }
@@ -150,7 +145,7 @@ public class MaintenanceRepository {
     public void getLogsInMaintenance(
             String email,
             String maintenanceCode,
-            final MutableLiveData<FlowState<ArrayList<Logs>>> result
+            final Result<ArrayList<Logs>> result
     ) {
         db.collection(USER_COLLECTION_PATH).document(email)
                 .collection(MAINTENANCE_COLLECTION_PATH)
@@ -168,15 +163,13 @@ public class MaintenanceRepository {
                                     (String) item.get(COST_FIELD)
                             ));
                         }
-                        result.postValue(new FlowState<>(logsList, null, SUCCESS));
+                        result.onSuccess(logsList);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(new FlowState<ArrayList<Logs>>(
-                                null, e, ERROR
-                        ));
+                        result.onFailure(e);
                     }
                 });
     }

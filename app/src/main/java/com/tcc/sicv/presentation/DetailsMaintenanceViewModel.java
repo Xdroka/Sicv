@@ -4,6 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.tcc.sicv.base.Result;
+import com.tcc.sicv.base.ResultListenerFactory;
 import com.tcc.sicv.data.firebase.MaintenanceRepository;
 import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.Logs;
@@ -22,6 +24,7 @@ public class DetailsMaintenanceViewModel extends ViewModel {
     private PreferencesHelper preferencesHelper;
     private MaintenanceRepository repository;
     private MutableLiveData<FlowState<ArrayList<Logs>>> flowState;
+    private Result<ArrayList<Logs>> resultListener;
     private MaintenanceVehicle maintenance;
     private Ticket ticket = null;
 
@@ -33,6 +36,7 @@ public class DetailsMaintenanceViewModel extends ViewModel {
         this.maintenance = maintenance;
         repository = new MaintenanceRepository();
         flowState = new MutableLiveData<>();
+        resultListener = new ResultListenerFactory<ArrayList<Logs>>().create(flowState);
         flowState.setValue(new FlowState<ArrayList<Logs>>());
         requestLogsMaintenance();
     }
@@ -42,7 +46,7 @@ public class DetailsMaintenanceViewModel extends ViewModel {
                 || maintenance == null) return;
         flowState.postValue(new FlowState<ArrayList<Logs>>(null, null, LOADING));
         repository.getLogsInMaintenance(
-                preferencesHelper.getEmail(), maintenance.getMaintenanceCode(), flowState
+                preferencesHelper.getEmail(), maintenance.getMaintenanceCode(), resultListener
         );
     }
 

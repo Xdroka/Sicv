@@ -1,6 +1,5 @@
 package com.tcc.sicv.data.firebase;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -8,7 +7,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.tcc.sicv.data.model.FlowState;
+import com.tcc.sicv.base.Result;
 import com.tcc.sicv.data.model.Ticket;
 
 import java.text.SimpleDateFormat;
@@ -16,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.tcc.sicv.data.model.Status.ERROR;
-import static com.tcc.sicv.data.model.Status.SUCCESS;
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_FIELD;
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_TICKET_FIELD;
 import static com.tcc.sicv.utils.Constants.COST_TICKET_FIELD;
@@ -37,7 +34,7 @@ public class TicketRepository {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void setTicket(final String email, final Ticket ticket, final MutableLiveData<FlowState<Boolean>> result) {
+    public void setTicket(final String email, final Ticket ticket, final Result<Boolean> result) {
         ticket.setTime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss",
                 Locale.getDefault()).format(new Date()));
 
@@ -51,19 +48,19 @@ public class TicketRepository {
                             removingVehicleFromMaintenance(
                                     email, ticket, result
                             );
-                        } else result.postValue(new FlowState<>(true, null, SUCCESS));
+                        } else result.onSuccess(true);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(new FlowState<Boolean>(null, e, ERROR));
+                        result.onFailure(e);
                     }
                 });
     }
 
     private void removingVehicleFromMaintenance(
-            final String email, final Ticket ticket, final MutableLiveData<FlowState<Boolean>> result
+            final String email, final Ticket ticket, final Result<Boolean> result
     ) {
         db.collection(USER_COLLECTION_PATH).document(email).collection(MAINTENANCE_COLLECTION_PATH)
                 .whereEqualTo(CODE_VEHICLE_FIELD, ticket.getCodigoVeiculo())
@@ -87,9 +84,7 @@ public class TicketRepository {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            result.postValue(new FlowState<Boolean>(
-                                                    null, e , ERROR
-                                            ));
+                                            result.onFailure(e);
                                         }
                                     });
                         }
@@ -98,13 +93,13 @@ public class TicketRepository {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(new FlowState<Boolean>(null, e, ERROR));
+                        result.onFailure(e);
                     }
                 });
     }
 
     private void updateFieldInVehicle(
-            String email, String codeVehicle, final MutableLiveData<FlowState<Boolean>> result
+            String email, String codeVehicle, final Result<Boolean> result
     ){
         db.collection(USER_COLLECTION_PATH).document(email)
                 .collection(VEHICLES_COLLECTION_PATH)
@@ -113,18 +108,18 @@ public class TicketRepository {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(new FlowState<Boolean>(null, e, ERROR));
+                        result.onFailure(e);
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        result.postValue(new FlowState<>(true, null, SUCCESS));
+                        result.onSuccess(true);
                     }
                 });
     }
 
-    public void getTickets(String email, final MutableLiveData<FlowState<ArrayList<Ticket>>> result) {
+    public void getTickets(String email, final Result<ArrayList<Ticket>> result) {
         db.collection(USER_COLLECTION_PATH).document(email)
                 .collection(TICKET_COLLECTION_PATH)
                 .get()
@@ -142,15 +137,13 @@ public class TicketRepository {
                                     (String) item.get(DATE_BUY_TICKET_FIELD)
                             ));
                         }
-                        result.postValue(new FlowState<>(ticketList, null, SUCCESS));
+                        result.onSuccess(ticketList);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(
-                                new FlowState<ArrayList<Ticket>>(null, null, ERROR)
-                        );
+                        result.onFailure(e);
                     }
                 });
     }

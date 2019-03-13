@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModel;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.tcc.sicv.base.Result;
+import com.tcc.sicv.base.ResultListenerFactory;
 import com.tcc.sicv.data.firebase.TicketRepository;
 import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.Ticket;
@@ -28,9 +30,14 @@ public class TicketDetailsViewModel extends ViewModel {
         if(loadedTicket){
             flowState.postValue(new FlowState<>(true, null, SUCCESS));
         }
+        getTickets(preferencesHelper);
+    }
+
+    private void getTickets(PreferencesHelper preferencesHelper) {
+        Result<Boolean> resultListener = new ResultListenerFactory<Boolean>().create(flowState);
         flowState.setValue(new FlowState<Boolean>(null, null, LOADING));
         TicketRepository repository = new TicketRepository();
-        repository.setTicket(preferencesHelper.getEmail(), ticket, flowState);
+        repository.setTicket(preferencesHelper.getEmail(), ticket, resultListener);
     }
 
     private void handleWithJson(String ticketJson) {
