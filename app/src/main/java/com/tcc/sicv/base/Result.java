@@ -1,6 +1,6 @@
-package com.tcc.sicv.presentation;
+package com.tcc.sicv.base;
 
 public interface Result<T> {
-    void onSucess(T data);
+    void onSuccess(T data);
     void onFailure(Throwable throwable);
 }

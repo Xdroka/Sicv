@@ -5,6 +5,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Patterns;
 
+import com.tcc.sicv.base.Result;
+import com.tcc.sicv.base.ResultListenerFactory;
 import com.tcc.sicv.data.firebase.AuthRepository;
 import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.State;
@@ -37,10 +39,12 @@ public class SignUpViewModel extends ViewModel {
     private MutableLiveData<State> passwordState;
     private MutableLiveData<State> confirmPassState;
     private PreferencesHelper preferencesHelper;
+    private Result<String> authListener;
 
     public SignUpViewModel(PreferencesHelper preferences) {
         authRepository = new AuthRepository();
         flowState = new MutableLiveData<>();
+        authListener = new ResultListenerFactory<String>().create(flowState);
         nameState = new MutableLiveData<>();
         cpfState = new MutableLiveData<>();
         telState = new MutableLiveData<>();
@@ -211,7 +215,7 @@ public class SignUpViewModel extends ViewModel {
                             tel,
                             date
                     ),
-                    flowState
+                    authListener
             );
         }
     }

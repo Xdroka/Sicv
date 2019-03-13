@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.tcc.sicv.base.Result;
+import com.tcc.sicv.base.ResultListenerFactory;
 import com.tcc.sicv.data.model.State;
 
 import android.arch.lifecycle.MutableLiveData;
@@ -16,10 +18,8 @@ import com.tcc.sicv.data.preferences.PreferencesHelper;
 import static com.tcc.sicv.data.model.State.EMPTY;
 import static com.tcc.sicv.data.model.State.INVALID;
 import static com.tcc.sicv.data.model.State.VALID;
-import static com.tcc.sicv.data.model.Status.ERROR;
 import static com.tcc.sicv.data.model.Status.LOADING;
 import static com.tcc.sicv.data.model.Status.NEUTRAL;
-import static com.tcc.sicv.data.model.Status.SUCCESS;
 
 public class LoginViewModel extends ViewModel {
     private AuthRepository authRepository;
@@ -27,26 +27,17 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<State> emailState;
     private MutableLiveData<State> passwordState;
     private PreferencesHelper preferencesHelper;
+    private Result<String> resultListener;
 
     public LoginViewModel(PreferencesHelper preferences) {
         flowState = new MutableLiveData<>();
         flowState.setValue(new FlowState<String>(null, null, NEUTRAL));
+        resultListener = new ResultListenerFactory<String>().create(flowState);
         authRepository = new AuthRepository();
         preferencesHelper = preferences;
         emailState = new MutableLiveData<>();
         passwordState = new MutableLiveData<>();
     }
-
-    private Result<String> resultListener = new Result<String>() {
-        @Override
-        public void onSucess(String data) {
-            flowState.postValue(new FlowState<>(data, null, SUCCESS));
-        }
-        @Override
-        public void onFailure(Throwable throwable) {
-            flowState.postValue(new FlowState<String>(null, throwable, ERROR));
-        }
-    };
 
     public void saveUser(String email) {
         preferencesHelper.saveUser(email);

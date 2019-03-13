@@ -1,6 +1,5 @@
 package com.tcc.sicv.data.firebase;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -11,12 +10,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.User;
-import com.tcc.sicv.presentation.Result;
+import com.tcc.sicv.base.Result;
 
-import static com.tcc.sicv.data.model.Status.ERROR;
-import static com.tcc.sicv.data.model.Status.SUCCESS;
 import static com.tcc.sicv.utils.Constants.USER_COLLECTION_PATH;
 
 public class AuthRepository {
@@ -28,9 +24,9 @@ public class AuthRepository {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void logout(final MutableLiveData<FlowState<Void>> result) {
+    public void logout(final Result<Void> result) {
         mAuth.signOut();
-        result.postValue(new FlowState<Void>(null, null, SUCCESS));
+        result.onSuccess(null);
     }
 
     public void signIn(final String email, String password, final Result<String> result) {
@@ -39,7 +35,7 @@ public class AuthRepository {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            result.onSucess(email);
+                            result.onSuccess(email);
                         } else {
                             result.onFailure(task.getException());
                         }
@@ -49,7 +45,7 @@ public class AuthRepository {
         );
     }
 
-    public void getUserProfile(final String email, final MutableLiveData<FlowState<User>> result) {
+    public void getUserProfile(final String email, final Result<User> result) {
         db.collection(USER_COLLECTION_PATH).document(email).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -58,47 +54,37 @@ public class AuthRepository {
                         String date = (String) documentSnapshot.get("date");
                         String name = (String) documentSnapshot.get("name");
                         String tel = (String) documentSnapshot.get("tel");
-                        result.postValue(
-                                new FlowState<>(
-                                        new User(email, "", name, cpf, tel, date),
-                                        null,
-                                        SUCCESS
-                                )
-                        );
+                        result.onSuccess(new User(email, "", name, cpf, tel, date));
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(
-                                new FlowState<User>(null, e, ERROR)
-                        );
+                        result.onFailure(e);
                     }
                 });
     }
 
-    private void createUserDocument(final User user, final MutableLiveData<FlowState<String>> result) {
+    private void createUserDocument(final User user, final Result<String> result) {
         db.collection(USER_COLLECTION_PATH).document(user.getEmail())
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        result.postValue(new FlowState<>(user.getEmail(), null, SUCCESS));
+                        result.onSuccess(user.getEmail());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        result.postValue(
-                                new FlowState<String>(null, e, ERROR)
-                        );
+                        result.onFailure(e);
                     }
                 });
     }
 
     public void checkAccountExistAndCreateUser(
             final User user,
-            final MutableLiveData<FlowState<String>> result
+            final Result<String> result
     ) {
         mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -107,9 +93,7 @@ public class AuthRepository {
                         if (task.isSuccessful()) {
                             createUserDocument(user, result);
                         } else {
-                            result.postValue(
-                                    new FlowState<String>(null, task.getException(), ERROR)
-                            );
+                            result.onFailure(task.getException());
                         }
                     }
                 });
