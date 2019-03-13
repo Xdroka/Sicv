@@ -16,8 +16,10 @@ import com.tcc.sicv.data.preferences.PreferencesHelper;
 import static com.tcc.sicv.data.model.State.EMPTY;
 import static com.tcc.sicv.data.model.State.INVALID;
 import static com.tcc.sicv.data.model.State.VALID;
+import static com.tcc.sicv.data.model.Status.ERROR;
 import static com.tcc.sicv.data.model.Status.LOADING;
 import static com.tcc.sicv.data.model.Status.NEUTRAL;
+import static com.tcc.sicv.data.model.Status.SUCCESS;
 
 public class LoginViewModel extends ViewModel {
     private AuthRepository authRepository;
@@ -35,6 +37,17 @@ public class LoginViewModel extends ViewModel {
         passwordState = new MutableLiveData<>();
     }
 
+    private Result<String> resultListener = new Result<String>() {
+        @Override
+        public void onSucess(String data) {
+            flowState.postValue(new FlowState<>(data, null, SUCCESS));
+        }
+        @Override
+        public void onFailure(Throwable throwable) {
+            flowState.postValue(new FlowState<String>(null, throwable, ERROR));
+        }
+    };
+
     public void saveUser(String email) {
         preferencesHelper.saveUser(email);
     }
@@ -50,7 +63,7 @@ public class LoginViewModel extends ViewModel {
         if (emailState.getValue() != VALID || passwordState.getValue() != VALID) return;
 
         flowState.postValue(new FlowState<String>(null, null, LOADING));
-        authRepository.signIn(email, password, flowState);
+        authRepository.signIn(email, password, resultListener);
     }
 
     private void validateEmail(String email) {

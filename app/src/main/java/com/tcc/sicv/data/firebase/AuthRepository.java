@@ -13,6 +13,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.tcc.sicv.data.model.FlowState;
 import com.tcc.sicv.data.model.User;
+import com.tcc.sicv.presentation.Result;
 
 import static com.tcc.sicv.data.model.Status.ERROR;
 import static com.tcc.sicv.data.model.Status.SUCCESS;
@@ -32,19 +33,15 @@ public class AuthRepository {
         result.postValue(new FlowState<Void>(null, null, SUCCESS));
     }
 
-    public void signIn(final String email, String password, final MutableLiveData<FlowState<String>> result) {
+    public void signIn(final String email, String password, final Result<String> result) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            result.postValue(
-                                    new FlowState<>(email, null, SUCCESS)
-                            );
+                            result.onSucess(email);
                         } else {
-                            result.postValue(
-                                    new FlowState<String>(null, task.getException(), ERROR)
-                            );
+                            result.onFailure(task.getException());
                         }
 
                     }
