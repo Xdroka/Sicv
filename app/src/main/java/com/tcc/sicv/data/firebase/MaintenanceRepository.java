@@ -14,13 +14,20 @@ import com.tcc.sicv.data.model.Logs;
 import com.tcc.sicv.data.model.MaintenanceVehicle;
 import com.tcc.sicv.data.model.Vehicle;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Locale;
 
 import static com.tcc.sicv.data.model.Status.ERROR;
 import static com.tcc.sicv.data.model.Status.SUCCESS;
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_FIELD;
 import static com.tcc.sicv.utils.Constants.COST_FIELD;
 import static com.tcc.sicv.utils.Constants.DATE_FIELD;
+import static com.tcc.sicv.utils.Constants.DATE_FORMAT;
 import static com.tcc.sicv.utils.Constants.DESCRIPTION_FIELD;
 import static com.tcc.sicv.utils.Constants.IMAGE_FIELD;
 import static com.tcc.sicv.utils.Constants.LOGS_COLLECTION_PATH;
@@ -61,18 +68,18 @@ public class MaintenanceRepository {
                         result.postValue(new FlowState<MaintenanceVehicle>(null, e, ERROR));
                     }
                 }).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                        public void onSuccess(Void aVoid) {
-                        setFirstLogInMaintenance(email, maintenanceVehicle, date, result);
-                    }
-                });
+            @Override
+            public void onSuccess(Void aVoid) {
+                setFirstLogInMaintenance(email, maintenanceVehicle, date, result);
+            }
+        });
     }
 
     private void setFirstLogInMaintenance(
             final String email, final MaintenanceVehicle maintenanceVehicle,
             String date,
             final MutableLiveData<FlowState<MaintenanceVehicle>> result
-    ){
+    ) {
         String firstLogDescription = "Entrega do veículo a concessionária";
         db.collection(USER_COLLECTION_PATH).document(email).collection(MAINTENANCE_COLLECTION_PATH)
                 .document(maintenanceVehicle.getMaintenanceCode())
@@ -95,7 +102,7 @@ public class MaintenanceRepository {
     private void setMyVehicleInMaintenance(
             String email, final MaintenanceVehicle maintenance,
             final MutableLiveData<FlowState<MaintenanceVehicle>> result
-    ){
+    ) {
         db.collection(USER_COLLECTION_PATH).document(email).collection(VEHICLES_COLLECTION_PATH)
                 .document(maintenance.getCod_veiculo())
                 .update(MAINTENANCE_FIELD, true)
@@ -168,6 +175,7 @@ public class MaintenanceRepository {
                                     (String) item.get(COST_FIELD)
                             ));
                         }
+                        orderListByDate(logsList);
                         result.postValue(new FlowState<>(logsList, null, SUCCESS));
                     }
                 })
@@ -179,5 +187,19 @@ public class MaintenanceRepository {
                         ));
                     }
                 });
+    }
+
+    private void orderListByDate(ArrayList<Logs> logsList) {
+        Collections.sort(logsList, new Comparator<Logs>() {
+            DateFormat f = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            @Override
+            public int compare(Logs o1, Logs o2) {
+                try {
+                    return f.parse(o1.getData()).compareTo(f.parse(o2.getData()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
     }
 }
