@@ -13,11 +13,18 @@ import com.tcc.sicv.data.model.Logs;
 import com.tcc.sicv.data.model.MaintenanceVehicle;
 import com.tcc.sicv.data.model.Vehicle;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Locale;
 
 import static com.tcc.sicv.utils.Constants.CODE_VEHICLE_FIELD;
 import static com.tcc.sicv.utils.Constants.COST_FIELD;
 import static com.tcc.sicv.utils.Constants.DATE_FIELD;
+import static com.tcc.sicv.utils.Constants.DATE_FORMAT;
 import static com.tcc.sicv.utils.Constants.DESCRIPTION_FIELD;
 import static com.tcc.sicv.utils.Constants.IMAGE_FIELD;
 import static com.tcc.sicv.utils.Constants.LOGS_COLLECTION_PATH;
@@ -163,6 +170,7 @@ public class MaintenanceRepository {
                                     (String) item.get(COST_FIELD)
                             ));
                         }
+                        orderListByDate(logsList);
                         result.onSuccess(logsList);
                     }
                 })
@@ -172,5 +180,19 @@ public class MaintenanceRepository {
                         result.onFailure(e);
                     }
                 });
+    }
+
+    private void orderListByDate(ArrayList<Logs> logsList) {
+        Collections.sort(logsList, new Comparator<Logs>() {
+            DateFormat f = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            @Override
+            public int compare(Logs o1, Logs o2) {
+                try {
+                    return f.parse(o1.getData()).compareTo(f.parse(o2.getData()));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
     }
 }
