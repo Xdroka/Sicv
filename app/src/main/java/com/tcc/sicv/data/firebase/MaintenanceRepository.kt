@@ -8,6 +8,7 @@ import com.tcc.sicv.data.model.Vehicle
 import com.tcc.sicv.utils.Constants.CODE_VEHICLE_FIELD
 import com.tcc.sicv.utils.Constants.COST_FIELD
 import com.tcc.sicv.utils.Constants.DATE_FIELD
+import com.tcc.sicv.utils.Constants.DATE_FORMAT
 import com.tcc.sicv.utils.Constants.DESCRIPTION_FIELD
 import com.tcc.sicv.utils.Constants.IMAGE_FIELD
 import com.tcc.sicv.utils.Constants.LOGS_COLLECTION_PATH
@@ -17,6 +18,9 @@ import com.tcc.sicv.utils.Constants.MODEL_FIELD
 import com.tcc.sicv.utils.Constants.RELEASE_VEHICLE_FIELD
 import com.tcc.sicv.utils.Constants.USER_COLLECTION_PATH
 import com.tcc.sicv.utils.Constants.VEHICLES_COLLECTION_PATH
+import java.text.DateFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MaintenanceRepository {
@@ -110,8 +114,22 @@ class MaintenanceRepository {
                                 (item.get(COST_FIELD) as String?) ?:""
                         ))
                     }
+                    orderListByDate(logsList)
                     result.onSuccess(logsList)
                 }
                 .addOnFailureListener { e -> result.onFailure(e) }
+    }
+
+    private fun orderListByDate(logsList: ArrayList<Logs>) {
+        Collections.sort(logsList, object : Comparator<Logs> {
+            var f: DateFormat = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
+            override fun compare(o1: Logs, o2: Logs): Int {
+                try {
+                    return f.parse(o1.data).compareTo(f.parse(o2.data))
+                } catch (e: ParseException) {
+                    throw IllegalArgumentException(e)
+                }
+            }
+        })
     }
 }
