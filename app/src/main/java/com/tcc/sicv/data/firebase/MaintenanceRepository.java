@@ -184,7 +184,7 @@ public class MaintenanceRepository {
 
     private void orderListByDate(ArrayList<Logs> logsList) {
         Collections.sort(logsList, new Comparator<Logs>() {
-            DateFormat f = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+            DateFormat f = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
             @Override
             public int compare(Logs o1, Logs o2) {
                 try {
