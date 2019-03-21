@@ -60,11 +60,12 @@ class DetailsMaintenanceActivity : BaseActivity() {
             mViewModel.requestLogsMaintenance()
         }
 
-        mViewModel.ticket?.let {ticket ->
-            generateTicketButton.setOnClickListener {
+        generateTicketButton.setOnClickListener {
+            mViewModel.ticket?.let {ticket ->
                 startActivity<TicketDetailsActivity>(mapOf(TICKET_KEY to ticket.toJson()))
             }
         }
+
     }
 
     private fun handleWithMainFlow(flowState: FlowState<ArrayList<Logs>>?) {
