@@ -25,7 +25,7 @@ class MyTicketsViewModel(private val preferencesHelper: PreferencesHelper) : Vie
     }
 
     fun requestMyTickets() {
-        if (flowState.value == null || flowState.value!!.isLoading!!) return
+        if (flowState.value?.isLoading == true) return
         flowState.postValue(FlowState(null, null, LOADING))
         repository.getTickets(preferencesHelper.email?:"", resultListener)
     }

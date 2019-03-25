@@ -20,7 +20,7 @@ import java.util.*
 
 class MyTicketsActivity : BaseActivity() {
     private lateinit var mViewModel: MyTicketsViewModel
-    private var adapter = makeAdapter()
+    private var ticketAdapter = makeAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +33,15 @@ class MyTicketsActivity : BaseActivity() {
 
     private fun setupViews() {
         ticketListRecylerView.apply{
-            adapter = adapter
+            adapter = ticketAdapter
             addItemDecoration(DividerItemDecoration(context, requestedOrientation))
         }
     }
 
     private fun creatingObservers() {
         refreshMyTicketLayout.setOnRefreshListener {
-            adapter.ticketList.clear()
-            adapter.notifyDataSetChanged()
+            ticketAdapter.ticketList.clear()
+            ticketAdapter.notifyDataSetChanged()
             mViewModel.requestMyTickets()
         }
 
@@ -59,8 +59,8 @@ class MyTicketsActivity : BaseActivity() {
                 refreshMyTicketLayout!!.isRefreshing = false
 
                 flowState.data?.let {
-                    adapter.ticketList.addAll(it)
-                    adapter.notifyDataSetChanged()
+                    ticketAdapter.ticketList.addAll(it)
+                    ticketAdapter.notifyDataSetChanged()
                 }
 
             }

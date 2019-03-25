@@ -7,7 +7,7 @@ data class FlowState<T>(
         val throwable: Throwable?,
         val status: Status
 ) {
-    val isLoading: Boolean?
+    val isLoading: Boolean
         get() = status == Status.LOADING
 
     companion object {

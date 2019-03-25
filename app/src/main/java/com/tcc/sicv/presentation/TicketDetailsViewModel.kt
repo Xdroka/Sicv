@@ -27,7 +27,7 @@ class TicketDetailsViewModel(
         if (loadedTicket) {
             flowState.postValue(FlowState(true, null, SUCCESS))
         }
-        getTickets(preferencesHelper)
+        else getTickets(preferencesHelper)
     }
 
     private fun getTickets(preferencesHelper: PreferencesHelper) {

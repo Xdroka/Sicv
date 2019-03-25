@@ -38,7 +38,10 @@ open class BaseActivity : AppCompatActivity() {
 
     protected fun showLoadingDialog() = loadingDialog.show(supportFragmentManager, "loading")
 
-    protected fun hideLoadingDialog() = loadingDialog.dismiss()
+    protected fun hideLoadingDialog() = loadingDialog.let{
+        if(it.isVisible) it.dismiss()
+        it
+    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){

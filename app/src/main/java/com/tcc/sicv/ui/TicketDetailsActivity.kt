@@ -19,9 +19,9 @@ class TicketDetailsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ticket_details)
-        if (intent != null && intent.extras != null) {
-            val ticketJson = intent.extras!!.getString(TICKET_KEY, "")
-            val loadedTicket = intent.extras!!.getBoolean(RESULT_TAG)
+        intent?.extras?.let {
+            val ticketJson = it.getString(TICKET_KEY, "")
+            val loadedTicket = it.getBoolean(RESULT_TAG)
             mViewModel = TicketDetailsViewModel(
                     ticketJson,
                     PreferencesHelper(application),
